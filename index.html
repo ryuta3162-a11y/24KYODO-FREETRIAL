@@ -5,89 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>無料見学体験 - JOYFIT24経堂</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Pattern: Heat Signature (ヒートシグネチャ) */
+        /* Pattern: Pure White Racing Cockpit (純白のレーシングコックピット) */
         :root { 
             --joy-red: #C21642; 
             --deep-red: #8E0E30; 
-            --molten-orange: #ff4500;
-            --bg-warm-dark: #1f0101; /* 暖色系の暗い背景 */
+            --border-thickness: 5px; /* 線を太く変更 */
+            --shadow-offset: 12px;  /* 影のオフセットを大きく変更 */
+            --card-inner-bg: #f8f8f8; /* フォーム内部の背景色を薄いグレーに */
         }
 
         body {
             font-family: 'Noto Sans JP', sans-serif;
             color: #333;
             min-height: 100vh;
-            background-color: var(--bg-warm-dark);
-            
-            /* 背景: 赤を強めた熱源グラデーション + 放射状のライン */
-            background-image: 
-                radial-gradient(ellipse at 50% 10%, var(--molten-orange) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, var(--joy-red) 0%, transparent 40%),
-                repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05), transparent 1px, transparent 40px),
-                repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05), transparent 1px, transparent 40px);
-            background-size: cover, cover, 100% 100%, 100% 100%;
-            background-attachment: fixed;
-            /* わずかな影で背景の熱を表現 */
-            box-shadow: inset 0 0 150px rgba(194, 22, 66, 0.15); 
+            /* 背景: 純粋な白 -> 薄いグレーに変更 */
+            background-color: #f7f7f7; 
+            overflow-x: hidden;
         }
 
         /* 共通スタイル */
         .font-eng { font-family: 'Montserrat', sans-serif; }
         .text-joy-red { color: var(--joy-red); }
-        .neon-card {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            /* 熱源に呼応する影を強調 */
-            box-shadow: 0 0 25px rgba(194, 22, 66, 0.5), 8px 8px 0 rgba(0, 0, 0, 0.5);
+        
+        /* カードの共通デザイン（立体的な角の切り取り） */
+        .clipped-card {
+            background: var(--card-inner-bg); /* フォームの背景色をグレーに */
+            border: var(--border-thickness) solid var(--joy-red); /* 太い赤枠 */
+            border-radius: 0;
+            /* ネオンのような赤いグロー + 強い影で立体感 */
+            box-shadow: 
+                0 0 15px rgba(194, 22, 66, 0.9), /* ネオンエフェクトを強く */
+                var(--shadow-offset) var(--shadow-offset) 0 rgba(0, 0, 0, 0.8); /* 黒のシャドウを太く */
+            position: relative;
+            z-index: 10;
+            
+            /* 角を切り取るclip-path */
+            clip-path: polygon(
+                0 15px, 15px 0, calc(100% - 15px) 0, 100% 15px, 
+                100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px)
+            );
+        }
+
+        /* ★★★ ヘッダーエリア (ロゴ部分) のスタイルを黒背景に変更 ★★★ */
+        .header-box {
+            background-color: #1a1a1a; /* 黒背景 */
+            color: #fff; /* 文字色は白 */
+            border: var(--border-thickness) solid var(--joy-red);
+            /* 立体感のある影を強調 */
+            box-shadow: 0 0 15px rgba(194, 22, 66, 0.8), var(--shadow-offset) var(--shadow-offset) 0 rgba(0, 0, 0, 0.8);
+            border-radius: 0;
+            
+            /* 角を切り取るclip-path (フォームと同じ形状を維持) */
+            clip-path: polygon(
+                0 15px, 15px 0, calc(100% - 15px) 0, 100% 15px, 
+                100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px)
+            );
         }
         
         /* プラン選択ボタンの斜めスタイル */
         .plan-radio + label { 
-            border: 2px solid #ddd; 
+            border: 2px solid var(--joy-red);
             border-radius: 4px; 
-            /* 斜めカットのクリップパスを適用 */
-            clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+            clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
             transition: all 0.3s ease;
         }
         .plan-radio:checked + label {
-            background: linear-gradient(135deg, var(--joy-red), var(--molten-orange));
+            background: var(--joy-red); 
             color: white;
-            border-color: var(--joy-red);
-            box-shadow: 0 4px 10px rgba(255, 69, 0, 0.4);
-            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(194, 22, 66, 0.6);
+            transform: scale(1.01);
         }
 
         /* 入力フィールド */
-        .input-underline { border: none; border-bottom: 2px solid #ddd; background: #f8f8f8; }
-        .input-underline:focus { border-bottom-color: var(--molten-orange); }
+        .input-underline { 
+            border: none; 
+            border-bottom: 2px solid #ddd; 
+            background: #ffffff; /* 入力フィールド自体は白を維持 */
+        }
+        .input-underline:focus { border-bottom-color: var(--joy-red); }
         
-        /* 送信ボタン (Circuit Edge継承) */
+        /* 送信ボタン */
         .btn-solid {
-            background: linear-gradient(90deg, var(--molten-orange), var(--joy-red)); 
+            background: var(--joy-red);
             color: white;
-            clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
-            padding-left: 1.5rem;
-            padding-right: 3rem;
-            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.6);
-            transition: all 0.3s ease;
+            clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+            box-shadow: 0 4px 15px rgba(194, 22, 66, 0.8);
         }
-        .btn-solid:hover { background: linear-gradient(90deg, #e03d00, #a00e32); transform: translateY(-2px); }
-        
-        /* ローディング */
-        .is-loading { opacity: 0.8; pointer-events: none; position: relative; color: transparent !important; }
-        .is-loading::after {
-            content: ""; position: absolute; width: 1.5em; height: 1.5em;
-            top: 50%; left: 50%; margin: -0.75em 0 0 -0.75em;
-            border: 3px solid #fff; border-radius: 50%; border-right-color: transparent;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        /* アニメーション */
+        .btn-solid:hover { background: var(--deep-red); transform: translateY(-2px); }
+
+        /* アニメーションは維持 */
         .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
         .animate-slide-up { animation: slideUp 0.8s ease-out 0.2s forwards; opacity: 0; transform: translateY(20px); }
         @keyframes fadeIn { to { opacity: 1; } }
@@ -99,21 +107,21 @@
     <!-- メインコンテンツ -->
     <main class="w-full max-w-2xl z-10 space-y-6">
         
-        <!-- ヘッダーエリア -->
-        <section class="neon-card p-6 text-center animate-fade-in">
-            <h1 class="text-gray-800 mb-2 flex items-center justify-center gap-3 flex-wrap">
+        <!-- ヘッダーエリア (黒背景、白文字、太い赤縁) -->
+        <section class="header-box clipped-card p-6 text-center animate-fade-in">
+            <h1 class="text-white mb-2 flex items-center justify-center gap-3 flex-wrap">
                 <span class="text-4xl font-bold font-sans tracking-tight">JOYFIT24</span>
                 <span class="text-3xl font-bold font-sans tracking-widest">経堂</span>
             </h1>
             <div class="inline-block mt-2">
-                <p class="font-eng font-bold text-sm md:text-base tracking-wider text-gray-800">
+                <p class="font-eng font-bold text-sm md:text-base tracking-wider text-white/80">
                     GYM <span class="mx-2 text-joy-red font-black">×</span> HOT YOGA <span class="mx-2 text-joy-red font-black">×</span> PILATES
                 </p>
             </div>
         </section>
 
         <!-- 申し込みフォーム -->
-        <section id="form-section" class="neon-card p-6 md:p-10 animate-slide-up">
+        <section id="form-section" class="neon-card clipped-card p-6 md:p-10 animate-slide-up">
             <div id="form-container">
                 <div class="text-center mb-8 border-b border-gray-100 pb-4">
                     <h2 class="text-2xl font-bold text-gray-800 leading-tight">
