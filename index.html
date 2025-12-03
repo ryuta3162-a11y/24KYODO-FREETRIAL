@@ -3,198 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>見学・体験お申し込み - JOYFIT24経堂</title>
+    <title>無料見学体験 - JOYFIT24経堂</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
+        /* Pattern: Heat Signature (ヒートシグネチャ) */
+        :root { 
+            --joy-red: #C21642; 
+            --deep-red: #8E0E30; 
+            --molten-orange: #ff4500;
+            --bg-warm-dark: #1f0101; /* 暖色系の暗い背景 */
+        }
+
         body {
             font-family: 'Noto Sans JP', sans-serif;
+            color: #333;
+            min-height: 100vh;
+            background-color: var(--bg-warm-dark);
+            
+            /* 背景: 赤を強めた熱源グラデーション + 放射状のライン */
+            background-image: 
+                radial-gradient(ellipse at 50% 10%, var(--molten-orange) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, var(--joy-red) 0%, transparent 40%),
+                repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05), transparent 1px, transparent 40px),
+                repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05), transparent 1px, transparent 40px);
+            background-size: cover, cover, 100% 100%, 100% 100%;
+            background-attachment: fixed;
+            /* わずかな影で背景の熱を表現 */
+            box-shadow: inset 0 0 150px rgba(194, 22, 66, 0.15); 
         }
-        /* カスタムスタイル */
-        .joy-red { color: #C21642; }
-        .bg-joy-red { background-color: #C21642; }
-        .border-joy-red { border-color: #C21642; }
-        .hover\:bg-joy-red-dark:hover { background-color: #a11235; }
-        .ring-joy-red:focus {
-            --tw-ring-color: #C21642;
+
+        /* 共通スタイル */
+        .font-eng { font-family: 'Montserrat', sans-serif; }
+        .text-joy-red { color: var(--joy-red); }
+        .neon-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            /* 熱源に呼応する影を強調 */
+            box-shadow: 0 0 25px rgba(194, 22, 66, 0.5), 8px 8px 0 rgba(0, 0, 0, 0.5);
         }
-        /* ラジオボタンのカスタムスタイル */
+        
+        /* プラン選択ボタンの斜めスタイル */
+        .plan-radio + label { 
+            border: 2px solid #ddd; 
+            border-radius: 4px; 
+            /* 斜めカットのクリップパスを適用 */
+            clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+            transition: all 0.3s ease;
+        }
         .plan-radio:checked + label {
-            background-color: #C21642;
+            background: linear-gradient(135deg, var(--joy-red), var(--molten-orange));
             color: white;
-            border-color: #C21642;
+            border-color: var(--joy-red);
+            box-shadow: 0 4px 10px rgba(255, 69, 0, 0.4);
+            transform: translateY(-1px);
         }
-        /* トップ背景画像 */
-        #hero-section {
-            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('トプ画像.jpg');
-            background-size: cover;
-            background-position: center;
-            /* スマホ用の高さを設定 */
-            height: 40vh; 
+
+        /* 入力フィールド */
+        .input-underline { border: none; border-bottom: 2px solid #ddd; background: #f8f8f8; }
+        .input-underline:focus { border-bottom-color: var(--molten-orange); }
+        
+        /* 送信ボタン (Circuit Edge継承) */
+        .btn-solid {
+            background: linear-gradient(90deg, var(--molten-orange), var(--joy-red)); 
+            color: white;
+            clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+            padding-left: 1.5rem;
+            padding-right: 3rem;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.6);
+            transition: all 0.3s ease;
         }
-        /* PC用の高さを設定 */
-        @media (min-width: 768px) {
-            #hero-section {
-                height: 50vh;
-            }
+        .btn-solid:hover { background: linear-gradient(90deg, #e03d00, #a00e32); transform: translateY(-2px); }
+        
+        /* ローディング */
+        .is-loading { opacity: 0.8; pointer-events: none; position: relative; color: transparent !important; }
+        .is-loading::after {
+            content: ""; position: absolute; width: 1.5em; height: 1.5em;
+            top: 50%; left: 50%; margin: -0.75em 0 0 -0.75em;
+            border: 3px solid #fff; border-radius: 50%; border-right-color: transparent;
+            animation: spin 0.8s linear infinite;
         }
-        .is-loading {
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        /* アニメーション */
+        .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
+        .animate-slide-up { animation: slideUp 0.8s ease-out 0.2s forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="bg-gray-200">
+<body class="py-10 px-4 flex flex-col items-center justify-center">
 
     <!-- メインコンテンツ -->
-    <main>
-        <!-- ヒーローセクション -->
-        <section id="hero-section" class="text-white text-center flex items-center justify-center">
-             <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-wider" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">
-                JOYFIT24経堂
+    <main class="w-full max-w-2xl z-10 space-y-6">
+        
+        <!-- ヘッダーエリア -->
+        <section class="neon-card p-6 text-center animate-fade-in">
+            <h1 class="text-gray-800 mb-2 flex items-center justify-center gap-3 flex-wrap">
+                <span class="text-4xl font-bold font-sans tracking-tight">JOYFIT24</span>
+                <span class="text-3xl font-bold font-sans tracking-widest">経堂</span>
             </h1>
+            <div class="inline-block mt-2">
+                <p class="font-eng font-bold text-sm md:text-base tracking-wider text-gray-800">
+                    GYM <span class="mx-2 text-joy-red font-black">×</span> HOT YOGA <span class="mx-2 text-joy-red font-black">×</span> PILATES
+                </p>
+            </div>
         </section>
 
         <!-- 申し込みフォーム -->
-        <div class="max-w-3xl mx-auto -mt-16 md:-mt-24 relative z-10 p-4">
-            <section id="form-section" class="bg-white rounded-lg shadow-2xl p-6 md:p-10">
-                <div id="form-container">
-                    <h2 class="text-2xl font-bold text-center text-gray-800 mb-8">見学・体験申請ページ</h2>
-                    <form id="inquiry-form" class="space-y-6">
-
-                        <!-- プラン選択 -->
-                        <div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <input type="radio" id="tour" name="plan" value="見学" class="hidden plan-radio" required checked>
-                                <label for="tour" class="block text-center cursor-pointer py-4 px-2 border-2 border-gray-300 rounded-lg transition-all duration-200 h-full flex items-center justify-center">
-                                    <span class="text-lg font-bold">見学はこちら</span>
-                                </label>
-                                <input type="radio" id="trial" name="plan" value="体験" class="hidden plan-radio">
-                                <label for="trial" class="block text-center cursor-pointer py-4 px-2 border-2 border-gray-300 rounded-lg transition-all duration-200 h-full flex items-center justify-center">
-                                    <span class="text-lg font-bold">体験はこちら</span>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <!-- お名前 -->
-                        <div>
-                            <label for="name" class="block text-sm font-bold text-gray-700 mb-1">お名前<span class="text-red-600 ml-2">*</span></label>
-                            <input type="text" id="name" name="name" required placeholder="例：経堂 太郎" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 ring-joy-red">
-                        </div>
-
-                         <!-- メールアドレス -->
-                        <div>
-                            <label for="email" class="block text-sm font-bold text-gray-700 mb-1">メールアドレス<span class="text-red-600 ml-2">*</span></label>
-                            <input type="email" id="email" name="email" required placeholder="例：joyfit@example.com" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 ring-joy-red">
-                        </div>
-
-                        <!-- 電話番号 -->
-                        <div>
-                            <label for="tel" class="block text-sm font-bold text-gray-700 mb-1">電話番号<span class="text-red-600 ml-2">*</span></label>
-                            <input type="tel" id="tel" name="tel" required placeholder="半角数字で入力してください" inputmode="numeric" pattern="[0-9]*" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 ring-joy-red">
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <!-- 性別 -->
-                            <div>
-                                <label for="gender" class="block text-sm font-bold text-gray-700 mb-1">性別<span class="text-red-600 ml-2">*</span></label>
-                                <select id="gender" name="gender" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 ring-joy-red bg-white">
-                                    <option value="">選択してください</option>
-                                    <option value="男性">男性</option>
-                                    <option value="女性">女性</option>
-                                </select>
-                            </div>
-                            <!-- 年代 -->
-                            <div>
-                                <label for="age" class="block text-sm font-bold text-gray-700 mb-1">年代<span class="text-red-600 ml-2">*</span></label>
-                                <select id="age" name="age" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 ring-joy-red bg-white">
-                                    <option value="">選択してください</option>
-                                    <option value="10代">10代</option>
-                                    <option value="20代">20代</option>
-                                    <option value="30代">30代</option>
-                                    <option value="40代">40代</option>
-                                    <option value="50代">50代</option>
-                                    <option value="60代以上">60代以上</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- 注意事項 -->
-                        <div class="bg-gray-50 border-l-4 border-joy-red p-4 rounded-r-lg text-sm text-gray-700 space-y-3">
-                           <p class="font-bold">【ご確認事項】</p>
-                           <ul class="list-disc list-inside space-y-2">
-                               <li>館内は土足でのご利用が可能です。</li>
-                               <li>体験はご案内時間を除き<span class="font-bold">60分を目安</span>にご利用頂いております。</li>
-                               <li>ご案内・ご体験はスタッフ常駐時間のみ可能です。</li>
-                               <li><span class="font-bold text-red-600">毎週月曜日・木曜日は終日スタッフ不在</span>のため、ご予約いただけません。</li>
-                           </ul>
-                           <div>
-                               <p class="font-bold">▼ 予約可能時間</p>
-                               <p>【平日】10:00～20:00 / 【土日祝】12:00～19:00</p>
-                           </div>
-                        </div>
-
-
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <!-- ご希望日 -->
-                            <div>
-                                <label for="date" class="block text-sm font-bold text-gray-700 mb-1">ご希望日<span class="text-red-600 ml-2">*</span></label>
-                                <input type="date" id="date" name="date" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 ring-joy-red">
-                                <p id="date-error" class="text-red-600 text-xs h-4 mt-1"></p>
-                            </div>
-
-                            <!-- ご来館時刻 -->
-                            <div>
-                                <label for="time" class="block text-sm font-bold text-gray-700 mb-1">ご来館時刻<span class="text-red-600 ml-2">*</span></label>
-                                <select id="time" name="time" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 ring-joy-red bg-white" disabled>
-                                    <option value="">先に日付を選択してください</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- 送信ボタン -->
-                        <div class="pt-4">
-                            <button type="submit" id="submit-button" class="w-full bg-joy-red text-white font-bold text-lg py-3 px-6 rounded-md hover:bg-joy-red-dark transition-colors duration-300 shadow-lg">
-                                上記の内容で申し込む
-                            </button>
-                             <p id="submit-error" class="text-red-600 text-xs h-4 mt-1 text-center"></p>
-                        </div>
-                    </form>
+        <section id="form-section" class="neon-card p-6 md:p-10 animate-slide-up">
+            <div id="form-container">
+                <div class="text-center mb-8 border-b border-gray-100 pb-4">
+                    <h2 class="text-2xl font-bold text-gray-800 leading-tight">
+                        無料見学体験<br>お申し込みフォーム
+                    </h2>
+                    <p class="text-xs text-gray-500 mt-1 font-eng tracking-wider">RESERVATION FORM</p>
                 </div>
-                
-                <!-- 送信完了メッセージ -->
-                <div id="success-message" class="hidden text-center py-10">
-                    <svg class="w-16 h-16 mx-auto mb-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">お申し込みありがとうございます</h2>
-                    <div class="text-left bg-gray-100 p-6 rounded-lg max-w-md mx-auto">
-                        <p class="font-bold text-lg mb-4 text-center">【お申し込み内容】</p>
-                        <p><strong>プラン：</strong> <span id="result-plan"></span></p>
-                        <p><strong>お名前：</strong> <span id="result-name"></span> 様</p>
-                        <p><strong>ご希望日時：</strong> <span id="result-datetime"></span></p>
+
+                <form id="inquiry-form" class="space-y-8">
+                    <!-- STEP 1: プラン選択 (斜めボタン) -->
+                    <div class="space-y-3">
+                        <p class="text-xs font-bold text-gray-400">STEP 1 : プラン選択</p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="radio" id="tour" name="plan" value="見学" class="hidden plan-radio" required checked>
+                            <label for="tour" class="block text-center cursor-pointer py-4 px-2 bg-white font-bold text-lg">
+                                <span class="block text-xs font-normal mb-1 text-gray-400 font-eng">VISIT</span>
+                                見学
+                            </label>
+                            <input type="radio" id="trial" name="plan" value="体験" class="hidden plan-radio">
+                            <label for="trial" class="block text-center cursor-pointer py-4 px-2 bg-white font-bold text-lg">
+                                <span class="block text-xs font-normal mb-1 text-gray-400 font-eng">TRIAL</span>
+                                体験
+                            </label>
+                        </div>
                     </div>
-                    <p class="text-gray-700 mt-6 font-bold text-red-600">
-                        ご来館時に必要となりますので、<br>こちらの画面をスクリーンショットして<br>保存をお願いいたします。
-                    </p>
-                    <p class="text-gray-600 mt-4">
-                        当日はお気をつけてお越しください。<br>スタッフ一同、心よりお待ちしております！
-                    </p>
-                </div>
-            </section>
-        </div>
-    </main>
 
-    <!-- フッター -->
-    <footer class="bg-black text-white text-center py-6 mt-12">
-        <p class="text-sm">&copy; 2024 JOYFIT24 Kyodo. All Rights Reserved.</p>
-    </footer>
+                    <!-- STEP 2: お客様情報 -->
+                    <div class="space-y-6">
+                        <p class="text-xs font-bold text-gray-400 border-b border-gray-100 pb-2">STEP 2 : お客様情報</p>
+                        <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">お名前</label><input type="text" id="name" name="name" required placeholder="経堂 太郎" class="input-underline w-full px-4 py-3"></div>
+                        <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">メールアドレス</label><input type="email" id="email" name="email" required placeholder="joyfit@example.com" class="input-underline w-full px-4 py-3"></div>
+                        <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">電話番号</label><input type="tel" id="tel" name="tel" required placeholder="09012345678" inputmode="numeric" pattern="[0-9]*" class="input-underline w-full px-4 py-3"></div>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">性別</label><div class="relative"><select id="gender" name="gender" required class="input-underline w-full px-4 py-3 bg-transparent"><option value="">選択</option><option value="男性">男性</option><option value="女性">女性</option></select><div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div></div></div>
+                            <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">年代</label><div class="relative"><select id="age" name="age" required class="input-underline w-full px-4 py-3 bg-transparent"><option value="">選択</option><option value="10代">10代</option><option value="20代">20代</option><option value="30代">30代</option><option value="40代">40代</option><option value="50代">50代</option><option value="60代以上">60+</option></select><div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- 注意事項セクション -->
+                    <div class="bg-gray-50 border-l-4 border-joy-red p-4 rounded-r text-sm text-gray-600 space-y-2">
+                        <p class="font-bold text-xs text-joy-red mb-2">ご確認事項</p>
+                        <ul class="list-disc list-inside space-y-1 text-xs">
+                            <li>館内は土足でのご利用が可能です。</li>
+                            <li>体験は<span class="font-bold text-gray-800">60分を目安</span>にご利用頂いております。</li>
+                            <li><span class="font-bold text-joy-red">月曜日・木曜日はスタッフ不在のため予約不可。</span></li>
+                        </ul>
+                        <div class="mt-4 bg-white border border-gray-200 rounded-md p-3 text-center shadow-sm text-xs">
+                            <p class="text-xs font-bold text-gray-400 mb-2 border-b border-gray-100 pb-1 inline-block">スタッフ常駐時間</p>
+                            <div class="flex justify-center items-center gap-4 text-sm">
+                                <div class="flex flex-col md:flex-row items-center">
+                                    <span class="bg-gray-800 text-white text-[10px] px-2 py-0.5 rounded mr-2 mb-1 md:mb-0">平日</span>
+                                    <span class="font-bold text-gray-700 font-eng">10:00 - 20:00</span>
+                                </div>
+                                <div class="h-8 w-px bg-gray-200 mx-1"></div>
+                                <div class="flex flex-col md:flex-row items-center">
+                                    <span class="bg-joy-red text-white text-[10px] px-2 py-0.5 rounded mr-2 mb-1 md:mb-0">土日祝</span>
+                                    <span class="font-bold text-gray-700 font-eng">12:00 - 19:00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: 日時選択 -->
+                    <div class="space-y-4">
+                        <p class="text-xs font-bold text-gray-400 border-b border-gray-100 pb-2">STEP 3 : 日時選択</p>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">ご希望日</label><input type="date" id="date" name="date" required class="input-underline w-full px-4 py-3 font-eng"></div>
+                            <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">ご来館時刻</label><select id="time" name="time" required class="input-underline w-full px-4 py-3 font-eng bg-transparent" disabled><option value="">---</option></select></div>
+                        </div>
+                        <p id="date-error" class="text-red-600 text-xs h-4 mt-1 font-bold text-center"></p>
+                    </div>
+
+                    <!-- 送信ボタン -->
+                    <div class="pt-4">
+                        <button type="submit" id="submit-button" class="btn-solid w-full text-white font-black text-lg py-4 tracking-widest">上記の内容で申し込む</button>
+                        <p id="submit-error" class="text-red-400 text-xs h-4 mt-3 text-center font-bold"></p>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- 送信完了メッセージ -->
+            <div id="success-message" class="hidden text-center py-10">
+                <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-bounce text-white">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h2 class="text-3xl font-black text-gray-800 mb-2 font-eng">THANK YOU!</h2>
+                <p class="text-gray-500 mb-8 font-medium">お申し込みを受け付けました</p>
+
+                <div class="text-left bg-gray-50 border border-gray-200 p-6 rounded-xl max-w-md mx-auto">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                            <span class="text-xs text-gray-400 font-bold">PLAN</span>
+                            <span class="font-bold text-lg" id="result-plan"></span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                            <span class="text-xs text-gray-400 font-bold">NAME</span>
+                            <span class="font-bold text-lg"><span id="result-name"></span> 様</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                            <span class="text-xs text-gray-400 font-bold">DATE</span>
+                            <span class="font-bold text-xl text-joy-red font-eng" id="result-datetime"></span>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400 mt-6">スクリーンショットを保存してください</p>
+            </div>
+        </section>
+
+        <!-- フッター -->
+        <footer class="text-center py-8 text-gray-500 text-xs font-eng tracking-wider">
+            <p>&copy; 2025 JOYFIT24 KYODO.</p>
+        </footer>
+    </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-            //            【重要】発行されたウェブアプリURLを ' ' の中に貼り付け
-            // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+            // GASウェブアプリのURL (ユーザーのファイルから保持)
             const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby8qQgZ1bE2eNcTHrqi9VN-ZveKjexFwDdDJObpLfxUrzz6iz6K1N2BLok9wKAJOlcl/exec';
 
             // --- 要素の取得 ---
@@ -215,18 +251,19 @@
             const todayString = today.toISOString().split('T')[0];
             dateInput.setAttribute('min', todayString);
 
-            // --- 時間選択肢を動的に生成するヘルパー関数 ---
+            // --- 時間選択肢を動的に生成 ---
             function populateTimeSlots(startHour, endHour) {
                 timeInput.innerHTML = ''; 
                 
                 const defaultOption = document.createElement('option');
                 defaultOption.value = "";
-                defaultOption.textContent = "時刻を選択";
+                defaultOption.textContent = "TIME SELECT";
                 timeInput.appendChild(defaultOption);
 
                 for (let h = startHour; h <= endHour; h++) {
                     for (let m = 0; m < 60; m += 30) {
                         if (h === endHour && m > 0) continue;
+                        if (h === endHour && m === 0) continue; 
 
                         const timeString = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
                         const option = document.createElement('option');
@@ -239,25 +276,26 @@
 
             // --- 日付選択時のイベント処理 ---
             dateInput.addEventListener('input', function() {
-                const selectedDate = new Date(this.value);
-                const dayOfWeek = selectedDate.getUTCDay();
+                const dateParts = this.value.split('-').map(Number);
+                const localDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                const dayOfWeek = localDate.getDay(); 
 
                 dateError.textContent = '';
                 timeInput.disabled = true;
-                timeInput.innerHTML = '<option value="">先に日付を選択してください</option>';
+                timeInput.innerHTML = '<option value="">---</option>';
 
                 if (!this.value) return;
 
                 if (dayOfWeek === 1 || dayOfWeek === 4) {
                     this.value = '';
-                    dateError.textContent = '月曜・木曜はご予約不可です。';
+                    dateError.textContent = 'MON & THU CLOSED';
                     return;
                 }
 
-                if (dayOfWeek === 0 || dayOfWeek === 6) { // 土日
+                if (dayOfWeek === 0 || dayOfWeek === 6) { 
                     populateTimeSlots(12, 19); 
-                } else { // 平日
-                    populateTimeSlots(10, 20);
+                } else { 
+                    populateTimeSlots(10, 20); 
                 }
                 timeInput.disabled = false;
             });
@@ -267,14 +305,13 @@
                 e.preventDefault();
 
                 if (!GAS_WEB_APP_URL) {
-                    submitError.textContent = 'エラー: 送信先URLが設定されていません。';
+                    submitError.textContent = 'Error: URL not set';
                     return;
                 }
 
                 submitError.textContent = '';
                 submitButton.disabled = true;
                 submitButton.classList.add('is-loading');
-                submitButton.textContent = '送信中...';
 
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
@@ -286,11 +323,12 @@
                     body: JSON.stringify(data)
                 })
                 .then(() => {
-                    // 完了画面に情報を表示
                     document.getElementById('result-plan').textContent = data.plan;
                     document.getElementById('result-name').textContent = data.name;
-                    const date = new Date(data.date);
-                    const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`;
+                    
+                    const dateString = data.date.replace(/-/g, '/');
+                    const formattedDate = `${new Date(dateString).getMonth() + 1}/${new Date(dateString).getDate()}`;
+                    
                     document.getElementById('result-datetime').textContent = `${formattedDate} ${data.time}`;
 
                     formContainer.classList.add('hidden');
@@ -299,17 +337,16 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    submitError.textContent = '送信エラーが発生しました。再度お試しください。';
+                    submitError.textContent = 'System Error. Please try again.';
                 })
                 .finally(() => {
-                    submitButton.disabled = false;
-                    submitButton.classList.remove('is-loading');
-                    submitButton.textContent = '上記の内容で申し込む';
+                    if(successMessage.classList.contains('hidden')) {
+                         submitButton.disabled = false;
+                         submitButton.classList.remove('is-loading');
+                    }
                 });
             });
         });
     </script>
-
 </body>
 </html>
-
