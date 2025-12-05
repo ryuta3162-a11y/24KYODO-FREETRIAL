@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>無料見学体験 - JOYFIT24経堂</title>
+    <title>ジム無料見学・体験 - JOYFIT24経堂</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -113,44 +113,53 @@
                 <span class="text-4xl font-bold font-sans tracking-tight">JOYFIT24</span>
                 <span class="text-3xl font-bold font-sans tracking-widest">経堂</span>
             </h1>
-            <div class="inline-block mt-2">
-                <p class="font-eng font-bold text-sm md:text-base tracking-wider text-white/80">
-                    GYM <span class="mx-2 text-joy-red font-black">×</span> HOT YOGA <span class="mx-2 text-joy-red font-black">×</span> PILATES
-                </p>
+            
+            <!-- 視認性向上 パターン 1: 赤いネオン強調を適用 -->
+            <div class="mt-4 bg-white p-3 border-4 border-joy-red shadow-[0_0_20px_rgba(194,22,66,1)] rounded-xl">
+                <h2 class="text-2xl font-black text-joy-red leading-tight">
+                    ジム無料見学・体験 
+                </h2>
+                <p class="text-sm text-gray-700 mt-1 font-eng tracking-wider">RESERVATION FORM</p>
             </div>
         </section>
 
         <!-- 申し込みフォーム -->
         <section id="form-section" class="neon-card clipped-card p-6 md:p-10 animate-slide-up">
             <div id="form-container">
+                <!-- フォームタイトルはヘッダーに移動したため削除
                 <div class="text-center mb-8 border-b border-gray-100 pb-4">
                     <h2 class="text-2xl font-bold text-gray-800 leading-tight">
-                        無料見学体験<br>お申し込みフォーム
+                        ジム無料見学・体験<br>お申し込みフォーム
                     </h2>
                     <p class="text-xs text-gray-500 mt-1 font-eng tracking-wider">RESERVATION FORM</p>
                 </div>
+                -->
 
                 <form id="inquiry-form" class="space-y-8">
-                    <!-- STEP 1: プラン選択 (斜めボタン) -->
-                    <div class="space-y-3">
-                        <p class="text-xs font-bold text-gray-400">STEP 1 : プラン選択</p>
-                        <div class="grid grid-cols-2 gap-4">
-                            <input type="radio" id="tour" name="plan" value="見学" class="hidden plan-radio" required checked>
-                            <label for="tour" class="block text-center cursor-pointer py-4 px-2 bg-white font-bold text-lg">
-                                <span class="block text-xs font-normal mb-1 text-gray-400 font-eng">VISIT</span>
-                                見学
-                            </label>
-                            <input type="radio" id="trial" name="plan" value="体験" class="hidden plan-radio">
-                            <label for="trial" class="block text-center cursor-pointer py-4 px-2 bg-white font-bold text-lg">
-                                <span class="block text-xs font-normal mb-1 text-gray-400 font-eng">TRIAL</span>
-                                体験
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- STEP 2: お客様情報 -->
+                    
+                    <!-- STEP 1 (旧 STEP 1 & STEP 2): プラン選択とお客様情報 -->
                     <div class="space-y-6">
-                        <p class="text-xs font-bold text-gray-400 border-b border-gray-100 pb-2">STEP 2 : お客様情報</p>
+                        <p class="text-xs font-bold text-gray-400 border-b border-gray-100 pb-2">STEP 1 : プラン選択 & お客様情報</p>
+
+                        <!-- プラン選択 (斜めボタン) -->
+                        <div class="space-y-3">
+                            <p class="text-xs font-bold text-gray-500">ご希望の予約種別</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="radio" id="tour" name="plan" value="見学" class="hidden plan-radio" required checked>
+                                <label for="tour" class="block text-center cursor-pointer py-4 px-2 bg-white font-bold text-lg">
+                                    <span class="block text-xs font-normal mb-1 text-gray-400 font-eng">VISIT</span>
+                                    見学
+                                </label>
+                                <input type="radio" id="trial" name="plan" value="体験" class="hidden plan-radio">
+                                <label for="trial" class="block text-center cursor-pointer py-4 px-2 bg-white font-bold text-lg">
+                                    <span class="block text-xs font-normal mb-1 text-gray-400 font-eng">TRIAL</span>
+                                    体験
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- お客様情報 -->
+                        <p class="text-xs font-bold text-gray-500 border-t border-gray-100 pt-4">お客様情報をご入力ください</p>
                         <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">お名前</label><input type="text" id="name" name="name" required placeholder="経堂 太郎" class="input-underline w-full px-4 py-3"></div>
                         <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">メールアドレス</label><input type="email" id="email" name="email" required placeholder="joyfit@example.com" class="input-underline w-full px-4 py-3"></div>
                         <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">電話番号</label><input type="tel" id="tel" name="tel" required placeholder="09012345678" inputmode="numeric" pattern="[0-9]*" class="input-underline w-full px-4 py-3"></div>
@@ -160,7 +169,7 @@
                         </div>
                     </div>
 
-                    <!-- 注意事項セクション -->
+                    <!-- 注意事項セクション (STEP 2に変更) -->
                     <div class="bg-gray-50 border-l-4 border-joy-red p-4 rounded-r text-sm text-gray-600 space-y-2">
                         <p class="font-bold text-xs text-joy-red mb-2">ご確認事項</p>
                         <ul class="list-disc list-inside space-y-1 text-xs">
@@ -184,9 +193,9 @@
                         </div>
                     </div>
 
-                    <!-- STEP 3: 日時選択 -->
+                    <!-- STEP 2 (旧 STEP 3): 日時選択 -->
                     <div class="space-y-4">
-                        <p class="text-xs font-bold text-gray-400 border-b border-gray-100 pb-2">STEP 3 : 日時選択</p>
+                        <p class="text-xs font-bold text-gray-400 border-b border-gray-100 pb-2">STEP 2 : 日時選択</p>
                         <div class="grid grid-cols-2 gap-6">
                             <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">ご希望日</label><input type="date" id="date" name="date" required class="input-underline w-full px-4 py-3 font-eng"></div>
                             <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">ご来館時刻</label><select id="time" name="time" required class="input-underline w-full px-4 py-3 font-eng bg-transparent" disabled><option value="">---</option></select></div>
@@ -238,7 +247,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // GASウェブアプリのURL (ユーザーのファイルから保持)
+            // Google Apps Script (GAS) ウェブアプリのURL
             const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby8qQgZ1bE2eNcTHrqi9VN-ZveKjexFwDdDJObpLfxUrzz6iz6K1N2BLok9wKAJOlcl/exec';
 
             // --- 要素の取得 ---
@@ -255,6 +264,7 @@
 
             // --- 日付の初期設定 ---
             const today = new Date();
+            // タイムゾーンオフセットを調整して、日付がずれないようにする
             today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
             const todayString = today.toISOString().split('T')[0];
             dateInput.setAttribute('min', todayString);
@@ -268,9 +278,12 @@
                 defaultOption.textContent = "TIME SELECT";
                 timeInput.appendChild(defaultOption);
 
+                // 30分刻みで時間を生成
                 for (let h = startHour; h <= endHour; h++) {
                     for (let m = 0; m < 60; m += 30) {
+                        // 終了時刻ぴったりは含めない
                         if (h === endHour && m > 0) continue;
+                        // 20:00など、終了時刻自体は含めない (例: 10:00-20:00 の場合、19:30まで)
                         if (h === endHour && m === 0) continue; 
 
                         const timeString = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
@@ -285,8 +298,9 @@
             // --- 日付選択時のイベント処理 ---
             dateInput.addEventListener('input', function() {
                 const dateParts = this.value.split('-').map(Number);
+                // Dateオブジェクトを作成する際に、ISO形式ではなく年/月/日を使用することで、ローカルタイムゾーンで日付がずれるのを防ぐ
                 const localDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-                const dayOfWeek = localDate.getDay(); 
+                const dayOfWeek = localDate.getDay(); // 0=日曜, 1=月曜, ..., 6=土曜
 
                 dateError.textContent = '';
                 timeInput.disabled = true;
@@ -294,15 +308,18 @@
 
                 if (!this.value) return;
 
+                // 月曜日 (1) または 木曜日 (4) は予約不可
                 if (dayOfWeek === 1 || dayOfWeek === 4) {
-                    this.value = '';
-                    dateError.textContent = 'MON & THU CLOSED';
+                    this.value = ''; // 日付をクリア
+                    dateError.textContent = 'MON & THU CLOSED (月曜・木曜はスタッフ不在)';
                     return;
                 }
 
+                // 土曜日 (6) または 日曜日 (0) は土日祝の時間帯 (12:00-19:00)
                 if (dayOfWeek === 0 || dayOfWeek === 6) { 
                     populateTimeSlots(12, 19); 
                 } else { 
+                    // 平日 (火、水、金) は平日の時間帯 (10:00-20:00)
                     populateTimeSlots(10, 20); 
                 }
                 timeInput.disabled = false;
@@ -313,44 +330,55 @@
                 e.preventDefault();
 
                 if (!GAS_WEB_APP_URL) {
-                    submitError.textContent = 'Error: URL not set';
+                    submitError.textContent = 'エラー: GASウェブアプリのURLが設定されていません。';
                     return;
                 }
 
                 submitError.textContent = '';
                 submitButton.disabled = true;
-                submitButton.classList.add('is-loading');
+                submitButton.textContent = '送信中...'; // ローディングテキスト
+                submitButton.classList.add('opacity-70');
 
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
 
+                // GASへの送信処理
                 fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
+                    // GASはCORS非対応のため 'no-cors' を使用。この場合、.then() の中ではレスポンス内容を確認できない。
+                    mode: 'no-cors', 
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded', },
-                    body: JSON.stringify(data)
+                    // GAS側でJSONを受け取る設定をしているため、JSON.stringify(data)で送信
+                    body: JSON.stringify(data) 
                 })
                 .then(() => {
+                    // no-corsモードでは常に成功の応答が返るため、ここでは単にUIを更新する
+                    // 実際には、GAS側でエラーが発生している可能性もある点に注意
                     document.getElementById('result-plan').textContent = data.plan;
                     document.getElementById('result-name').textContent = data.name;
                     
                     const dateString = data.date.replace(/-/g, '/');
+                    // 完了メッセージ用に日付を 'MM/DD' 形式に整形
                     const formattedDate = `${new Date(dateString).getMonth() + 1}/${new Date(dateString).getDate()}`;
                     
                     document.getElementById('result-datetime').textContent = `${formattedDate} ${data.time}`;
 
                     formContainer.classList.add('hidden');
                     successMessage.classList.remove('hidden');
+                    // 完了メッセージまでスクロール
                     formSection.scrollIntoView({ behavior: 'smooth' });
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    submitError.textContent = 'System Error. Please try again.';
+                    // no-corsモードではネットワークエラーのみ捕捉
+                    submitError.textContent = 'システムエラーが発生しました。再度お試しください。';
                 })
                 .finally(() => {
+                    // 成功メッセージが表示されていない場合（エラーの場合）のみ、ボタンを元に戻す
                     if(successMessage.classList.contains('hidden')) {
                          submitButton.disabled = false;
-                         submitButton.classList.remove('is-loading');
+                         submitButton.textContent = '上記の内容で申し込む';
+                         submitButton.classList.remove('opacity-70');
                     }
                 });
             });
