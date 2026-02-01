@@ -25,16 +25,32 @@
             font-family: 'Noto Sans JP', sans-serif;
             color: var(--text-main);
             min-height: 100vh;
-            /* 背景: 真っ黒ではなく、ダークグレーのグラデーションに変更 */
             background-color: #1a1a1a; 
+            /* 背景設定は下の body::before に移動しました */
+            position: relative; /* 擬似要素のために必要 */
+            overflow-x: hidden;
+        }
+
+        /* ★★★ 背景画像の自動モノクロ加工設定 ★★★ */
+        body::before {
+            content: '';
+            position: fixed; /* スクロールしても背景を固定 */
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; /* 最背面へ */
+
             background-image: 
-                /* 黒の被せを少し弱くし、グレーのトーンを追加 */
+                /* 黒の被せ (画像を暗くして文字を読みやすくする調整) */
                 linear-gradient(135deg, rgba(40, 40, 40, 0.85) 0%, rgba(10, 10, 10, 0.9) 100%),
-                url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+                
+                /* ▼▼▼ ここを変更しました！ ▼▼▼ 
+                   画像を index.html と同じフォルダに「gym-bg.jpg」という名前で保存してください */
+                url('./gym-bg.jpg');
+            
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
-            overflow-x: hidden;
+
+            /* ★ CSSフィルター: これが画像を強制的にモノクロにします (0%にするとカラーに戻ります) */
+            filter: grayscale(100%); 
         }
 
         /* テキストカラーの強制上書き (視認性向上) */
