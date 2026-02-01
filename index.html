@@ -7,99 +7,186 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Pattern: Pure White Racing Cockpit (純白のレーシングコックピット) */
+        /* Theme: STEALTH PERFORMANCE v2 (High Visibility Tuned) */
         :root { 
-            --joy-red: #C21642; 
-            --deep-red: #8E0E30; 
-            --border-thickness: 5px; /* 線を太く変更 */
-            --shadow-offset: 12px;  /* 影のオフセットを大きく変更 */
-            --card-inner-bg: #f8f8f8; /* フォーム内部の背景色を薄いグレーに */
+            --joy-red: #E6002D; 
+            --joy-red-glow: rgba(230, 0, 45, 0.5);
+            /* 背景ガラス: 透過を抑えて文字を読みやすく (0.85 -> 0.95) */
+            --card-bg: rgba(30, 30, 35, 0.95); 
+            /* 入力欄: 視認性を高めるため、少し明るいグレーに */
+            --input-bg: rgba(255, 255, 255, 0.08);
+            --input-border: rgba(255, 255, 255, 0.2);
+            --text-main: #ffffff;
+            --text-sub: #cccccc; /* グレーを明るく */
+            --border-width: 2px;
         }
 
         body {
             font-family: 'Noto Sans JP', sans-serif;
-            color: #333;
+            color: var(--text-main);
             min-height: 100vh;
-            /* 背景: 純粋な白 -> 薄いグレーに変更 */
-            background-color: #f7f7f7; 
+            /* 背景: 真っ黒ではなく、ダークグレーのグラデーションに変更 */
+            background-color: #1a1a1a; 
+            background-image: 
+                /* 黒の被せを少し弱くし、グレーのトーンを追加 */
+                linear-gradient(135deg, rgba(40, 40, 40, 0.85) 0%, rgba(10, 10, 10, 0.9) 100%),
+                url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             overflow-x: hidden;
         }
 
-        /* 共通スタイル */
-        .font-eng { font-family: 'Montserrat', sans-serif; }
-        .text-joy-red { color: var(--joy-red); }
+        /* テキストカラーの強制上書き (視認性向上) */
+        .text-gray-800, .text-gray-700, .text-gray-600 { color: var(--text-sub) !important; }
+        .text-gray-500 { color: #aaaaaa !important; } /* 薄すぎるグレーを明るく */
+        .text-gray-400 { color: #888 !important; }
         
-        /* カードの共通デザイン（立体的な角の切り取り） */
-        .clipped-card {
-            background: var(--card-inner-bg); /* フォームの背景色をグレーに */
-            border: var(--border-thickness) solid var(--joy-red); /* 太い赤枠 */
-            border-radius: 0;
-            /* ネオンのような赤いグロー + 強い影で立体感 */
-            box-shadow: 
-                0 0 15px rgba(194, 22, 66, 0.9), /* ネオンエフェクトを強く */
-                var(--shadow-offset) var(--shadow-offset) 0 rgba(0, 0, 0, 0.8); /* 黒のシャドウを太く */
-            position: relative;
-            z-index: 10;
-            
-            /* 角を切り取るclip-path */
-            clip-path: polygon(
-                0 15px, 15px 0, calc(100% - 15px) 0, 100% 15px, 
-                100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px)
-            );
+        /* カード内の背景色リセット */
+        .bg-white { background-color: transparent !important; } 
+        .bg-gray-50 { 
+            background-color: rgba(0, 0, 0, 0.3) !important; 
+            border: 1px solid rgba(255,255,255,0.1); 
         }
 
-        /* ★★★ ヘッダーエリア (ロゴ部分) のスタイルを黒背景に変更 ★★★ */
-        .header-box {
-            background-color: #1a1a1a; /* 黒背景 */
-            color: #fff; /* 文字色は白 */
-            border: var(--border-thickness) solid var(--joy-red);
-            /* 立体感のある影を強調 */
-            box-shadow: 0 0 15px rgba(194, 22, 66, 0.8), var(--shadow-offset) var(--shadow-offset) 0 rgba(0, 0, 0, 0.8);
-            border-radius: 0;
-            
-            /* 角を切り取るclip-path (フォームと同じ形状を維持) */
+        /* 背景色ユーティリティ追加 */
+        .bg-joy-red { background-color: var(--joy-red) !important; }
+        
+        /* 共通スタイル */
+        .font-eng { font-family: 'Montserrat', sans-serif; letter-spacing: 0.05em; }
+        .text-joy-red { color: var(--joy-red) !important; text-shadow: 0 0 15px var(--joy-red-glow); }
+
+        /* カードデザイン: 視認性重視のダークマターガラス */
+        .clipped-card {
+            background: var(--card-bg) !important;
+            /* ぼかしを少し弱めてシャープに */
+            backdrop-filter: blur(8px); 
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            /* 切り欠き */
             clip-path: polygon(
-                0 15px, 15px 0, calc(100% - 15px) 0, 100% 15px, 
-                100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px)
+                0 20px, 20px 0, 100% 0, 
+                100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%
             );
+            position: relative;
+            /* 影を強化して、背景から「浮き上がらせる」 */
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.05) inset;
+        }
+
+        /* アクセントボーダー */
+        .clipped-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--joy-red) 0%, transparent 15%, transparent 85%, var(--joy-red) 100%);
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* ヘッダーエリア */
+        .header-box {
+            background-color: #0f0f0f !important; /* ほぼ不透明な黒でロゴを際立たせる */
+            border-bottom: 3px solid var(--joy-red);
+            padding-bottom: 2rem !important;
         }
         
-        /* プラン選択ボタンの斜めスタイル */
+        .header-box .bg-white {
+            background: rgba(30, 30, 30, 0.8) !important;
+            border: 1px solid var(--joy-red) !important;
+            box-shadow: 0 0 25px rgba(230, 0, 45, 0.3) !important;
+            border-radius: 4px !important;
+        }
+
+        /* プラン選択ボタン */
         .plan-radio + label { 
-            border: 2px solid var(--joy-red);
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            color: var(--text-sub) !important;
             border-radius: 4px; 
-            clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
-            transition: all 0.3s ease;
+            clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 0% 100%);
+            transition: all 0.2s ease;
         }
         .plan-radio:checked + label {
-            background: var(--joy-red); 
-            color: white;
-            box-shadow: 0 4px 10px rgba(194, 22, 66, 0.6);
-            transform: scale(1.01);
+            background: var(--joy-red) !important; 
+            color: white !important;
+            border-color: var(--joy-red) !important;
+            box-shadow: 0 0 20px var(--joy-red-glow);
+            transform: scale(1.02);
+            /* 選択されたことが明確にわかるよう文字色を白で固定 */
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
+        .plan-radio:checked + label span { color: #eee !important; }
 
-        /* 入力フィールド */
+        /* 入力フィールド - 視認性向上のための最前面化処理 */
         .input-underline { 
-            border: none; 
-            border-bottom: 2px solid #ddd; 
-            background: #ffffff; /* 入力フィールド自体は白を維持 */
+            background: var(--input-bg) !important;
+            /* 境界線をはっきりさせる */
+            border: 1px solid var(--input-border) !important; 
+            border-bottom: 2px solid var(--joy-red) !important;
+            border-radius: 4px;
+            color: white !important;
+            font-weight: 500; /* 文字を少し太く */
+            transition: all 0.3s ease;
+            /* 内側に影を入れて奥行きを出すことで、入力エリアであることを強調 */
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+            
+            /* ★高さ調整の追加: 54pxで強制統一し、ズレを解消 */
+            height: 54px;
         }
-        .input-underline:focus { border-bottom-color: var(--joy-red); }
+        .input-underline::placeholder { color: rgba(255,255,255,0.4); }
+        .input-underline:focus { 
+            background: rgba(255, 255, 255, 0.15) !important; /* フォーカス時に明るく */
+            border-color: rgba(255,255,255,0.5) !important;
+            border-bottom-color: var(--joy-red) !important;
+            box-shadow: 0 0 15px rgba(230, 0, 45, 0.4), inset 0 0 0 1px rgba(255,255,255,0.1);
+            outline: none;
+        }
         
+        select { color: white !important; }
+        option { background-color: #222; color: white; }
+
         /* 送信ボタン */
         .btn-solid {
-            background: var(--joy-red);
+            background: linear-gradient(90deg, var(--joy-red), #b30024) !important;
             color: white;
-            clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
-            box-shadow: 0 4px 15px rgba(194, 22, 66, 0.8);
+            font-weight: 900;
+            border: 1px solid rgba(255,255,255,0.2);
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            box-shadow: 0 5px 25px rgba(230, 0, 45, 0.5);
+            letter-spacing: 0.15em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
-        .btn-solid:hover { background: var(--deep-red); transform: translateY(-2px); }
+        .btn-solid::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            transition: 0.5s;
+        }
+        .btn-solid:hover { 
+            transform: translateY(-2px) scale(1.02); 
+            box-shadow: 0 10px 40px rgba(230, 0, 45, 0.7);
+            border-color: rgba(255,255,255,0.5);
+        }
+        .btn-solid:hover::after { left: 100%; }
 
-        /* アニメーションは維持 */
+        /* アニメーション */
         .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
         .animate-slide-up { animation: slideUp 0.8s ease-out 0.2s forwards; opacity: 0; transform: translateY(20px); }
         @keyframes fadeIn { to { opacity: 1; } }
         @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* 完了画面 */
+        #success-message .bg-gray-50 {
+            background: rgba(30, 30, 30, 0.9) !important;
+            border: 1px solid var(--joy-red);
+            box-shadow: 0 0 30px rgba(194, 22, 66, 0.3);
+        }
+        #success-message .font-bold.text-lg { color: white !important; }
+        #success-message .text-gray-400 { color: #aaa !important; }
     </style>
 </head>
 <body class="py-10 px-4 flex flex-col items-center justify-center">
@@ -107,14 +194,13 @@
     <!-- メインコンテンツ -->
     <main class="w-full max-w-2xl z-10 space-y-6">
         
-        <!-- ヘッダーエリア (黒背景、白文字、太い赤縁) -->
+        <!-- ヘッダーエリア -->
         <section class="header-box clipped-card p-6 text-center animate-fade-in">
             <h1 class="text-white mb-2 flex items-center justify-center gap-3 flex-wrap">
                 <span class="text-4xl font-bold font-sans tracking-tight">JOYFIT24</span>
                 <span class="text-3xl font-bold font-sans tracking-widest">経堂</span>
             </h1>
             
-            <!-- 視認性向上 パターン 1: 赤いネオン強調を適用 -->
             <div class="mt-4 bg-white p-3 border-4 border-joy-red shadow-[0_0_20px_rgba(194,22,66,1)] rounded-xl">
                 <h2 class="text-2xl font-black text-joy-red leading-tight">
                     ジム無料見学・体験 
@@ -126,24 +212,17 @@
         <!-- 申し込みフォーム -->
         <section id="form-section" class="neon-card clipped-card p-6 md:p-10 animate-slide-up">
             <div id="form-container">
-                <!-- フォームタイトルはヘッダーに移動したため削除
-                <div class="text-center mb-8 border-b border-gray-100 pb-4">
-                    <h2 class="text-2xl font-bold text-gray-800 leading-tight">
-                        ジム無料見学・体験<br>お申し込みフォーム
-                    </h2>
-                    <p class="text-xs text-gray-500 mt-1 font-eng tracking-wider">RESERVATION FORM</p>
-                </div>
-                -->
-
                 <form id="inquiry-form" class="space-y-8">
                     
-                    <!-- STEP 1 (旧 STEP 1 & STEP 2): プラン選択とお客様情報 -->
+                    <!-- STEP 1 エリア -->
                     <div class="space-y-6">
-                        <p class="text-xs font-bold text-gray-400 border-b border-gray-100 pb-2">STEP 1 : プラン選択 & お客様情報</p>
+                        <!-- 区切り線 -->
+                        <div class="border-b border-gray-600 pb-2 mb-4"></div>
 
-                        <!-- プラン選択 (斜めボタン) -->
+                        <!-- プラン選択 -->
                         <div class="space-y-3">
-                            <p class="text-xs font-bold text-gray-500">ご希望の予約種別</p>
+                            <!-- テキスト変更: 白字・太字・句点なし -->
+                            <p class="text-sm font-black text-white tracking-wide">見学・体験どちらかご選択ください</p>
                             <div class="grid grid-cols-2 gap-4">
                                 <input type="radio" id="tour" name="plan" value="見学" class="hidden plan-radio" required checked>
                                 <label for="tour" class="block text-center cursor-pointer py-4 px-2 bg-white font-bold text-lg">
@@ -159,7 +238,12 @@
                         </div>
 
                         <!-- お客様情報 -->
-                        <p class="text-xs font-bold text-gray-500 border-t border-gray-100 pt-4">お客様情報をご入力ください</p>
+                        <!-- 区切り線 -->
+                        <div class="border-t border-gray-600 pt-4 mt-6">
+                            <!-- テキスト変更: 白字・太字・句点なし -->
+                            <p class="text-sm font-black text-white mb-4 tracking-wide">お客様情報をご入力ください</p>
+                        </div>
+                        
                         <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">お名前</label><input type="text" id="name" name="name" required placeholder="経堂 太郎" class="input-underline w-full px-4 py-3"></div>
                         <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">メールアドレス</label><input type="email" id="email" name="email" required placeholder="joyfit@example.com" class="input-underline w-full px-4 py-3"></div>
                         <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">電話番号</label><input type="tel" id="tel" name="tel" required placeholder="09012345678" inputmode="numeric" pattern="[0-9]*" class="input-underline w-full px-4 py-3"></div>
@@ -169,7 +253,7 @@
                         </div>
                     </div>
 
-                    <!-- 注意事項セクション (STEP 2に変更) -->
+                    <!-- 注意事項セクション -->
                     <div class="bg-gray-50 border-l-4 border-joy-red p-4 rounded-r text-sm text-gray-600 space-y-2">
                         <p class="font-bold text-xs text-joy-red mb-2">ご確認事項</p>
                         <ul class="list-disc list-inside space-y-1 text-xs">
@@ -177,25 +261,30 @@
                             <li>体験は<span class="font-bold text-gray-800">60分を目安</span>にご利用頂いております。</li>
                             <li><span class="font-bold text-joy-red">月曜日・木曜日はスタッフ不在のため予約不可。</span></li>
                         </ul>
-                        <div class="mt-4 bg-white border border-gray-200 rounded-md p-3 text-center shadow-sm text-xs">
-                            <p class="text-xs font-bold text-gray-400 mb-2 border-b border-gray-100 pb-1 inline-block">スタッフ常駐時間</p>
-                            <div class="flex justify-center items-center gap-4 text-sm">
-                                <div class="flex flex-col md:flex-row items-center">
-                                    <span class="bg-gray-800 text-white text-[10px] px-2 py-0.5 rounded mr-2 mb-1 md:mb-0">平日</span>
-                                    <span class="font-bold text-gray-700 font-eng">10:00 - 20:00</span>
+                        
+                        <!-- スタッフ常駐時間（デザイン統一: 赤背景ラベル + 白文字 + ネオン削除） -->
+                        <div class="mt-4 pt-3 border-t border-gray-700">
+                            <p class="text-xs font-bold text-gray-500 mb-2 text-center">スタッフ常駐時間</p>
+                            <div class="grid grid-cols-2 gap-3">
+                                <!-- 平日パネル -->
+                                <div class="p-2 rounded border border-gray-700 bg-white/5 flex flex-col items-center justify-center text-center">
+                                    <span class="text-[10px] text-white bg-joy-red px-3 py-1 rounded mb-1 font-bold">平日</span>
+                                    <span class="font-bold text-white font-eng text-sm tracking-wide">10:00 - 20:00</span>
                                 </div>
-                                <div class="h-8 w-px bg-gray-200 mx-1"></div>
-                                <div class="flex flex-col md:flex-row items-center">
-                                    <span class="bg-joy-red text-white text-[10px] px-2 py-0.5 rounded mr-2 mb-1 md:mb-0">土日祝</span>
-                                    <span class="font-bold text-gray-700 font-eng">12:00 - 19:00</span>
+                                <!-- 土日祝パネル -->
+                                <div class="p-2 rounded border border-gray-700 bg-white/5 flex flex-col items-center justify-center text-center">
+                                    <span class="text-[10px] text-white bg-joy-red px-3 py-1 rounded mb-1 font-bold">土日祝</span>
+                                    <span class="font-bold text-white font-eng text-sm tracking-wide">12:00 - 19:00</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- STEP 2 (旧 STEP 3): 日時選択 -->
+                    <!-- STEP 2 エリア -->
                     <div class="space-y-4">
-                        <p class="text-xs font-bold text-gray-400 border-b border-gray-100 pb-2">STEP 2 : 日時選択</p>
+                        <!-- 区切り線 -->
+                        <div class="border-b border-gray-600 pb-2 mb-4"></div>
+                        
                         <div class="grid grid-cols-2 gap-6">
                             <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">ご希望日</label><input type="date" id="date" name="date" required class="input-underline w-full px-4 py-3 font-eng"></div>
                             <div class="group"><label class="block text-xs font-bold text-gray-500 mb-1">ご来館時刻</label><select id="time" name="time" required class="input-underline w-full px-4 py-3 font-eng bg-transparent" disabled><option value="">---</option></select></div>
@@ -216,26 +305,26 @@
                 <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-bounce text-white">
                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
                 </div>
-                <h2 class="text-3xl font-black text-gray-800 mb-2 font-eng">THANK YOU!</h2>
-                <p class="text-gray-500 mb-8 font-medium">お申し込みを受け付けました</p>
+                <h2 class="text-3xl font-black text-white mb-2 font-eng">THANK YOU!</h2>
+                <p class="text-gray-400 mb-8 font-medium">お申し込みを受け付けました</p>
 
                 <div class="text-left bg-gray-50 border border-gray-200 p-6 rounded-xl max-w-md mx-auto">
                     <div class="space-y-4">
-                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                        <div class="flex justify-between items-center border-b border-gray-600 pb-2">
                             <span class="text-xs text-gray-400 font-bold">PLAN</span>
-                            <span class="font-bold text-lg" id="result-plan"></span>
+                            <span class="font-bold text-lg text-white" id="result-plan"></span>
                         </div>
-                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                        <div class="flex justify-between items-center border-b border-gray-600 pb-2">
                             <span class="text-xs text-gray-400 font-bold">NAME</span>
-                            <span class="font-bold text-lg"><span id="result-name"></span> 様</span>
+                            <span class="font-bold text-lg text-white"><span id="result-name"></span> 様</span>
                         </div>
-                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                        <div class="flex justify-between items-center border-b border-gray-600 pb-2">
                             <span class="text-xs text-gray-400 font-bold">DATE</span>
                             <span class="font-bold text-xl text-joy-red font-eng" id="result-datetime"></span>
                         </div>
                     </div>
                 </div>
-                <p class="text-xs text-gray-400 mt-6">スクリーンショットを保存してください</p>
+                <p class="text-xs text-gray-500 mt-6">スクリーンショットを保存してください</p>
             </div>
         </section>
 
