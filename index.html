@@ -64,6 +64,57 @@
                 0 10px 22px rgba(17, 24, 39, 0.12),
                 0 0 0 1px rgba(17, 24, 39, 0.04) inset;
         }
+        .hero-brand-line {
+            display: inline-flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.45rem;
+            color: #111827;
+            line-height: 1.1;
+        }
+        .hero-brand-main {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            font-size: clamp(1.8rem, 4.6vw, 2.4rem);
+        }
+        .hero-brand-sub {
+            font-weight: 800;
+            color: var(--brand-red);
+            letter-spacing: 0.12em;
+            font-size: clamp(1.2rem, 3.6vw, 1.65rem);
+        }
+        .hero-chip {
+            display: inline-block;
+            margin-top: 0.9rem;
+            padding: 0.3rem 0.8rem;
+            border: 1px solid rgba(166, 54, 70, 0.28);
+            border-radius: 9999px;
+            color: var(--brand-red);
+            background: rgba(166, 54, 70, 0.08);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+        }
+        .hero-subtitle {
+            margin-top: 1rem;
+            color: #374151;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+        .hero-accent-bar {
+            margin: 1rem auto 0;
+            padding: 0.6rem 0.85rem;
+            max-width: 28rem;
+            border-radius: 0.7rem;
+            border: 1px solid rgba(166, 54, 70, 0.28);
+            background: linear-gradient(180deg, #fff7f8, #ffeff2);
+            color: #7a2230;
+            font-size: 0.82rem;
+            font-weight: 700;
+            box-shadow: 0 8px 16px rgba(166, 54, 70, 0.14);
+        }
 
         .plan-radio + label {
             background: #FAFBFC !important;
@@ -174,18 +225,21 @@
 
     <main class="w-full max-w-2xl z-10 space-y-6">
 
-        <section class="lp-card p-6 text-center">
-            <h1 class="text-white mb-2 flex items-center justify-center gap-3 flex-wrap">
-                <span class="text-4xl font-black font-sans tracking-tight">JOYFIT24</span>
-                <span class="text-3xl font-black font-sans tracking-widest">経堂</span>
+        <section class="lp-card p-6 md:p-8 text-center">
+            <h1 class="hero-brand-line">
+                <span class="hero-brand-main">JOYFIT24</span>
+                <span class="hero-brand-sub">経堂</span>
             </h1>
+            <p class="hero-chip font-eng">FREE TOUR / TRIAL</p>
+            <p class="hero-subtitle">24時間ジムを無料で見学・体験できます</p>
 
-            <div class="mt-4 page-title-card p-3">
+            <div class="mt-4 page-title-card p-4">
                 <h2 class="text-2xl font-black text-brand-red leading-tight">
                     ジム無料見学・体験
                 </h2>
                 <p class="text-sm text-gray-600 mt-1 font-eng tracking-wider">RESERVATION FORM</p>
             </div>
+            <p class="hero-accent-bar">最短1分で予約完了。ご希望日時を選ぶだけで申込できます。</p>
         </section>
 
         <section id="form-section" class="lp-card p-6 md:p-10">
