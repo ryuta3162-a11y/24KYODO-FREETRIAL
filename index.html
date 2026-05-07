@@ -339,8 +339,8 @@
                 <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg text-white">
                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
                 </div>
-                <h2 class="text-3xl font-black text-white mb-2 font-eng">THANK YOU!</h2>
-                <p class="text-white/80 mb-8 font-medium">お申し込みを受け付けました</p>
+                <h2 class="text-3xl font-black text-gray-900 mb-2"><span id="result-plan-message"></span>予約を承りました。</h2>
+                <p class="text-gray-700 mb-8 font-medium"><span id="result-name-message"></span>様のご来館をお待ちしております。</p>
 
                 <div class="lp-card text-left p-6 rounded-xl max-w-md mx-auto">
                     <div class="space-y-4">
@@ -479,6 +479,8 @@
                 .then(() => {
                     // no-corsモードでは常に成功の応答が返るため、ここでは単にUIを更新する
                     // 実際には、GAS側でエラーが発生している可能性もある点に注意
+                    document.getElementById('result-plan-message').textContent = data.plan;
+                    document.getElementById('result-name-message').textContent = data.name;
                     document.getElementById('result-plan').textContent = data.plan;
                     document.getElementById('result-name').textContent = data.name;
 
