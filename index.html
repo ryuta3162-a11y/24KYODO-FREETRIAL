@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
+            --page-bg-dark: #141416;
             --logo-wine-bg: #A63646;
             --brand-red: #A63646;
             --brand-red-dark: #852c38;
@@ -24,7 +25,7 @@
             font-family: 'Noto Sans JP', sans-serif;
             color: #F3F4F6;
             min-height: 100vh;
-            background-color: var(--logo-wine-bg);
+            background-color: var(--page-bg-dark);
             position: relative;
             overflow-x: hidden;
         }
@@ -35,9 +36,9 @@
             z-index: 0;
             pointer-events: none;
             background:
-                radial-gradient(1200px 600px at 50% -10%, rgba(0,0,0,0.28), transparent 60%),
-                radial-gradient(900px 500px at 10% 20%, rgba(0,0,0,0.16), transparent 55%),
-                radial-gradient(900px 500px at 90% 20%, rgba(0,0,0,0.16), transparent 55%);
+                radial-gradient(1200px 600px at 50% -10%, rgba(166,54,70,0.22), transparent 60%),
+                radial-gradient(900px 500px at 10% 20%, rgba(255,255,255,0.03), transparent 55%),
+                radial-gradient(900px 500px at 90% 20%, rgba(255,255,255,0.03), transparent 55%);
         }
 
         .font-eng { font-family: 'Montserrat', sans-serif; letter-spacing: 0.05em; }
@@ -47,9 +48,9 @@
         .lp-card {
             background: var(--surface) !important;
             color: var(--ink);
-            border: 1px solid var(--line);
+            border: 2px solid var(--brand-red);
             border-radius: 1.25rem;
-            border-top: 3px solid var(--brand-red);
+            border-top: 4px solid var(--brand-red);
             box-shadow:
                 0 22px 45px -18px rgba(0, 0, 0, 0.55),
                 0 8px 18px rgba(0, 0, 0, 0.18),
@@ -83,18 +84,6 @@
             color: var(--brand-red);
             letter-spacing: 0.12em;
             font-size: clamp(1.2rem, 3.6vw, 1.65rem);
-        }
-        .hero-chip {
-            display: inline-block;
-            margin-top: 0.9rem;
-            padding: 0.3rem 0.8rem;
-            border: 1px solid rgba(166, 54, 70, 0.28);
-            border-radius: 9999px;
-            color: var(--brand-red);
-            background: rgba(166, 54, 70, 0.08);
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
         }
         .hero-subtitle {
             margin-top: 1rem;
@@ -210,6 +199,7 @@
             background-color: var(--logo-wine-bg);
             padding: 1.25rem 1rem;
             color: rgba(255,255,255,0.9);
+            border-radius: 0.9rem;
         }
         .site-footer-bar .footer-logo-img {
             height: 2rem;
@@ -230,7 +220,6 @@
                 <span class="hero-brand-main">JOYFIT24</span>
                 <span class="hero-brand-sub">経堂</span>
             </h1>
-            <p class="hero-chip font-eng">FREE TOUR / TRIAL</p>
             <p class="hero-subtitle">24時間ジムを無料で見学・体験できます</p>
 
             <div class="mt-4 page-title-card p-4">
