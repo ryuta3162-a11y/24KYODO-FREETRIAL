@@ -186,8 +186,10 @@
         .site-footer-bar {
             background-color: var(--logo-wine-bg);
             padding: 1.25rem 1rem;
-            color: rgba(255,255,255,0.9);
-            border-radius: 0.9rem;
+            border-radius: 0 !important;
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            margin-right: calc(50% - 50vw);
         }
         .site-footer-bar .footer-logo-img {
             height: 2rem;
@@ -201,7 +203,7 @@
 </head>
 <body class="antialiased">
 
-    <main class="w-full max-w-2xl z-10 space-y-6 mx-auto py-10 px-4">
+    <main class="w-full max-w-2xl z-10 space-y-6 mx-auto pt-10 px-4 pb-0">
 
         <section class="lp-card p-6 md:p-8 text-center">
             <h1 class="hero-brand-line">
@@ -362,7 +364,7 @@
 
     </main>
 
-    <footer class="site-footer-bar border-t border-white/10 w-full">
+    <footer class="site-footer-bar border-t border-white/10">
         <div class="container mx-auto text-center">
             <img src="joyfit_logo.png" alt="JOYFIT24" class="footer-logo-img">
         </div>
