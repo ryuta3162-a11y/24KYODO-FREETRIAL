@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ジム無料見学・体験 - JOYFIT24経堂</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --page-bg: #F3F4F6;
-            --logo-wine-bg: #A63646;
-            --brand-red: #A63646;
-            --brand-red-dark: #852c38;
-            --brand-red-soft: rgba(166, 54, 70, 0.14);
+            --logo-wine-bg: #DC2626;
+            --brand-red: #DC2626;
+            --brand-red-dark: #B91C1C;
+            --brand-red-soft: rgba(220, 38, 38, 0.14);
             --ink: #111827;
             --muted: #6B7280;
             --line: #D1D5DB;
@@ -36,12 +36,12 @@
             z-index: 0;
             pointer-events: none;
             background:
-                radial-gradient(1200px 600px at 50% -10%, rgba(166, 54, 70, 0.07), transparent 60%),
+                radial-gradient(1200px 600px at 50% -10%, rgba(220, 38, 38, 0.07), transparent 60%),
                 radial-gradient(900px 500px at 10% 20%, rgba(255, 255, 255, 0.9), transparent 55%),
                 radial-gradient(900px 500px at 90% 20%, rgba(255, 255, 255, 0.7), transparent 55%);
         }
 
-        .font-eng { font-family: 'Montserrat', sans-serif; letter-spacing: 0.05em; }
+        .font-eng { letter-spacing: 0.05em; }
         .text-brand-red { color: var(--brand-red) !important; }
         .bg-brand-red { background-color: var(--brand-red) !important; }
 
@@ -74,7 +74,6 @@
             line-height: 1.1;
         }
         .hero-brand-main {
-            font-family: 'Montserrat', sans-serif;
             font-weight: 900;
             letter-spacing: 0.04em;
             font-size: clamp(1.8rem, 4.6vw, 2.4rem);
@@ -107,7 +106,7 @@
             background: var(--brand-red) !important;
             color: #fff !important;
             border-color: var(--brand-red) !important;
-            box-shadow: 0 0 0 3px var(--brand-red-soft), 0 16px 34px rgba(166, 54, 70, 0.35);
+            box-shadow: 0 0 0 3px var(--brand-red-soft), 0 16px 34px rgba(220, 38, 38, 0.35);
             transform: translateY(-1px);
             text-shadow: none;
         }
@@ -157,14 +156,14 @@
             letter-spacing: 0.06em;
             transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
             box-shadow:
-                0 12px 28px rgba(166, 54, 70, 0.22),
+                0 12px 28px rgba(220, 38, 38, 0.22),
                 0 4px 12px rgba(17, 24, 39, 0.08);
             clip-path: none;
         }
         .btn-solid:hover {
             transform: translateY(-1px);
             background-color: var(--brand-red-dark) !important;
-            box-shadow: 0 14px 26px rgba(166, 54, 70, 0.34);
+            box-shadow: 0 14px 26px rgba(220, 38, 38, 0.34);
         }
 
         .notice-card {
