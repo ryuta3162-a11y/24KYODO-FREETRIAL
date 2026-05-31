@@ -8,24 +8,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --page-bg-dark: #141416;
+            --page-bg: #F3F4F6;
             --logo-wine-bg: #A63646;
             --brand-red: #A63646;
             --brand-red-dark: #852c38;
-            --brand-red-soft: rgba(166, 54, 70, 0.18);
+            --brand-red-soft: rgba(166, 54, 70, 0.14);
             --ink: #111827;
             --muted: #6B7280;
             --line: #D1D5DB;
-            --line-strong: rgba(17, 24, 39, 0.22);
+            --line-strong: rgba(17, 24, 39, 0.14);
             --surface: #FFFFFF;
             --radius: 0.75rem;
         }
 
         body {
             font-family: 'Noto Sans JP', sans-serif;
-            color: #F3F4F6;
+            color: var(--ink);
             min-height: 100vh;
-            background-color: var(--page-bg-dark);
+            background-color: var(--page-bg);
             position: relative;
             overflow-x: hidden;
         }
@@ -36,9 +36,9 @@
             z-index: 0;
             pointer-events: none;
             background:
-                radial-gradient(1200px 600px at 50% -10%, rgba(166,54,70,0.22), transparent 60%),
-                radial-gradient(900px 500px at 10% 20%, rgba(255,255,255,0.03), transparent 55%),
-                radial-gradient(900px 500px at 90% 20%, rgba(255,255,255,0.03), transparent 55%);
+                radial-gradient(1200px 600px at 50% -10%, rgba(166, 54, 70, 0.07), transparent 60%),
+                radial-gradient(900px 500px at 10% 20%, rgba(255, 255, 255, 0.9), transparent 55%),
+                radial-gradient(900px 500px at 90% 20%, rgba(255, 255, 255, 0.7), transparent 55%);
         }
 
         .font-eng { font-family: 'Montserrat', sans-serif; letter-spacing: 0.05em; }
@@ -52,9 +52,9 @@
             border-radius: 1.25rem;
             border-top: 4px solid var(--brand-red);
             box-shadow:
-                0 22px 45px -18px rgba(0, 0, 0, 0.55),
-                0 8px 18px rgba(0, 0, 0, 0.18),
-                0 0 0 1px rgba(255,255,255,0.25) inset;
+                0 22px 45px -18px rgba(17, 24, 39, 0.10),
+                0 8px 18px rgba(17, 24, 39, 0.06),
+                0 0 0 1px rgba(255, 255, 255, 0.8) inset;
         }
 
         .page-title-card {
@@ -157,8 +157,8 @@
             letter-spacing: 0.06em;
             transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
             box-shadow:
-                0 16px 34px rgba(166, 54, 70, 0.32),
-                0 8px 18px rgba(0, 0, 0, 0.16);
+                0 12px 28px rgba(166, 54, 70, 0.22),
+                0 4px 12px rgba(17, 24, 39, 0.08);
             clip-path: none;
         }
         .btn-solid:hover {
