@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "Free Gym Tour & Trial - JOYFIT24 Kyodo"
+  },
+  "hero": {
+    "subtitle": "Tour or try our 24-hour gym for free",
+    "title": "Free Gym Tour & Trial",
+    "formLabel": "RESERVATION FORM"
+  },
+  "form": {
+    "planPrompt": "Please choose a tour or trial session",
+    "visit": "Tour",
+    "trial": "Trial",
+    "customerInfo": "Please enter your details",
+    "name": "Full name",
+    "namePlaceholder": "Taro Kyodo",
+    "email": "Email address",
+    "emailPlaceholder": "joyfit@example.com",
+    "tel": "Phone number",
+    "telPlaceholder": "09012345678",
+    "gender": "Gender",
+    "age": "Age group",
+    "select": "Select",
+    "male": "Male",
+    "female": "Female",
+    "age10": "Teens",
+    "age20": "20s",
+    "age30": "30s",
+    "age40": "40s",
+    "age50": "50s",
+    "age60": "60+",
+    "noticeTitle": "Please note",
+    "notice1": "Street shoes are allowed in the facility.",
+    "notice2": "Trial sessions are typically up to <span class=\"font-bold text-gray-900\">60 minutes</span>.",
+    "notice3": "<span class=\"font-bold text-brand-red\">No reservations on Mondays and Thursdays (no staff on site).</span>",
+    "staffHours": "Staffed hours",
+    "weekday": "Weekdays",
+    "weekend": "Sat / Sun / Holidays",
+    "preferredDate": "Preferred date",
+    "preferredTime": "Arrival time",
+    "timeSelect": "Select time",
+    "timeEmpty": "---",
+    "submit": "Submit reservation",
+    "submitting": "Sending...",
+    "successPlanPrefix": "",
+    "successReceived": " reservation received.",
+    "successWelcome": ", we look forward to your visit.",
+    "honorific": "",
+    "screenshotTitle": "Please take a screenshot of this screen<br>and save it.",
+    "screenshotNote": "On the day of your visit, please check the saved screen before coming to the gym.",
+    "resultNameSuffix": ""
+  },
+  "errors": {
+    "monThuClosed": "MON & THU CLOSED (No staff on Mondays and Thursdays)",
+    "gasMissing": "Error: Web app URL is not configured.",
+    "system": "A system error occurred. Please try again."
+  },
+  "lang": {
+    "label": "Language"
+  }
+}

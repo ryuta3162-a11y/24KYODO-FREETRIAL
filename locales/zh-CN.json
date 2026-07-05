@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "免费参观·体验 - JOYFIT24经堂"
+  },
+  "hero": {
+    "subtitle": "可免费参观·体验24小时健身房",
+    "title": "健身房免费参观·体验",
+    "formLabel": "RESERVATION FORM"
+  },
+  "form": {
+    "planPrompt": "请选择参观或体验",
+    "visit": "参观",
+    "trial": "体验",
+    "customerInfo": "请填写您的信息",
+    "name": "姓名",
+    "namePlaceholder": "经堂 太郎",
+    "email": "电子邮箱",
+    "emailPlaceholder": "joyfit@example.com",
+    "tel": "电话号码",
+    "telPlaceholder": "09012345678",
+    "gender": "性别",
+    "age": "年龄段",
+    "select": "请选择",
+    "male": "男性",
+    "female": "女性",
+    "age10": "10多岁",
+    "age20": "20多岁",
+    "age30": "30多岁",
+    "age40": "40多岁",
+    "age50": "50多岁",
+    "age60": "60岁以上",
+    "noticeTitle": "注意事项",
+    "notice1": "馆内可穿着外出鞋使用。",
+    "notice2": "体验时间以<span class=\"font-bold text-gray-900\">约60分钟</span>为参考。",
+    "notice3": "<span class=\"font-bold text-brand-red\">周一、周四无工作人员，无法预约。</span>",
+    "staffHours": "工作人员在岗时间",
+    "weekday": "工作日",
+    "weekend": "周六·周日·节假日",
+    "preferredDate": "希望日期",
+    "preferredTime": "到店时间",
+    "timeSelect": "选择时间",
+    "timeEmpty": "---",
+    "submit": "按以上内容提交申请",
+    "submitting": "发送中...",
+    "successPlanPrefix": "",
+    "successReceived": "预约已受理。",
+    "successWelcome": "，期待您的光临。",
+    "honorific": " 先生/女士",
+    "screenshotTitle": "请截图保存此页面<br>务必留存。",
+    "screenshotNote": "到访当天请先确认保存的截图内容后再前来。",
+    "resultNameSuffix": " 先生/女士"
+  },
+  "errors": {
+    "monThuClosed": "周一·周四休息（无工作人员）",
+    "gasMissing": "错误：未设置系统URL。",
+    "system": "发生系统错误，请重试。"
+  },
+  "lang": {
+    "label": "语言"
+  }
+}

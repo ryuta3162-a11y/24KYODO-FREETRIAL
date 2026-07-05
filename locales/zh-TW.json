@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "免費參觀·體驗 - JOYFIT24經堂"
+  },
+  "hero": {
+    "subtitle": "可免費參觀·體驗24小時健身房",
+    "title": "健身房免費參觀·體驗",
+    "formLabel": "RESERVATION FORM"
+  },
+  "form": {
+    "planPrompt": "請選擇參觀或體驗",
+    "visit": "參觀",
+    "trial": "體驗",
+    "customerInfo": "請填寫您的資訊",
+    "name": "姓名",
+    "namePlaceholder": "經堂 太郎",
+    "email": "電子郵件",
+    "emailPlaceholder": "joyfit@example.com",
+    "tel": "電話號碼",
+    "telPlaceholder": "09012345678",
+    "gender": "性別",
+    "age": "年齡層",
+    "select": "請選擇",
+    "male": "男性",
+    "female": "女性",
+    "age10": "10多歲",
+    "age20": "20多歲",
+    "age30": "30多歲",
+    "age40": "40多歲",
+    "age50": "50多歲",
+    "age60": "60歲以上",
+    "noticeTitle": "注意事項",
+    "notice1": "館內可穿著外出鞋使用。",
+    "notice2": "體驗時間以<span class=\"font-bold text-gray-900\">約60分鐘</span>為參考。",
+    "notice3": "<span class=\"font-bold text-brand-red\">週一、週四無工作人員，無法預約。</span>",
+    "staffHours": "工作人員在館時間",
+    "weekday": "平日",
+    "weekend": "週六·週日·國定假日",
+    "preferredDate": "希望日期",
+    "preferredTime": "到店時間",
+    "timeSelect": "選擇時間",
+    "timeEmpty": "---",
+    "submit": "依上述內容送出申請",
+    "submitting": "傳送中...",
+    "successPlanPrefix": "",
+    "successReceived": "預約已受理。",
+    "successWelcome": "，期待您的光臨。",
+    "honorific": " 先生/女士",
+    "screenshotTitle": "請截圖保存此畫面<br>務必留存。",
+    "screenshotNote": "預約當天請先確認保存的截圖內容後再前來。",
+    "resultNameSuffix": " 先生/女士"
+  },
+  "errors": {
+    "monThuClosed": "週一·週四休館（無工作人員）",
+    "gasMissing": "錯誤：未設定系統URL。",
+    "system": "發生系統錯誤，請再試一次。"
+  },
+  "lang": {
+    "label": "語言"
+  }
+}

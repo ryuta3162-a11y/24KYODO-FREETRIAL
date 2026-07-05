@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "무료 견학·체험 - JOYFIT24 경당"
+  },
+  "hero": {
+    "subtitle": "24시간 헬스장을 무료로 견학·체험할 수 있습니다",
+    "title": "헬스장 무료 견학·체험",
+    "formLabel": "RESERVATION FORM"
+  },
+  "form": {
+    "planPrompt": "견학 또는 체험 중 선택해 주세요",
+    "visit": "견학",
+    "trial": "체험",
+    "customerInfo": "고객 정보를 입력해 주세요",
+    "name": "이름",
+    "namePlaceholder": "교도 타로",
+    "email": "이메일 주소",
+    "emailPlaceholder": "joyfit@example.com",
+    "tel": "전화번호",
+    "telPlaceholder": "09012345678",
+    "gender": "성별",
+    "age": "연령대",
+    "select": "선택",
+    "male": "남성",
+    "female": "여성",
+    "age10": "10대",
+    "age20": "20대",
+    "age30": "30대",
+    "age40": "40대",
+    "age50": "50대",
+    "age60": "60대 이상",
+    "noticeTitle": "확인 사항",
+    "notice1": "시설 내에서는 외출화 착용이 가능합니다.",
+    "notice2": "체험은 <span class=\"font-bold text-gray-900\">약 60분</span>을 기준으로 이용해 주세요.",
+    "notice3": "<span class=\"font-bold text-brand-red\">월·목요일은 스태프 부재로 예약 불가입니다.</span>",
+    "staffHours": "스태프 상주 시간",
+    "weekday": "평일",
+    "weekend": "토·일·공휴일",
+    "preferredDate": "희망 날짜",
+    "preferredTime": "방문 시간",
+    "timeSelect": "시간 선택",
+    "timeEmpty": "---",
+    "submit": "위 내용으로 신청하기",
+    "submitting": "전송 중...",
+    "successPlanPrefix": "",
+    "successReceived": " 예약이 접수되었습니다.",
+    "successWelcome": "님의 방문을 기다리겠습니다.",
+    "honorific": "",
+    "screenshotTitle": "이 화면을 스크린샷으로<br>반드시 저장해 주세요",
+    "screenshotNote": "예약 당일에는 저장한 화면을 확인한 후 방문해 주세요.",
+    "resultNameSuffix": " 님"
+  },
+  "errors": {
+    "monThuClosed": "월·목 휴무 (스태프 부재)",
+    "gasMissing": "오류: 웹앱 URL이 설정되지 않았습니다.",
+    "system": "시스템 오류가 발생했습니다. 다시 시도해 주세요."
+  },
+  "lang": {
+    "label": "언어"
+  }
+}
