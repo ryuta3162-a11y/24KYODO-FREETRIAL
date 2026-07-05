@@ -211,58 +211,45 @@
             gap: 0.55rem;
             padding: 0.62rem 0.95rem;
             border-radius: 0.35rem;
-            border: 1px solid #7f1d1d;
-            border-bottom: 3px solid #5c1218;
-            background: linear-gradient(180deg, #ef4444 0%, #dc2626 48%, #b91c1c 100%);
-            color: #fff;
+            border: 1px solid #111827;
+            background: #ffffff;
+            color: #111827;
             font-size: 0.74rem;
             font-weight: 800;
             letter-spacing: 0.04em;
-            box-shadow:
-                0 1px 0 rgba(255, 255, 255, 0.22) inset,
-                0 10px 22px rgba(185, 28, 28, 0.38),
-                0 2px 0 rgba(0, 0, 0, 0.12);
+            box-shadow: 0 1px 2px rgba(17, 24, 39, 0.08);
             cursor: pointer;
-            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+            transition: background 0.15s ease, box-shadow 0.15s ease;
         }
         .lang-switcher__btn:hover {
-            filter: brightness(1.05);
-            transform: translateY(-1px);
-            box-shadow:
-                0 1px 0 rgba(255, 255, 255, 0.28) inset,
-                0 14px 28px rgba(185, 28, 28, 0.45),
-                0 3px 0 rgba(0, 0, 0, 0.14);
+            background: #f9fafb;
+            box-shadow: 0 2px 5px rgba(17, 24, 39, 0.1);
         }
         .lang-switcher__btn:active {
-            transform: translateY(1px);
-            border-bottom-width: 2px;
-            box-shadow:
-                0 1px 0 rgba(255, 255, 255, 0.12) inset,
-                0 6px 14px rgba(185, 28, 28, 0.32);
+            background: #f3f4f6;
         }
         .lang-switcher__icon {
             font-size: 0.9rem;
             line-height: 1;
-            opacity: 0.95;
         }
         .lang-switcher__label {
-            color: rgba(255, 255, 255, 0.88);
+            color: #111827;
             font-weight: 800;
             font-size: 0.68rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
         .lang-switcher__sep {
-            color: rgba(255, 255, 255, 0.45);
+            color: #9ca3af;
             font-weight: 400;
         }
         .lang-switcher__current {
-            color: #fff;
+            color: #111827;
             font-weight: 900;
             font-size: 0.78rem;
         }
         .lang-switcher__caret {
-            color: rgba(255, 255, 255, 0.85);
+            color: #6b7280;
             font-size: 0.62rem;
             margin-left: 0.1rem;
         }
@@ -274,12 +261,9 @@
             min-width: 10.5rem;
             padding: 0.35rem;
             border-radius: 0.4rem;
-            border: 1px solid rgba(17, 24, 39, 0.14);
-            border-bottom: 2px solid rgba(17, 24, 39, 0.22);
-            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-            box-shadow:
-                0 16px 36px rgba(17, 24, 39, 0.18),
-                0 1px 0 rgba(255, 255, 255, 0.9) inset;
+            border: 1px solid #111827;
+            background: #ffffff;
+            box-shadow: 0 16px 36px rgba(17, 24, 39, 0.12);
         }
         .lang-switcher.is-open .lang-switcher__menu { display: block; }
         .lang-switcher__item {
@@ -293,16 +277,15 @@
             font-weight: 700;
             color: var(--ink);
             cursor: pointer;
-            transition: background 0.12s ease, color 0.12s ease;
+            transition: background 0.12s ease;
         }
         .lang-switcher__item:hover {
             background: #f3f4f6;
-            color: var(--brand-red-dark);
         }
         .lang-switcher__item.is-active {
-            background: linear-gradient(180deg, #fee2e2 0%, #fecaca 100%);
-            color: var(--brand-red-dark);
-            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+            background: #e5e7eb;
+            color: var(--ink);
+            font-weight: 700;
         }
     </style>
 </head>
