@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "title": "JOYFIT24 경당 여름 특가 | 7/12(일)까지"
+  },
+  "opening": {
+    "label": "아직 늦지 않았어요!<br><span class=\"lp-o-label-summer\">여름 특가 캠페인!</span>",
+    "lead": "7/12(일)까지 한정",
+    "cdDay": "일",
+    "cdHour": "시간",
+    "cdMin": "분",
+    "cdSec": "초",
+    "remaining": "남은",
+    "remainingUnit": "명",
+    "note": "※<span class=\"dynamic-remaining-count\">--</span>명 더 입회 시 한정 캠페인 종료"
+  },
+  "hero": {
+    "title": "아직 늦지 않았어요!<br><span class=\"campaign-title-summer\">여름 특가 캠페인!</span>",
+    "appBadge": "앱 입회 최단 5분　당일 바로 이용!",
+    "halfYearCatch": "반년 내내 <em>특가</em>"
+  },
+  "pricing": {
+    "optionLabel": "7월 옵션",
+    "optionLabelSub": "무료 옵션 8개 자동 가입",
+    "optionHighlight": "7월 0원",
+    "optionNote": "※8개 옵션은 입회 시 자동 가입됩니다.<br>불필요한 경우 <span id=\"campaign-option-cancel-deadline\">7월 말</span>까지 해지해 주세요.",
+    "optionCancelDeadline": "7월 말",
+    "joinAmountLabel": "입회 시 결제 금액",
+    "joinAmountAt": "(<span class=\"join-date\">{m}/{d}</span>) 입회 시 결제 금액"
+  },
+  "banner": {
+    "trial": "무료 견학・체험",
+    "appJoin": "앱 입회는 여기"
+  }
+}

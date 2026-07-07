@@ -1,0 +1,3180 @@
+﻿<!DOCTYPE html>
+<!-- キャンペーンLP本体: kyodo-lp-deta の index.html をここに貼り付け可（貼り替え後は i18n 用の追記を再適用） -->
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JOYFIT24経堂 まだ間に合う夏得キャンペーン｜7/12(日)まで</title>
+    <!-- OGP（LINE等は絶対URL必須）: 公開先が決まったら REPLACE_ORIGIN を https://ドメイン まで（末尾スラッシュなし）で一括置換。ogp.jpg は 1200×630px 前後推奨 -->
+    <meta name="description" content="JOYFIT24経堂 まだ間に合う夏得キャンペーン。7〜12月3,630円(税込)/月。7月オプション0円。7/12(日)まで・先着20名。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:title" content="JOYFIT24経堂 まだ間に合う夏得キャンペーン｜7/12(日)まで" />
+    <meta property="og:description" content="JOYFIT24経堂の夏得キャンペーン。7〜12月3,630円(税込)/月・7月オプション0円。7/12(日)まで・先着20名。" />
+    <meta property="og:url" content="REPLACE_ORIGIN/index.html" />
+    <meta property="og:image" content="REPLACE_ORIGIN/ogp.jpg" />
+    <meta property="og:image:alt" content="JOYFIT24経堂 まだ間に合う夏得キャンペーン" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JOYFIT24経堂 まだ間に合う夏得キャンペーン｜7/12(日)まで" />
+    <meta name="twitter:description" content="JOYFIT24経堂の夏得キャンペーン。7〜12月3,630円(税込)/月・7月オプション0円。7/12(日)まで・先着20名。" />
+    <meta name="twitter:image" content="REPLACE_ORIGIN/ogp.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- 視認性の高い Noto Sans JP に完全統一 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="i18n.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* =======================================================
+           ■ Root Variables & Base
+           ======================================================= */
+        :root { 
+            --brand: #C21632;
+            --brand-red: #C21632;
+            --brand-dark: #8a0e20;
+            --lp-frame: #1a1a1a;
+            --lp-frame-shadow: 0 5px 0 #1a1a1a;
+            --gold-main: #D4AF37; 
+            --gold-light: #F8E71C; 
+            --gold-dark: #B48811; 
+            --gold-gradient: linear-gradient(135deg, #B48811 0%, #F8E71C 25%, #D4AF37 50%, #F8E71C 75%, #B48811 100%);
+            --summer-sun: rgba(255, 196, 87, 0.22);
+            --summer-sky: rgba(126, 200, 227, 0.07);
+            
+            --color-dark: #1a1a2e;
+            --color-text: #2C2C2C;
+            --bg-body: #fffdf0; /* 全体の背景色を統一して明るく */
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.06);
+            
+            --container-max-width: 600px;
+        }
+
+        html { box-sizing: border-box; scroll-behavior: smooth; }
+        *, *::before, *::after { box-sizing: inherit; }
+        
+        /* フォントの完全統一 (Noto Sans JPを強制) */
+        body {
+            font-family: 'Noto Sans JP', sans-serif !important;
+            text-align: center;
+            margin: 0; padding: 0; padding-bottom: 120px;
+            overflow-x: hidden; 
+            color: var(--color-text);
+            background-color: var(--bg-body);
+        }
+        body.banner-hidden { padding-bottom: 40px; }
+        body.top-banner-hidden { --lp-top-banner-offset: 0px; }
+
+        /* 数字強調用クラス (Noto Sans JPの極太を指定) */
+        .font-impact { 
+            font-weight: 900 !important;
+            letter-spacing: -0.02em;
+        }
+
+        /* =======================================================
+           ■ Hero Section
+           ======================================================= */
+        .mild-fade-in { opacity: 0; animation: mildFadeIn 0.9s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
+        @keyframes mildFadeIn {
+            0% { opacity: 0; transform: translateY(12px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* =======================================================
+           ■ 背景・訴求テキスト（洗練・視認性）
+           ======================================================= */
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse 72% 42% at 50% 0%, var(--summer-sky), transparent 52%),
+                radial-gradient(ellipse 90% 55% at 50% -5%, rgba(212, 175, 55, 0.07), transparent 55%),
+                radial-gradient(ellipse 55% 38% at 100% 92%, var(--summer-sun), transparent 50%),
+                radial-gradient(ellipse 50% 35% at 100% 90%, rgba(194, 22, 50, 0.04), transparent 50%);
+        }
+        .bg-noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.025; mix-blend-mode: multiply;
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ヒーロー価格・重要数字：縁取りでお得感を明確に */
+        .text-value-hero {
+            color: var(--brand);
+            -webkit-text-stroke: 2px #1a1a1a;
+            paint-order: stroke fill;
+            text-shadow: 0 2px 0 rgba(255, 255, 255, 0.85);
+        }
+        .text-value-accent {
+            color: var(--brand);
+            font-weight: 900;
+            text-shadow:
+                1px 0 0 #fff, -1px 0 0 #fff,
+                0 1px 0 #fff, 0 -1px 0 #fff,
+                0 2px 6px rgba(194, 22, 50, 0.12);
+        }
+        .text-value-inline {
+            color: var(--brand);
+            text-shadow: 0 0 0 2px #fff, 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        .campaign-title {
+            color: #1a1a1a;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+        }
+        .featured-price {
+            text-shadow:
+                1px 0 0 #fff, -1px 0 0 #fff,
+                0 1px 0 #fff, 0 -1px 0 #fff,
+                0 2px 8px rgba(194, 22, 50, 0.1);
+        }
+        .cta-emphasis {
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+        .cta-emphasis:hover,
+        .cta-emphasis:focus-visible {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        /* =======================================================
+           ■ スクロール連動Reveal効果 & デザインコンポーネント
+           ======================================================= */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(14px);
+            transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
+
+        .lp-wrapper { width: 100%; max-width: var(--container-max-width); margin: 0 auto; padding: 1.25rem 15px 0; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10; }
+        @media (min-width: 768px) {
+            .lp-wrapper { padding-top: 1rem; }
+        }
+        
+        .plan-selection-section { width: 100%; margin: 0 auto; }
+        
+        /* 見出し（赤背景・白ライン） */
+        .campaign-header-enhanced {
+            position: relative;
+            margin-top: 10px;
+            padding: 32px 20px 30px;
+            border-radius: 14px 14px 0 0;
+            text-align: center;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse 95% 65% at 50% -18%, var(--summer-sun), transparent 58%),
+                var(--brand-red);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        }
+        .campaign-header-enhanced::before,
+        .campaign-header-enhanced::after {
+            content: '';
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35) 12%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0.35) 88%, transparent);
+            pointer-events: none;
+        }
+        .campaign-header-enhanced::before { top: 10px; }
+        .campaign-header-enhanced::after { bottom: 10px; opacity: 0.9; }
+        .campaign-header-inner {
+            position: relative;
+            z-index: 1;
+            padding: 6px 0;
+        }
+        .campaign-header-enhanced h2 {
+            margin: 0;
+            font-size: 1.55rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 0.18em;
+            line-height: 1.35;
+        }
+        .campaign-header-enhanced h2::after {
+            content: '';
+            display: block;
+            width: min(11.2em, 92%);
+            height: 2px;
+            margin: 12px auto 0;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 1px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+        }
+        .campaign-title-summer {
+            display: inline-block;
+            background: linear-gradient(135deg, #fff8dc 0%, #F8E71C 38%, #FFC857 72%, #F8E71C 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.12));
+        }
+        .campaign-app-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 12px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            background: #fff;
+            color: var(--brand);
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.14);
+            max-width: calc(100% - 24px);
+        }
+        .campaign-app-badge span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        @media (min-width: 400px) {
+            .campaign-header-enhanced h2 { font-size: 1.65rem; }
+            .campaign-app-badge { font-size: 0.72rem; padding: 7px 14px; }
+        }
+
+        .plan-container-wrapper {
+            overflow: hidden;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            background-color: #fff;
+            box-shadow: var(--shadow-soft);
+            padding-top: 15px;
+            padding-bottom: 30px;
+            border: 2px solid var(--lp-frame);
+            border-top: none;
+            box-shadow: var(--lp-frame-shadow);
+        }
+        .price-showcase {
+            border-radius: var(--radius-md);
+            max-width: 95%;
+            margin: 0 auto;
+            text-align: left;
+            border: 1px solid #eee;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+        .price-list { padding: 0 1.15rem; }
+        .campaign-header-enhanced .deadline-text {
+            display: inline-block;
+            background-color: var(--brand);
+            color: #fff;
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(194, 22, 50, 0.25);
+            letter-spacing: 0.03em;
+            text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+        }
+        .campaign-price-chip { display: inline-block; margin-top: 8px; background: #fff; color: var(--brand); border: 2px solid var(--brand); border-radius: 999px; padding: 3px 12px; font-size: 0.78rem; font-weight: 900; letter-spacing: 0.01em; }
+
+        /* 左右同幅で中央揃え（料金行） */
+        .price-item {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            justify-items: center;
+            column-gap: 0.65rem;
+            padding: 1.2rem 0;
+            border-bottom: 1px dashed #ccc;
+            min-height: 108px;
+        }
+        .price-item .label-group {
+            display: grid;
+            grid-template-columns: 36px minmax(0, 1fr);
+            align-items: center;
+            justify-content: start;
+            justify-self: center;
+            width: 280px;
+            max-width: 280px;
+            text-align: left;
+            column-gap: 10px;
+        }
+        .price-item .number-circle.number-circle-accent {
+            background-color: var(--brand);
+        }
+        .price-item .number-circle {
+            width: 34px;
+            height: 34px;
+            background-color: #555;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+        .price-item .label {
+            font-size: 1.02rem;
+            font-weight: 800;
+            color: #333;
+            text-align: left;
+            line-height: 1.35;
+        }
+        .price-item .label-sub {
+            font-size: 0.82rem;
+            color: #555;
+            font-weight: 700;
+            margin-top: 4px;
+            display: block;
+        }
+        .price-item .label .note { font-size: 0.82rem; color: #C21632; display: block; font-weight: 800; margin-top: 2px; }
+        .price-normal-note { font-size: 0.8rem; font-weight: 800; color: #a8b2c4; text-decoration: line-through; display: block; margin-bottom: 4px; text-align: center; }
+        .price-item .label-usual-ref {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #888;
+            margin-top: 4px;
+            display: block;
+            line-height: 1.35;
+        }
+        .price-item .label-usual-ref .price-usual-strike {
+            text-decoration: line-through;
+            color: #aaa;
+            font-weight: 800;
+        }
+        .price-item--initial .price-value {
+            color: #555 !important;
+            font-size: 1.45rem !important;
+        }
+        .price-item--half-year {
+            display: block;
+            grid-template-columns: none;
+            min-height: 0;
+            padding: 0;
+            border-bottom: none;
+            margin: 0.35rem 0 0.85rem;
+        }
+        .half-year-block {
+            position: relative;
+            padding: 1rem 1rem 1.1rem;
+            border-radius: 14px;
+            background:
+                linear-gradient(145deg, rgba(255, 196, 87, 0.14) 0%, rgba(255, 255, 255, 0.98) 38%, rgba(194, 22, 50, 0.05) 100%);
+            border: 2.5px solid var(--brand-red);
+            box-shadow:
+                0 5px 0 rgba(26, 26, 26, 0.08),
+                0 10px 28px rgba(194, 22, 50, 0.12);
+        }
+        .half-year-head {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            margin-bottom: 0.85rem;
+            padding-bottom: 0.7rem;
+            border-bottom: 1px dashed rgba(194, 22, 50, 0.2);
+        }
+        .half-year-head .number-circle {
+            flex-shrink: 0;
+        }
+        .half-year-catch {
+            margin: 0;
+            font-size: clamp(1.05rem, 4.2vw, 1.28rem);
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            color: var(--brand-red);
+            line-height: 1.35;
+        }
+        .half-year-catch em {
+            font-style: normal;
+            display: inline-block;
+            margin-left: 0.08em;
+            padding: 0.12em 0.55em;
+            background: var(--gold-gradient);
+            color: #1a1a1a;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.35);
+            transform: rotate(-2deg);
+        }
+        .half-year-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.55rem;
+        }
+        .half-year-months-col {
+            width: 100%;
+        }
+        .half-year-months {
+            margin: 0;
+            font-size: clamp(0.8rem, 3.1vw, 0.95rem);
+            font-weight: 900;
+            line-height: 1.5;
+            letter-spacing: 0.02em;
+            color: #333;
+            word-break: keep-all;
+        }
+        .half-year-months-col .label-usual-ref {
+            margin-top: 0.35rem;
+            font-size: 0.72rem;
+            text-align: center;
+        }
+        .half-year-price-col {
+            width: 100%;
+            text-align: center;
+            line-height: 1.1;
+            padding: 0.15rem 0 0.1rem;
+        }
+        .half-year-price-row {
+            display: inline-flex;
+            align-items: baseline;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.1rem 0.2rem;
+        }
+        .half-year-price {
+            display: inline;
+            font-size: clamp(2.1rem, 10vw, 2.85rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: var(--brand-red);
+            text-shadow:
+                1px 0 0 #fff, -1px 0 0 #fff,
+                0 1px 0 #fff, 0 -1px 0 #fff,
+                0 3px 12px rgba(194, 22, 50, 0.15);
+        }
+        .half-year-unit {
+            display: inline;
+            font-size: clamp(0.82rem, 3.2vw, 0.95rem);
+            font-weight: 800;
+            color: var(--brand-red);
+            letter-spacing: 0.02em;
+        }
+        .price-item .divider-dot {
+            width: 1px;
+            height: 88px;
+            background-image: linear-gradient(to bottom, #ccc 60%, transparent 40%);
+            background-size: 1px 8px;
+            background-repeat: repeat-y;
+            justify-self: center;
+            align-self: center;
+        }
+        .price-item .price-display-center .price-value {
+            font-size: 1.65rem !important;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+        }
+        .price-item .price-display-center .price-value.zero-yen {
+            font-size: 1.65rem !important;
+        }
+        .price-item .price-display-center .unit {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+        .price-item .price-display-center .price-sub-note {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #555;
+            display: block;
+            margin-top: 5px;
+        }
+        .price-item .price-display-center .price-tag {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--brand);
+            background: #fff0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-top: 4px;
+        }
+        .price-item .price-display-center .price-normal-note {
+            font-size: 0.82rem;
+        }
+        .price-item .price-display-center {
+            width: 100%;
+            max-width: 260px;
+            justify-self: center;
+            min-height: 88px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        @media (max-width: 520px) {
+            .price-item {
+                grid-template-columns: 1fr;
+                row-gap: 0.5rem;
+                min-height: 0;
+            }
+            .price-item .divider-dot { display: none; }
+            .price-item .label-group { order: 1; width: 100%; max-width: 280px; }
+            .price-item .price-display-center { order: 2; min-height: 0; max-width: 100%; }
+        }
+        .price-item .label .note .period-inline {
+            display: block;
+            margin-top: 0.15rem;
+            font-size: 0.64rem;
+            font-weight: 700;
+            color: #666;
+            letter-spacing: 0.01em;
+        }
+        .price-item-monthly .divider-dot {
+            display: none;
+        }
+        .monthly-fee-breakdown {
+            align-items: stretch !important;
+            text-align: left !important;
+            justify-content: center !important;
+            gap: 0.7rem;
+            padding: 0.35rem 0;
+        }
+        .fee-row {
+            display: grid;
+            grid-template-columns: minmax(125px, 1fr) 1.25fr;
+            align-items: center;
+            gap: 10px 14px;
+            padding: 0.55rem 0;
+        }
+        .fee-row + .fee-row {
+            border-top: 1px dashed #d7d7d7;
+            margin-top: 0.2rem;
+            padding-top: 0.55rem;
+        }
+        .fee-label {
+            font-size: 0.97rem;
+            font-weight: 900;
+            color: #2d2d2d;
+            letter-spacing: 0.01em;
+            line-height: 1.25;
+        }
+        .fee-value {
+            text-align: right;
+            min-width: 230px;
+        }
+        .fee-normal {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #a8b2c4;
+            text-decoration: line-through;
+            display: block;
+            line-height: 1.1;
+            margin-bottom: 0.1rem;
+        }
+        .fee-highlight {
+            color: var(--brand);
+            line-height: 1;
+            white-space: nowrap;
+            text-shadow:
+                1px 0 0 #fff, -1px 0 0 #fff,
+                0 1px 0 #fff, 0 -1px 0 #fff,
+                0 2px 6px rgba(194, 22, 50, 0.1);
+        }
+        .fee-highlight.zero-emphasis {
+            font-size: 2.4rem !important;
+        }
+        .fee-highlight.campaign-emphasis {
+            font-size: 2.5rem !important;
+        }
+        @media (max-width: 520px) {
+            .fee-row {
+                grid-template-columns: 1fr;
+                gap: 0.25rem;
+            }
+            .fee-value {
+                text-align: left;
+                padding-left: 0.05rem;
+                min-width: 0;
+            }
+        }
+        
+        /* 料金表以外で .price-display-center を使う場合の既定 */
+        .price-display-center { text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .mid-list-total-block {
+            padding: 1.75rem 1.25rem;
+            text-align: center;
+            background: var(--brand-red);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: var(--radius-md);
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 16px rgba(194, 22, 50, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+        .mid-list-total-block .label {
+            font-size: 1.12rem;
+            font-weight: 900;
+            margin-bottom: 0.65rem;
+            color: #fff;
+            letter-spacing: 0.06em;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        .mid-list-total-block .label i {
+            font-size: 1.25rem;
+            vertical-align: -0.12em;
+            margin-right: 2px;
+        }
+        .mid-list-total-block .total-price-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.15rem 0.35rem;
+        }
+        .mid-list-total-block .price-large,
+        .mid-list-total-block .text-value-accent,
+        .mid-list-total-block .featured-price {
+            font-size: 2.9rem !important;
+            font-weight: 900;
+            color: #fff !important;
+            line-height: 1;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.22);
+        }
+        .mid-list-total-block .unit-large {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        .mid-list-total-block .join-date {
+            color: #fff !important;
+            font-weight: 900;
+        }
+        .mid-list-total-block .total-prorate-note {
+            margin: 0.55rem 0 0;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.88);
+            letter-spacing: 0.02em;
+            line-height: 1.45;
+        }
+        .monthly-fee {
+            padding: 1.5rem 1.25rem;
+            text-align: center;
+            background: linear-gradient(180deg, #fafafa 0%, #fff5f6 100%);
+            border-top: 2px solid rgba(194, 22, 50, 0.12);
+        }
+        .monthly-fee-label {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--brand);
+            margin-bottom: 0.55rem;
+            letter-spacing: 0.04em;
+        }
+        .monthly-fee-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.25rem 0.5rem;
+        }
+        .monthly-fee .price-large {
+            font-size: 1.65rem;
+            font-weight: 900;
+            color: #333;
+        }
+        .monthly-fee .unit-large {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+        .monthly-fee-plus {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--brand);
+            margin: 0 0.15rem;
+        }
+        .monthly-fee-option {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: #444;
+        }
+        
+        .condition-list-content { padding: 8px 6px 4px; }
+        .condition-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; text-align: left; font-size: 0.8rem; font-weight: 700; }
+        
+        /* 追加特典まわりの注釈（STEP・ボーナスで統一） */
+        .lp-note-pill {
+            display: inline-block;
+            margin-top: 8px;
+            max-width: 100%;
+            padding: 0.25rem 0.1rem;
+            font-size: 0.74rem;
+            font-weight: 700;
+            line-height: 1.45;
+            letter-spacing: 0.01em;
+            color: #666;
+            text-align: center;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        /* 黒枠カード（STEP・注意事項・オプション・アクセスで共通） */
+        .lp-framed {
+            background: #fff;
+            border: 2px solid var(--lp-frame);
+            border-radius: 14px;
+            box-shadow: var(--lp-frame-shadow);
+            position: relative;
+        }
+        .lp-framed--hover {
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+        .lp-framed--hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0 var(--lp-frame), 0 14px 28px rgba(0, 0, 0, 0.1);
+        }
+        .lp-frame-badge,
+        .step-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            padding: 7px 18px;
+            border-radius: 999px;
+            border: 2px solid var(--lp-frame);
+            margin: 0;
+            white-space: nowrap;
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+            z-index: 2;
+        }
+        .lp-frame-badge--brand,
+        .step-badge.red {
+            background: var(--brand-red);
+            color: #fff;
+        }
+        .lp-frame-badge--gold,
+        .step-badge.gold {
+            background: var(--gold-gradient);
+            color: #3e2723;
+        }
+        .digital-step-card,
+        .condition-card {
+            padding: 26px 18px 22px;
+            text-align: left;
+            width: 95%;
+            margin: 0 auto 24px auto;
+        }
+        .condition-card {
+            margin-top: 28px;
+        }
+        .how-to-join-container {
+            margin-top: 4px;
+        }
+        .step-card-lead {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: var(--brand);
+            letter-spacing: 0.06em;
+            margin-bottom: 6px;
+        }
+        .step-main-content { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .step-info { flex: 1; }
+        .step-title { font-size: 0.95rem; font-weight: 900; margin-bottom: 4px; }
+        .step-action-btn { display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 900; padding: 10px 15px; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn-gold-flat { background: var(--gold-gradient); color: #3e2723; border: 1px solid #d4af37; }
+        .btn-red-flat { background: var(--brand-red); color: #fff; border: 1px solid var(--lp-frame); }
+
+        /* =======================================================
+           ■ オプションセクション (デザイン改善)
+           ======================================================= */
+        .options-unified-section {
+            width: 100%;
+            max-width: var(--container-max-width);
+            margin: 40px auto 48px;
+        }
+        .options-unified-inner {
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .options-carousel-section {
+            padding: 24px 0 20px;
+        }
+        .options-carousel-section + .options-carousel-section {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        .options-carousel-section .text-box {
+            margin: 0 auto 1.35rem auto;
+            max-width: 92%;
+            text-align: center;
+            background: var(--brand-red);
+            border: 2px solid var(--lp-frame);
+            border-radius: 12px;
+            padding: 20px 16px;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+            color: #fff;
+        }
+        .options-carousel-section .section-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            color: #fff;
+        }
+        .options-carousel-section .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 3px;
+            background: var(--gold-gradient);
+            border-radius: 2px;
+        }
+        .options-carousel-section .section-title .highlight {
+            color: var(--gold-light);
+            font-size: 2.5rem;
+            margin-right: 4px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+        }
+        .options-carousel-section .text-box p {
+            font-size: 0.85rem;
+            line-height: 1.65;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+        }
+        .options-carousel-section .text-box .highlight-text {
+            color: #fff;
+            font-size: 1.15rem;
+            font-weight: 900;
+        }
+        .options-carousel-section .text-box .text-box-note {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.88);
+            display: inline-block;
+            margin-top: 8px;
+            font-weight: 700;
+        }
+        .options-notice-block {
+            padding: 28px 20px 32px;
+            border-top: none;
+            background: #fff;
+            text-align: center;
+        }
+        .options-notice-block .notice-title-v22 {
+            margin-bottom: 20px;
+        }
+        .options-notice-block .notice-body {
+            font-size: 0.85rem;
+            line-height: 1.8;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .scene { width: 100%; height: 450px; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+        .card-carousel { width: 280px; height: 340px; position: relative; cursor: grab; }
+        .option-card-3d { position: absolute; width: 280px; height: 340px; border-radius: 20px; background-color: #fff; border: 4px solid var(--brand-red); display: flex; flex-direction: column; padding: 1.5rem 1rem; left: 50%; top: 0; transform: translateX(-50%); transition: 0.5s; }
+        .card-icon { max-width: 140px; max-height: 140px; margin: auto; }
+        .card-title { font-size: 1.1rem; font-weight: 900; color: #333; }
+        .card-price { font-size: 1.4rem; font-weight: 700; color: var(--brand); }
+        .card-badge { position: absolute; top: 1rem; left: 1rem; padding: 0.4rem 0.8rem; font-weight: 900; font-size: 0.75rem; border-radius: 6px; }
+        .card-badge.free { background: var(--brand); color: #fff; }
+        .card-badge.paid { background: var(--brand); color: #fff; }
+        
+        .carousel-nav { display: flex; justify-content: center; gap: 1.5rem; margin-top: 20px; }
+        .carousel-nav button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--brand-red);
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 4px 14px rgba(194, 22, 50, 0.35);
+            color: #fff;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .carousel-nav button:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 18px rgba(194, 22, 50, 0.45);
+            filter: brightness(1.05);
+        }
+        .carousel-nav button:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+
+        a:focus-visible,
+        .step-action-btn:focus-visible,
+        .banner-btn:focus-visible,
+        .cta-button-video:focus-visible,
+        #banner-toggle-btn:focus-visible {
+            outline: 3px solid var(--brand);
+            outline-offset: 3px;
+        }
+
+        .notice-container-v22 { background: #fff; border: 4px solid var(--brand); border-radius: var(--radius-lg); padding: 35px 20px; margin: 60px auto 0; width: 95%; text-align: center; } /* legacy – 統合後は .options-notice-block を使用 */
+        .notice-title-v22 { font-size: 1.75rem; font-weight: 900; color: var(--brand); margin-bottom: 25px; display: flex; align-items: center; justify-content: center; }
+        .notice-title-v22::before, .notice-title-v22::after { content: ''; flex: 1; height: 2px; background: var(--brand); opacity: 0.3; margin: 0 15px; }
+        .notice-warning-v22 { display: block; font-size: 0.8rem; font-weight: 900; color: #fff; background: var(--brand-red); padding: 15px; border-radius: 8px; margin-top: 20px; }
+        .cta-button-video { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(45deg, #ffea00, #ffd600); color: #333; font-weight: 900; padding: 12px 25px; border-radius: 50px; text-decoration: none; margin-top: 25px; transition: 0.3s; font-size: 0.9rem; }
+
+        .bonus-section-red { display: block; text-decoration: none; background: #fff; border: 4px solid var(--brand); border-radius: var(--radius-lg); padding: 35px 20px; margin: 40px auto 0; width: 95%; text-align: center; transition: 0.3s; }
+        .bonus-section-red:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.12); }
+        .bonus-btn-large { display: inline-flex; justify-content: center; width: 85%; background: var(--gold-gradient); color: #3e2723; font-size: 1.15rem; font-weight: 900; padding: 16px; border-radius: 50px; border: 2px solid #fff; }
+
+        .access-section-wrap {
+            width: 100%;
+            max-width: var(--container-max-width);
+            margin: 44px auto 40px;
+        }
+        .access-section {
+            margin: 0;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .access-section header img {
+            display: block;
+            width: 100%;
+        }
+        .access-map-cta {
+            padding: 25px;
+            border-top: 1px solid #eee;
+            background: #fafafa;
+            text-align: center;
+        }
+        .access-map-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--brand-red);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 900;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            border: 2px solid var(--lp-frame);
+            box-shadow: 0 4px 0 var(--lp-frame);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .access-map-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 var(--lp-frame);
+        }
+        .map-embed-container iframe { width: 100%; height: 350px; border: 0; }
+        .facilities-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 10px; padding: 25px; border-top: 1px solid #eee; text-align: center; }
+        /* 施設アイコン: 軽くトーンを寄せて一覧の一体感を出す（元画像はそのまま） */
+        .facilities-grid img {
+            width: 45px;
+            margin: 0 auto 10px;
+            border-radius: 6px;
+            object-fit: cover;
+            filter: saturate(0.94) contrast(1.04) brightness(1.02);
+        }
+        @media (max-width: 640px) { .facilities-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .fixed-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            display: flex;
+            gap: 12px;
+            padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+            max-width: 100%;
+            margin: 0 auto;
+            background: linear-gradient(180deg, rgba(255, 253, 248, 0.96) 0%, rgba(255, 255, 255, 0.9) 55%, rgba(255, 250, 240, 0.94) 100%);
+            backdrop-filter: blur(16px) saturate(1.15);
+            -webkit-backdrop-filter: blur(16px) saturate(1.15);
+            border-top: 1px solid rgba(212, 175, 55, 0.55);
+            box-shadow: 0 -10px 36px rgba(26, 26, 46, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .fixed-banner .banner-btn {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 12px;
+            font-weight: 900;
+            font-size: 0.88rem;
+            letter-spacing: 0.03em;
+            border-radius: 9999px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.2s ease;
+        }
+        .fixed-banner .banner-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+            filter: brightness(1.04);
+        }
+        .fixed-banner .banner-btn i { font-size: 1.15rem; flex-shrink: 0; }
+        /* 見学：ゴールド系で「特別感」／APP：ブランド赤の深みグラデ */
+        .fixed-banner .trial {
+            background: linear-gradient(155deg, #fdf6d5 0%, #e8c547 38%, #c9a227 72%, #8a6b1a 100%);
+            color: #1a1100;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+            border-color: rgba(255, 255, 255, 0.65);
+        }
+        .fixed-banner .app {
+            background: var(--brand-red);
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.22);
+        }
+        body.banner-hidden .fixed-banner { transform: translateY(100%); }
+        body.top-banner-hidden .gold-metallic-banner { transform: translateY(-100%); }
+        #banner-toggle-container {
+            position: fixed;
+            bottom: 96px;
+            right: 15px;
+            z-index: 10000;
+            transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body.banner-hidden #banner-toggle-container { bottom: 16px; }
+        #banner-toggle-btn { width: 45px; height: 45px; background: #1a1a1a; color: #fff; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid #fff; }
+
+        /* =======================================================
+           ■ トップ固定バナー（既定カラー：赤・ゴールド・白）
+           ======================================================= */
+        .gold-metallic-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            background: var(--brand-red);
+            color: #fff;
+            padding: 10px 14px;
+            box-shadow: 0 3px 16px rgba(194, 22, 50, 0.35);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hero-first-view {
+            padding-top: 7.25rem;
+            transition: padding-top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body.top-banner-hidden .hero-first-view {
+            padding-top: 1.25rem;
+        }
+
+        /* =======================================================
+           ■ オープニング v4（月次シーケンス・JS演出）
+           ======================================================= */
+        html.lp-opening-lock,
+        html.lp-opening-lock body {
+            overflow: hidden !important;
+            height: 100%;
+            overscroll-behavior: none;
+        }
+        html.lp-opening-seen #lp-opening-scroll { display: none !important; }
+        body.lp-opening-active { overflow-x: hidden; }
+        body.lp-opening-active .fixed-banner,
+        body.lp-opening-active #banner-toggle-container,
+        body.lp-opening-active .lp-wrapper {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        body.lp-opening-reveal .fixed-banner,
+        body.lp-opening-reveal #banner-toggle-container {
+            opacity: 1;
+            pointer-events: auto;
+            transition: opacity 0.45s ease 0.28s;
+        }
+        body.lp-opening-reveal .lp-wrapper {
+            opacity: 1;
+            pointer-events: auto;
+            animation: lpORevealSoft 0.62s cubic-bezier(0.25, 0.1, 0.25, 1) 0.12s both;
+        }
+        @keyframes lpORevealSoft {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .lp-opening-exit-play .lp-o-intro-box.is-visible {
+            animation: lpOExitSoft 0.42s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+        }
+        .lp-opening-exit-play .lp-opening {
+            animation: lpOExitFade 0.52s ease 0.22s forwards;
+        }
+        @keyframes lpOExitSoft {
+            to { opacity: 0; transform: translateY(-14px) scale(0.98); }
+        }
+        @keyframes lpOExitFade {
+            to { opacity: 0; }
+        }
+        .lp-opening-scroll {
+            position: fixed;
+            inset: 0;
+            z-index: 100001;
+            height: 100vh;
+            height: 100dvh;
+            touch-action: none;
+        }
+        .lp-opening {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: max(24px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+            background:
+                radial-gradient(ellipse 100% 72% at 50% -12%, rgba(255, 210, 100, 0.24), transparent 58%),
+                radial-gradient(ellipse 80% 50% at 100% 100%, rgba(126, 200, 227, 0.06), transparent 55%),
+                var(--brand-red);
+            color: #fff;
+            overflow: hidden;
+            will-change: opacity;
+            font-family: 'Noto Sans JP', sans-serif !important;
+        }
+        .lp-opening-gym-lines,
+        .lp-opening-pulse-line { display: none !important; }
+        .lp-opening-badge {
+            display: none !important;
+        }
+        .lp-opening-curtain {
+            position: absolute;
+            inset: 0;
+            z-index: 30;
+            background:
+                radial-gradient(ellipse 100% 72% at 50% -12%, rgba(255, 210, 100, 0.24), transparent 58%),
+                var(--brand-red);
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        .lp-opening-curtain::after { display: none; }
+        .lp-opening-scroll-hint {
+            position: absolute;
+            bottom: max(36px, calc(env(safe-area-inset-bottom) + 20px));
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 31;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            width: max-content;
+            max-width: 90vw;
+            pointer-events: none;
+            transition: opacity 0.45s ease;
+        }
+        .lp-opening-scroll-track {
+            position: relative;
+            width: 2px;
+            height: 56px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.22);
+            overflow: hidden;
+        }
+        .lp-opening-scroll-track::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, #fff 40%, transparent);
+            animation: openingScrollTrack 1.8s ease-in-out infinite;
+        }
+        @keyframes openingScrollTrack {
+            0% { top: -100%; opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0.3; }
+        }
+        .lp-opening-scroll-hint-text {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: clamp(0.95rem, 3.2vw, 1.15rem);
+            font-weight: 800;
+            letter-spacing: 0.28em;
+            text-indent: 0.28em;
+            color: #fff;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+            white-space: nowrap;
+        }
+        .lp-o-hint-desktop { display: none; }
+        @media (min-width: 768px) {
+            .lp-o-hint-mobile { display: none; }
+            .lp-o-hint-desktop { display: block; }
+        }
+        .lp-opening-scroll-hint i {
+            font-size: clamp(1.75rem, 5vw, 2.25rem);
+            color: #fff;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+            animation: openingHintBounce 1.5s ease-in-out infinite;
+        }
+        @keyframes openingHintBounce {
+            0%, 100% { transform: translateY(0); opacity: 0.8; }
+            50% { transform: translateY(14px); opacity: 1; }
+        }
+        .lp-opening-bg {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: transparent;
+        }
+        .lp-opening-grain {
+            position: absolute;
+            inset: 0;
+            opacity: 0.06;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+        }
+        .lp-opening-vignette {
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.7);
+        }
+        .lp-opening-meta { display: none; }
+        .lp-opening-skip {
+            position: absolute;
+            top: max(12px, env(safe-area-inset-top));
+            right: max(12px, 3vw);
+            z-index: 35;
+            padding: 8px 14px;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: rgba(255, 255, 255, 0.85);
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+        }
+        .lp-opening-stage {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(1.5rem, 5vw, 3rem);
+            font-family: 'Noto Sans JP', sans-serif !important;
+            --lp-o-intro: clamp(1.55rem, 5.5vw, 2.15rem);
+            --lp-o-header-main: clamp(1.75rem, 6.2vw, 2.5rem);
+            --lp-o-row-month: clamp(1.35rem, 5vw, 1.75rem);
+            --lp-o-row-price: clamp(1.55rem, 5.8vw, 2.1rem);
+            --lp-o-deal-head: clamp(1rem, 3.4vw, 1.28rem);
+            --lp-o-panel-w: min(100%, 540px);
+            --lp-o-panel-h: min(72vh, 480px);
+        }
+        .lp-o-panel {
+            width: var(--lp-o-panel-w);
+            min-height: var(--lp-o-panel-h);
+            height: var(--lp-o-panel-h);
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 10px 36px rgba(0, 0, 0, 0.15);
+            color: var(--brand-red);
+            overflow: hidden;
+        }
+        .lp-o-card-frame {
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.42);
+            border-radius: 14px;
+            box-shadow:
+                0 5px 0 rgba(0, 0, 0, 0.32),
+                inset 0 1px 0 rgba(255, 255, 255, 0.14);
+            background: rgba(0, 0, 0, 0.18);
+        }
+        .lp-opening-frame,
+        .lp-opening-corner { display: none !important; }
+        .lp-opening-progress {
+            position: absolute;
+            bottom: max(12px, env(safe-area-inset-bottom));
+            left: max(16px, 3vw);
+            right: max(16px, 3vw);
+            z-index: 4;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.12);
+            overflow: hidden;
+            border-radius: 2px;
+        }
+        .lp-opening-progress span {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.4), #fff);
+            transition: width 0.12s ease-out;
+        }
+        .lp-opening-phase {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(1.5rem, 5vw, 3rem);
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.45s ease;
+        }
+        .lp-opening-phase.is-active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .lp-o-card-frame--white {
+            background: #fff;
+            border-color: rgba(194, 22, 50, 0.22);
+            box-shadow:
+                0 5px 0 rgba(0, 0, 0, 0.1),
+                0 10px 28px rgba(0, 0, 0, 0.14);
+            color: var(--brand-red);
+        }
+        .lp-opening-phase--intro,
+        .lp-opening-phase--months,
+        .lp-opening-phase--urgency {
+            justify-content: center;
+            padding: max(10px, env(safe-area-inset-top)) 14px max(10px, env(safe-area-inset-bottom));
+        }
+        .lp-opening-phase--months {
+            gap: 0;
+            --lp-o-row-month: clamp(1.65rem, 6.2vw, 2.2rem);
+            --lp-o-row-price: clamp(2.05rem, 8vw, 3rem);
+        }
+        .lp-o-intro-box {
+            padding: clamp(1.5rem, 5vh, 2rem) clamp(1.25rem, 4.5vw, 1.85rem);
+            justify-content: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+        .lp-o-intro-box.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .lp-o-intro-box .lp-o-lead,
+        .lp-o-intro-box .lp-o-caption {
+            font-size: var(--lp-o-intro);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-indent: 0.1em;
+            line-height: 1.45;
+            opacity: 1;
+            transform: none;
+        }
+        .lp-o-start-badge {
+            display: none;
+            margin: 0 0 0.55rem;
+            padding: 0.35em 0.85em;
+            font-size: clamp(0.78rem, 2.8vw, 0.92rem);
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            color: #1a1a1a;
+            background: var(--gold-gradient);
+            border-radius: 999px;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.35);
+        }
+        .lp-o-start-badge.is-visible {
+            display: inline-block;
+        }
+        .lp-o-header-tag {
+            display: block;
+            margin: 0 0 0.65rem;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: clamp(0.88rem, 3.2vw, 1.05rem);
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            text-indent: 0.18em;
+            color: rgba(194, 22, 50, 0.65);
+        }
+        .lp-o-label {
+            margin: 0;
+            font-size: clamp(2rem, 7.2vw, 2.85rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-indent: 0.1em;
+            line-height: 1.3;
+            color: var(--brand-red);
+        }
+        .lp-o-summer-mark {
+            display: flex;
+            justify-content: center;
+            margin: 0 0 0.4rem;
+            font-size: clamp(1.15rem, 4.2vw, 1.5rem);
+            color: #FFC857;
+            opacity: 0.9;
+            filter: drop-shadow(0 2px 8px rgba(255, 180, 60, 0.28));
+        }
+        .lp-o-label-summer {
+            background: linear-gradient(135deg, #c9920a 0%, #ff9f1a 42%, #F8E71C 68%, #e8a820 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .lp-o-intro-box .lp-o-lead {
+            margin: 0.85rem 0 0;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(194, 22, 50, 0.12);
+            font-size: clamp(1.45rem, 5.4vw, 2rem);
+            letter-spacing: 0.06em;
+            text-indent: 0.06em;
+            color: var(--brand-red);
+        }
+        .lp-o-intro-box.lp-o-panel {
+            height: auto;
+            min-height: auto;
+            max-height: min(86vh, 520px);
+            padding: clamp(1.15rem, 3.5vh, 1.65rem) clamp(1.1rem, 4vw, 1.45rem);
+            justify-content: flex-start;
+            overflow-y: auto;
+        }
+        .lp-o-intro-box .lp-o-countdown {
+            margin: 0.75rem 0 0.85rem;
+            width: 100%;
+        }
+        .lp-o-intro-box .lp-o-intro-remaining {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: clamp(0.15rem, 1vw, 0.35rem);
+            margin: 0;
+            line-height: 1;
+        }
+        .lp-o-intro-box .lp-o-intro-remaining-label {
+            font-size: clamp(1.05rem, 3.8vw, 1.35rem);
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            color: var(--brand-red);
+        }
+        .lp-o-intro-box .lp-o-intro-remaining-num {
+            font-size: clamp(2.5rem, 10vw, 3.75rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: var(--brand-red);
+            min-width: 1.1em;
+            text-align: center;
+        }
+        .lp-o-intro-box .lp-o-intro-remaining-unit {
+            font-size: clamp(1.05rem, 3.8vw, 1.35rem);
+            font-weight: 900;
+            color: var(--brand-red);
+        }
+        .lp-o-intro-box .lp-o-intro-note {
+            margin: 0.65rem 0 0;
+            font-size: clamp(0.68rem, 2.4vw, 0.78rem);
+            font-weight: 700;
+            line-height: 1.55;
+            letter-spacing: 0.04em;
+            color: #666;
+        }
+        .lp-o-deal-sheet {
+            flex: 0 0 auto;
+            justify-content: flex-start;
+        }
+        .lp-o-deal-top {
+            flex-shrink: 0;
+            padding: clamp(14px, 2.4vh, 20px) clamp(16px, 4vw, 22px) clamp(10px, 1.6vh, 14px);
+            text-align: center;
+            background: linear-gradient(180deg, rgba(255, 196, 87, 0.08) 0%, rgba(194, 22, 50, 0.06) 45%, rgba(194, 22, 50, 0.01) 100%);
+            border-bottom: 1px solid rgba(194, 22, 50, 0.07);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .lp-o-deal-top.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .lp-o-months-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(5px, 1.1vw, 8px);
+            width: min(100%, 300px);
+            margin: 0 auto clamp(12px, 2vh, 16px);
+        }
+        .lp-o-month-chip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: clamp(30px, 5.5vh, 38px);
+            padding: 0 4px;
+            font-size: clamp(0.82rem, 3.1vw, 0.98rem);
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            line-height: 1.2;
+            color: var(--brand-red);
+            background: #fff;
+            border: 1.5px solid rgba(194, 22, 50, 0.14);
+            border-radius: 8px;
+            box-shadow: 0 1px 0 rgba(194, 22, 50, 0.06);
+            opacity: 0;
+            transform: translateY(6px) scale(0.94);
+            transition: opacity 0.38s ease, transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+        }
+        .lp-o-deal-top.is-visible .lp-o-month-chip {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .lp-o-deal-top.is-visible .lp-o-month-chip:nth-child(1) { transition-delay: 0.03s; }
+        .lp-o-deal-top.is-visible .lp-o-month-chip:nth-child(2) { transition-delay: 0.06s; }
+        .lp-o-deal-top.is-visible .lp-o-month-chip:nth-child(3) { transition-delay: 0.09s; }
+        .lp-o-deal-top.is-visible .lp-o-month-chip:nth-child(4) { transition-delay: 0.12s; }
+        .lp-o-deal-top.is-visible .lp-o-month-chip:nth-child(5) { transition-delay: 0.15s; }
+        .lp-o-deal-top.is-visible .lp-o-month-chip:nth-child(6) { transition-delay: 0.18s; }
+        .lp-o-deal-head {
+            flex-shrink: 0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            line-height: 1.3;
+            font-size: clamp(1.12rem, 4.4vw, 1.42rem);
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            color: var(--brand-red);
+            background: none;
+            border-bottom: none;
+        }
+        .lp-o-deal-head .lp-o-deal-o {
+            font-style: normal;
+            display: inline-block;
+            margin-left: 0.06em;
+            padding: 0.08em 0.38em 0.1em;
+            font-size: 1em;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            line-height: 1;
+            color: #1a1a1a;
+            background: var(--gold-gradient);
+            border-radius: 4px;
+            box-shadow: 0 1px 6px rgba(212, 175, 55, 0.25);
+            vertical-align: baseline;
+        }
+        .lp-o-price-once {
+            position: relative;
+            z-index: 1;
+            flex: 1 1 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(6px, 1.5vh, 14px) clamp(18px, 4vw, 24px);
+            min-height: 0;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .lp-o-price-once.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .lp-o-price-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(0.3rem, 1.1vh, 0.55rem);
+            width: 100%;
+        }
+        .lp-o-price-tier {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.15rem;
+        }
+        .lp-o-price-tier--usual .lp-o-row-usual-wrap {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 1px;
+        }
+        .lp-o-price-tier--usual .lp-o-row-usual-num {
+            position: relative;
+            display: inline-block;
+            line-height: 1;
+        }
+        .lp-o-price-tier--usual .lp-o-row-usual-wrap.is-struck .lp-o-row-usual,
+        .lp-o-price-tier--usual .lp-o-row-usual-wrap.is-struck .lp-o-row-yen {
+            color: rgba(26, 26, 26, 0.28);
+        }
+        .lp-o-price-tier--usual .lp-o-row-strike {
+            position: absolute;
+            left: -2%;
+            right: -2%;
+            top: 46%;
+            height: 3px;
+            background: #1a1a1a;
+            opacity: 0;
+            transform: rotate(-8deg);
+            pointer-events: none;
+        }
+        .lp-o-price-tier--usual .lp-o-row-strike.is-on {
+            opacity: 1;
+        }
+        .lp-o-price-tier--usual .lp-o-row-usual {
+            font-size: clamp(1.35rem, 5.8vw, 1.85rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            color: #1a1a1a;
+            transition: color 0.3s ease;
+        }
+        .lp-o-price-tier--usual .lp-o-row-yen {
+            font-size: 0.42em;
+            font-weight: 900;
+            color: #1a1a1a;
+            transition: color 0.3s ease;
+        }
+        .lp-o-price-tier--deal .lp-o-row-deal {
+            font-size: clamp(2.35rem, 11vw, 3.35rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            color: var(--brand-red);
+        }
+        .lp-o-price-tier--deal .lp-o-row-yen {
+            font-size: 0.36em;
+            font-weight: 900;
+            color: var(--brand-red);
+        }
+        .lp-o-price-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: clamp(14px, 2vh, 20px);
+            margin: clamp(0.1rem, 0.4vh, 0.25rem) 0;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: opacity 0.34s ease, transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .lp-o-price-arrow.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .lp-o-price-arrow-icon {
+            position: relative;
+            width: 14px;
+            height: 12px;
+        }
+        .lp-o-price-arrow-icon::before,
+        .lp-o-price-arrow-icon::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            margin-left: -4px;
+            border-bottom: 2.5px solid var(--brand-red);
+            border-right: 2.5px solid var(--brand-red);
+            transform: rotate(45deg);
+        }
+        .lp-o-price-arrow-icon::before {
+            top: -1px;
+            opacity: 0.45;
+        }
+        .lp-o-price-arrow-icon::after {
+            top: 5px;
+        }
+        .lp-o-price-tier--deal .lp-o-row-deal-wrap {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 1px;
+            opacity: 0;
+            transform: translateY(8px) scale(0.96);
+            transition: opacity 0.42s ease, transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .lp-o-price-tier--deal .lp-o-row-deal-wrap.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .lp-o-deal-sheet .lp-o-row-month {
+            color: #1a1a1a;
+        }
+        .lp-o-deal-sheet .lp-o-row-usual,
+        .lp-o-deal-sheet .lp-o-row-yen {
+            color: #1a1a1a;
+        }
+        .lp-o-deal-sheet .lp-o-row-usual-wrap.is-struck .lp-o-row-usual,
+        .lp-o-deal-sheet .lp-o-row-usual-wrap.is-struck .lp-o-row-yen {
+            color: rgba(26, 26, 26, 0.28);
+        }
+        .lp-o-deal-sheet .lp-o-row-strike {
+            height: 3.5px;
+            background: #1a1a1a;
+            box-shadow: none;
+            opacity: 0;
+            transform: scaleX(1) rotate(-10deg);
+            transition: none;
+        }
+        .lp-o-deal-sheet .lp-o-row-strike.is-on {
+            opacity: 1;
+        }
+        .lp-o-deal-sheet .lp-o-row-deal {
+            color: var(--brand-red);
+            text-shadow: none;
+        }
+        .lp-o-deal-sheet .lp-o-row-deal-wrap.is-visible .lp-o-row-yen {
+            color: var(--brand-red);
+        }
+        .lp-o-deal-sheet .lp-o-month-row.is-current {
+            background: rgba(194, 22, 50, 0.04);
+        }
+        .lp-o-deal-sheet .lp-o-month-row.is-done {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        .lp-o-savings-footer {
+            flex-shrink: 0;
+            padding: clamp(0.65rem, 1.8vh, 0.85rem) clamp(0.85rem, 3.5vw, 1.1rem);
+            background: #111;
+            text-align: center;
+            border-top: none;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .lp-o-savings-footer.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .lp-o-savings-footer .lp-o-savings-label {
+            display: block;
+            margin: 0 0 0.3rem;
+            font-size: clamp(0.68rem, 2.4vw, 0.82rem);
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            text-indent: 0.2em;
+            color: rgba(255, 255, 255, 0.55);
+        }
+        .lp-o-savings-footer .lp-o-savings-main {
+            margin: 0;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.1rem 0.28rem;
+            line-height: 1;
+        }
+        .lp-o-savings-footer .lp-o-savings-num {
+            font-size: clamp(2rem, 9vw, 3rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: #fff;
+        }
+        .lp-o-savings-footer .lp-o-savings-yen {
+            font-size: clamp(0.9rem, 3.2vw, 1.15rem);
+            font-weight: 900;
+            color: #fff;
+        }
+        .lp-o-savings-footer .lp-o-savings-badge {
+            margin: 0 0 0 0.15rem;
+            padding: 0.08em 0.38em 0.1em;
+            font-size: var(--lp-o-deal-head);
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            color: #1a1a1a;
+            background: var(--gold-gradient);
+            border-radius: 4px;
+            box-shadow: 0 1px 6px rgba(212, 175, 55, 0.25);
+            transform: none;
+        }
+        .lp-o-deal-sheet .lp-o-row-deal-wrap.is-visible .lp-o-row-deal {
+            animation: lpODealPop 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes lpODealPop {
+            0% { transform: scale(0.86); opacity: 0.4; }
+            55% { transform: scale(1.07); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .lp-o-month-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: clamp(3px, 0.65vh, 7px);
+        }
+        .lp-o-month-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: clamp(0.35rem, 2vw, 0.65rem);
+            padding: clamp(5px, 0.85vh, 9px) 8px;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: background 0.35s ease, box-shadow 0.35s ease;
+        }
+        .lp-o-month-row.is-revealed {
+            max-height: 4.5em;
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            animation: lpORowReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .lp-o-month-row.is-hidden {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            transform: translateY(8px);
+            pointer-events: none;
+        }
+        @keyframes lpORowReveal {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .lp-o-row-month {
+            flex: 0 0 2.35em;
+            font-size: var(--lp-o-row-month);
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            text-align: left;
+            line-height: 1.15;
+        }
+        .lp-o-row-price-col {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: nowrap;
+            gap: clamp(0.3rem, 2.5vw, 0.55rem);
+            min-width: 0;
+        }
+        .lp-o-row-yen {
+            font-size: 0.38em;
+            font-weight: 900;
+            letter-spacing: 0;
+            white-space: nowrap;
+            line-height: 1;
+        }
+        .lp-o-row-usual-wrap {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 1px;
+            flex-shrink: 0;
+        }
+        .lp-o-row-usual-num {
+            position: relative;
+            display: inline-block;
+            line-height: 1;
+        }
+        .lp-o-row-usual {
+            font-size: var(--lp-o-row-price);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            color: rgba(255, 255, 255, 0.9);
+            transition: color 0.3s ease;
+        }
+        .lp-o-row-usual-wrap.is-struck .lp-o-row-usual {
+            color: rgba(255, 255, 255, 0.38);
+        }
+        .lp-o-row-strike {
+            position: absolute;
+            left: -2%;
+            right: -2%;
+            top: 46%;
+            height: 3.5px;
+            background: #1a1a1a;
+            opacity: 0;
+            transform: rotate(-10deg);
+            pointer-events: none;
+        }
+        .lp-o-row-strike.is-on {
+            opacity: 1;
+        }
+        .lp-o-row-shift {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 0;
+            opacity: 0;
+            overflow: hidden;
+            transform: translateX(-4px);
+            transition: width 0.34s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease, transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .lp-o-row-shift.is-visible {
+            width: clamp(22px, 6vw, 30px);
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .lp-o-row-shift-mark {
+            position: relative;
+            width: 16px;
+            height: 12px;
+            flex-shrink: 0;
+        }
+        .lp-o-row-shift-mark::before,
+        .lp-o-row-shift-mark::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 8px;
+            height: 8px;
+            margin-top: -4px;
+            border-top: 2.5px solid var(--brand-red);
+            border-right: 2.5px solid var(--brand-red);
+            transform: rotate(45deg);
+        }
+        .lp-o-row-shift-mark::before {
+            left: 0;
+        }
+        .lp-o-row-shift-mark::after {
+            left: 7px;
+            opacity: 0.45;
+        }
+        .lp-o-row-deal-wrap {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 1px;
+            flex-shrink: 0;
+            opacity: 0;
+            transform: translateX(6px);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .lp-o-row-deal-wrap.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .lp-o-row-deal {
+            font-size: var(--lp-o-row-price);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            color: #fff;
+            text-shadow: 0 0 24px rgba(212, 175, 55, 0.4);
+        }
+        .lp-o-savings-card {
+            margin: 0;
+            width: min(100%, 540px);
+            flex-shrink: 0;
+            padding: clamp(0.85rem, 2vh, 1.1rem) clamp(0.85rem, 3.5vw, 1.15rem);
+            text-align: center;
+            border-radius: 14px;
+            opacity: 0;
+            transform: translateY(14px) scale(0.97);
+            transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .lp-o-savings-card.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .lp-o-savings-card.lp-o-card-frame--white .lp-o-savings-label {
+            color: rgba(194, 22, 50, 0.65);
+        }
+        .lp-o-savings-label {
+            display: block;
+            margin: 0 0 0.5rem;
+            font-size: clamp(0.82rem, 2.8vw, 0.98rem);
+            font-weight: 800;
+            letter-spacing: 0.22em;
+            text-indent: 0.22em;
+            color: rgba(255, 255, 255, 0.72);
+        }
+        .lp-o-savings-price-block {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.15rem 0.35rem;
+            margin: 0 auto;
+            padding: clamp(0.55rem, 2vh, 0.75rem) clamp(1rem, 4vw, 1.35rem);
+            background: #fff;
+            color: var(--brand-red);
+            border-radius: 10px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
+            line-height: 1;
+        }
+        .lp-o-savings-main {
+            margin: 0;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.1rem 0.25rem;
+            line-height: 1;
+        }
+        .lp-o-savings-num {
+            font-size: clamp(2.35rem, 10.5vw, 3.5rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: var(--brand-red);
+            text-shadow: none;
+        }
+        .lp-o-savings-yen {
+            font-size: clamp(1rem, 3.8vw, 1.3rem);
+            font-weight: 900;
+            letter-spacing: 0.02em;
+            color: var(--brand-red);
+        }
+        .lp-o-savings-badge {
+            display: inline-block;
+            margin: 0 0 0 0.15rem;
+            padding: 0.28rem 0.75rem;
+            font-size: clamp(0.78rem, 2.8vw, 0.92rem);
+            font-weight: 900;
+            letter-spacing: 0.16em;
+            text-indent: 0.16em;
+            color: #1a1a1a;
+            background: var(--gold-gradient);
+            border-radius: 999px;
+            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4);
+            transform: rotate(-4deg);
+            vertical-align: middle;
+        }
+        .lp-o-urgency-box {
+            padding: clamp(1.25rem, 4vh, 1.75rem) clamp(1.15rem, 4vw, 1.5rem);
+            justify-content: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(16px) scale(0.96);
+            transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .lp-o-urgency-box.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .lp-o-urgency-head {
+            margin: 0 0 0.85rem;
+            font-size: clamp(0.98rem, 3.6vw, 1.18rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-indent: 0.1em;
+            color: var(--brand-red);
+        }
+        .lp-o-countdown {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: nowrap;
+            gap: clamp(0.1rem, 1vw, 0.3rem);
+            margin: 0 0 1.15rem;
+            padding: clamp(0.7rem, 2vh, 0.95rem) clamp(0.5rem, 2.5vw, 0.85rem);
+            background: #111;
+            border-radius: 10px;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+        .lp-o-countdown-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.15rem;
+            min-width: clamp(2.5rem, 11vw, 3.5rem);
+        }
+        .lp-o-countdown-num {
+            font-family: 'Barlow Condensed', 'Noto Sans JP', sans-serif;
+            font-size: clamp(1.75rem, 7.5vw, 2.65rem);
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.02em;
+            line-height: 1;
+            color: #fff;
+        }
+        .lp-o-countdown-label {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: clamp(0.58rem, 2.2vw, 0.7rem);
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .lp-o-countdown-sep {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(1.35rem, 5.5vw, 1.85rem);
+            font-weight: 700;
+            line-height: 1;
+            color: var(--brand-red);
+            margin: 0 0.02rem;
+            padding-bottom: 0.85rem;
+            animation: lpOCountdownBlink 1s step-end infinite;
+        }
+        @keyframes lpOCountdownBlink {
+            50% { opacity: 0.15; }
+        }
+        .lp-o-urgency-hero {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: clamp(0.15rem, 1vw, 0.35rem);
+            width: 100%;
+            margin: 0 0 1rem;
+            line-height: 1;
+        }
+        .lp-o-urgency-hero-label {
+            font-size: clamp(1.15rem, 4.2vw, 1.45rem);
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            color: var(--brand-red);
+        }
+        .lp-o-urgency-hero-num {
+            font-size: clamp(4.25rem, 20vw, 6rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: var(--brand-red);
+            min-width: 1.05em;
+            text-align: center;
+        }
+        .lp-o-urgency-hero-unit {
+            font-size: clamp(1.25rem, 4.8vw, 1.65rem);
+            font-weight: 900;
+            color: var(--brand-red);
+        }
+        .lp-o-urgency-disclaimer {
+            margin: 0;
+            padding-top: 0.85rem;
+            border-top: 1px solid rgba(194, 22, 50, 0.15);
+            font-size: clamp(0.82rem, 3vw, 0.95rem);
+            font-weight: 800;
+            line-height: 1.7;
+            letter-spacing: 0.04em;
+            color: #444;
+        }
+        .lp-o-urgency-disclaimer .dynamic-remaining-count {
+            font-weight: 900;
+            color: var(--brand-red);
+        }
+        @keyframes openingFrameIn {
+            from { opacity: 0; transform: scale(0.94); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes openingStackIn {
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes openingFinalePop {
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes openingOverlayExit {
+            to { opacity: 0; visibility: hidden; pointer-events: none; }
+        }
+        @media (min-width: 768px) {
+            .hero-first-view { padding-top: 6.5rem; }
+            body.top-banner-hidden .hero-first-view { padding-top: 1rem; }
+        }
+        .gold-metallic-banner .banner-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            max-width: 520px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+        .banner-period-dates {
+            font-size: 0.8rem;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            line-height: 1.2;
+            margin: 0;
+        }
+        .banner-capacity-pill {
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            white-space: nowrap;
+        }
+        .banner-vdivider {
+            width: 1px;
+            height: 32px;
+            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+            flex-shrink: 0;
+        }
+        .banner-remaining-block {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            color: var(--color-text);
+            padding: 5px 12px 5px 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            min-width: 88px;
+        }
+        .banner-remaining-block .remaining-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.05;
+            font-size: 0.58rem;
+            font-weight: 800;
+            color: #666;
+            letter-spacing: 0.08em;
+        }
+        .banner-remaining-block .highlight-num {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--brand);
+            line-height: 1;
+            min-width: 1.2em;
+            text-align: center;
+        }
+        .banner-remaining-block .remaining-unit {
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: var(--brand);
+            align-self: flex-end;
+            padding-bottom: 2px;
+        }
+
+        .hero-price-card {
+            overflow: visible;
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
+        /* ヒーロー：3枚の独立カード（外枠＋影で立体感） */
+        .hero-deal-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+        }
+        .hero-deal-panel {
+            position: relative;
+            padding: 1.5rem 1.25rem;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            border-radius: 14px;
+            background: var(--brand-red);
+            border: 2px solid var(--lp-frame);
+            box-shadow: var(--lp-frame-shadow);
+        }
+        .hero-panel-intro {
+            opacity: 0;
+            animation: heroSlideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.15s;
+        }
+        .hero-panel-offer {
+            padding: 1.35rem 1.25rem 1.45rem;
+            opacity: 0;
+            animation: heroSlideInRight 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.75s;
+        }
+        @keyframes heroShine {
+            0%, 52% { transform: translateX(-130%); }
+            100% { transform: translateX(130%); }
+        }
+        @keyframes heroSlideInLeft {
+            0% { opacity: 0; transform: translateX(-56px) skewX(-5deg); filter: blur(6px); }
+            100% { opacity: 1; transform: translateX(0) skewX(0); filter: blur(0); }
+        }
+        @keyframes heroSlideInRight {
+            0% { opacity: 0; transform: translateX(56px) skewX(5deg); filter: blur(6px); }
+            100% { opacity: 1; transform: translateX(0) skewX(0); filter: blur(0); }
+        }
+        @keyframes heroSlideInUp {
+            0% { opacity: 0; transform: translateY(32px); filter: blur(4px); }
+            70% { transform: translateY(-5px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        @keyframes heroPricePower {
+            0% { opacity: 0; transform: translateX(72px) scale(0.88); filter: blur(5px); }
+            55% { transform: translateX(-8px) scale(1.05); filter: blur(0); }
+            75% { transform: translateX(3px) scale(0.99); }
+            100% { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+        }
+        @keyframes heroArrowFlow {
+            0%, 100% { transform: translateY(0); opacity: 0.75; }
+            50% { transform: translateY(12px); opacity: 1; }
+        }
+        @keyframes heroStrikeDraw {
+            from { transform: translateY(-50%) rotate(-5deg) scaleX(0); opacity: 0.5; }
+            to { transform: translateY(-50%) rotate(-5deg) scaleX(1); opacity: 1; }
+        }
+        .hero-deal-exclusive {
+            margin: 0 0 0.75rem;
+            font-size: 1.64rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            color: #fff;
+        }
+        .hero-deal-period {
+            margin: 0;
+            font-size: 1.81rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            line-height: 1.45;
+        }
+        .hero-deal-months {
+            display: block;
+            font-size: 1.54rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            opacity: 0.95;
+            margin-top: 6px;
+        }
+        .hero-deal-usual {
+            margin: 0;
+            font-size: 1.64rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: rgba(255, 255, 255, 0.96);
+        }
+        .hero-deal-struck {
+            position: relative;
+            display: inline-block;
+            font-weight: 900;
+            font-size: 1.12em;
+            padding: 0 4px;
+            color: rgba(255, 255, 255, 0.82);
+        }
+        .hero-deal-struck::before {
+            content: '';
+            position: absolute;
+            left: -3%;
+            right: -3%;
+            top: 50%;
+            height: 2.5px;
+            background: linear-gradient(90deg, transparent, #fff 10%, #fff 90%, transparent);
+            transform: translateY(-50%) rotate(-5deg) scaleX(0);
+            transform-origin: center center;
+            border-radius: 2px;
+            animation: heroStrikeDraw 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 1.35s;
+        }
+        .hero-deal-tax {
+            font-size: 0.92em;
+            font-weight: 700;
+            opacity: 0.9;
+        }
+        .hero-deal-arrow {
+            display: flex;
+            justify-content: center;
+            margin: 0.7rem 0 0;
+            font-size: 2.85rem;
+            line-height: 1;
+            color: #fff;
+            animation: heroArrowFlow 1.6s ease-in-out 1.5s infinite;
+        }
+        .hero-deal-price-row {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0;
+            line-height: 1;
+            margin: 0;
+        }
+        .hero-deal-num {
+            font-size: clamp(3rem, 14vw, 4.25rem);
+            font-weight: 500;
+            color: #fff;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .hero-deal-yen {
+            font-size: clamp(1.5rem, 6.5vw, 2rem);
+            font-weight: 500;
+            color: #fff;
+            margin-left: 4px;
+        }
+        .hero-deal-price-row .hero-deal-tax--offer {
+            font-size: clamp(0.95rem, 4.2vw, 1.28rem);
+            margin-left: 4px;
+            opacity: 0.92;
+        }
+        @media (min-width: 768px) {
+            .hero-deal-panel {
+                padding: 1.65rem 1.75rem;
+            }
+            .hero-deal-exclusive {
+                font-size: 1.85rem;
+            }
+            .hero-deal-period {
+                font-size: 2.04rem;
+            }
+            .hero-deal-months {
+                font-size: 1.72rem;
+            }
+            .hero-deal-usual {
+                font-size: 1.81rem;
+            }
+            .hero-deal-num {
+                font-size: 4.25rem;
+            }
+            .hero-deal-yen {
+                font-size: 2rem;
+            }
+            .hero-deal-price-row .hero-deal-tax--offer {
+                font-size: 1.28rem;
+            }
+            .hero-deal-arrow {
+                font-size: 3.2rem;
+            }
+            .gold-metallic-banner .banner-inner {
+                gap: 14px;
+            }
+            .banner-period-dates {
+                font-size: 0.88rem;
+            }
+            .banner-remaining-block .highlight-num {
+                font-size: 1.65rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .mild-fade-in { animation: none !important; opacity: 1 !important; transform: none !important; }
+            .reveal-up { opacity: 1 !important; transform: none !important; transition: none !important; }
+            .cta-emphasis:hover, .cta-emphasis:focus-visible { transform: none; }
+            .facilities-grid img { filter: none; }
+            .lp-o-countdown-sep { animation: none !important; opacity: 1 !important; }
+            .lp-o-deal-top.is-visible .lp-o-month-chip,
+            .lp-o-price-tier--deal .lp-o-row-deal-wrap.is-visible {
+                transition: none !important;
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .lp-o-deal-sheet .lp-o-row-deal-wrap.is-visible .lp-o-row-deal,
+            .lp-o-month-row.is-revealed {
+                animation: none !important;
+            }
+            body.lp-opening-reveal .lp-wrapper {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .lp-opening-exit-play .lp-o-intro-box.is-visible,
+            .lp-opening-exit-play .lp-opening {
+                animation: none !important;
+            }
+            .hero-panel-intro,
+            .hero-panel-offer { animation: none !important; }
+            .hero-deal-stack,
+            .hero-deal-panel,
+            .hero-deal-arrow {
+                opacity: 1 !important;
+                transform: none !important;
+                filter: none !important;
+            }
+            .hero-deal-struck::before {
+                transform: translateY(-50%) rotate(-5deg) scaleX(1);
+                animation: none;
+            }
+            #lp-opening-scroll,
+            #lp-opening,
+            .lp-opening,
+            .lp-opening-frame,
+            .lp-opening-phase,
+            .lp-o-month-display,
+            .lp-o-savings-card,
+            .lp-o-month-row,
+            .lp-opening-skip {
+                animation: none !important;
+                transition: none !important;
+                filter: none !important;
+                clip-path: none !important;
+            }
+            .lp-opening-scroll-track::after {
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="lang-switcher" id="lang-switcher">
+    <button type="button" class="lang-switcher__btn" id="lang-toggle" aria-expanded="false" aria-haspopup="listbox">
+        <span class="lang-switcher__icon" aria-hidden="true">🌐</span>
+        <span class="lang-switcher__label">Language</span>
+        <span class="lang-switcher__sep" aria-hidden="true">|</span>
+        <span class="lang-switcher__current" id="lang-current">日本語</span>
+        <span class="lang-switcher__caret" aria-hidden="true">▼</span>
+    </button>
+    <div class="lang-switcher__menu" id="lang-menu" role="listbox" aria-label="Language">
+        <button type="button" class="lang-switcher__item is-active" data-lang="ja" role="option">日本語</button>
+        <button type="button" class="lang-switcher__item" data-lang="en" role="option">English</button>
+        <button type="button" class="lang-switcher__item" data-lang="zh-CN" role="option">简体中文</button>
+        <button type="button" class="lang-switcher__item" data-lang="zh-TW" role="option">繁體中文</button>
+        <button type="button" class="lang-switcher__item" data-lang="ko" role="option">한국어</button>
+    </div>
+</div>
+
+<!-- オープニング（1枚・自動再生 約5.5秒） -->
+<div id="lp-opening-scroll" class="lp-opening-scroll">
+<div id="lp-opening" class="lp-opening" role="dialog" aria-modal="true" aria-label="キャンペーン紹介">
+    <div class="lp-opening-bg" aria-hidden="true">
+        <div class="lp-opening-grain"></div>
+        <div class="lp-opening-vignette"></div>
+    </div>
+    <div class="lp-opening-curtain" id="lp-o-curtain"></div>
+    <button type="button" class="lp-opening-skip" id="lp-opening-skip">SKIP</button>
+    <div class="lp-opening-stage">
+        <div class="lp-opening-phase lp-opening-phase--intro is-active" id="lp-o-phase-intro">
+            <div class="lp-o-intro-box lp-o-panel is-visible" id="lp-o-intro-box">
+                <p class="lp-o-label" id="lp-o-label" data-i18n-html="opening.label">まだ間に合う！<br><span class="lp-o-label-summer">夏得キャンペーン！</span></p>
+                <p class="lp-o-lead" id="lp-o-lead" data-i18n="opening.lead">7/12(日)まで限定</p>
+                <div class="lp-o-countdown" aria-live="polite">
+                    <div class="lp-o-countdown-unit">
+                        <span class="lp-o-countdown-num" id="lp-o-cd-days">00</span>
+                        <span class="lp-o-countdown-label" data-i18n="opening.cdDay">日</span>
+                    </div>
+                    <span class="lp-o-countdown-sep" aria-hidden="true">:</span>
+                    <div class="lp-o-countdown-unit">
+                        <span class="lp-o-countdown-num" id="lp-o-cd-hours">00</span>
+                        <span class="lp-o-countdown-label" data-i18n="opening.cdHour">時間</span>
+                    </div>
+                    <span class="lp-o-countdown-sep" aria-hidden="true">:</span>
+                    <div class="lp-o-countdown-unit">
+                        <span class="lp-o-countdown-num" id="lp-o-cd-mins">00</span>
+                        <span class="lp-o-countdown-label" data-i18n="opening.cdMin">分</span>
+                    </div>
+                    <span class="lp-o-countdown-sep" aria-hidden="true">:</span>
+                    <div class="lp-o-countdown-unit">
+                        <span class="lp-o-countdown-num" id="lp-o-cd-secs">00</span>
+                        <span class="lp-o-countdown-label" data-i18n="opening.cdSec">秒</span>
+                    </div>
+                </div>
+                <div class="lp-o-intro-remaining">
+                    <span class="lp-o-intro-remaining-label" data-i18n="opening.remaining">残り</span>
+                    <span class="lp-o-intro-remaining-num dynamic-remaining-count">--</span>
+                    <span class="lp-o-intro-remaining-unit" data-i18n="opening.remainingUnit">名</span>
+                </div>
+                <p class="lp-o-intro-note" data-i18n-html="opening.note">※残り<span class="dynamic-remaining-count">--</span>名入会次第、限定キャンペーンは終了します</p>
+            </div>
+        </div>
+    </div>
+    <div class="lp-opening-progress" aria-hidden="true"><span id="lp-o-progress"></span></div>
+</div>
+</div>
+
+<div class="ambient-bg" aria-hidden="true"></div>
+<div class="bg-noise" aria-hidden="true"></div>
+
+<!-- ==========================================
+     メインコンテンツ
+     ========================================== -->
+<div class="lp-wrapper">
+
+    <!-- プラン詳細セクション -->
+    <section class="plan-selection-section reveal-up py-4">
+        <div class="campaign-header-enhanced">
+            <div class="campaign-header-inner">
+                <h2 class="campaign-title" data-i18n-html="hero.title">まだ間に合う！<br><span class="campaign-title-summer">夏得キャンペーン！</span></h2>
+                <div class="campaign-app-badge">
+                    <span data-i18n="hero.appBadge">APP入会最短5分　当日すぐ使える!</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="plan-container-wrapper">
+            <div class="price-showcase">
+                <div class="price-list">
+                    <!-- 1. 7月〜12月会費（強調） -->
+                    <div class="price-item price-item--half-year">
+                        <div class="half-year-block">
+                            <div class="half-year-head">
+                                <span class="number-circle number-circle-accent">1</span>
+                                <p class="half-year-catch" data-i18n-html="hero.halfYearCatch">半年間ずーっと<em>お得</em></p>
+                            </div>
+                            <div class="half-year-body">
+                                <div class="half-year-months-col">
+                                    <p class="half-year-months">7月、8月、9月、10月、11月、12月</p>
+                                    <p class="label-usual-ref">通常月額<span class="price-usual-strike">9,350</span>円(税込)</p>
+                                </div>
+                                <div class="half-year-price-col">
+                                    <div class="half-year-price-row">
+                                        <span class="half-year-price font-impact">3,630</span>
+                                        <span class="half-year-unit">円(税込)/月</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. オプション -->
+                    <div class="price-item">
+                        <div class="label-group">
+                            <span class="number-circle number-circle-accent">2</span>
+                            <div class="label"><span id="campaign-option-label">7月オプション</span><span class="label-sub" id="campaign-option-label-sub">無料オプション8つ自動契約</span></div>
+                        </div>
+                        <div class="divider-dot"></div>
+                        <div class="price-display-center">
+                            <span class="price-value zero-yen font-impact featured-price text-value-accent">0<span class="unit">円</span></span>
+                        </div>
+                    </div>
+
+                    <!-- 3. 初期費用 -->
+                    <div class="price-item price-item--initial">
+                        <div class="label-group">
+                            <span class="number-circle">3</span>
+                            <div class="label">初期費用<br><span class="label-sub">入会金・登録料</span></div>
+                        </div>
+                        <div class="divider-dot"></div>
+                        <div class="price-display-center">
+                            <span class="price-value font-impact">5,500<span class="unit">円(税込)</span></span>
+                        </div>
+                    </div>
+
+                    <!-- 入会時お支払い目安 -->
+                    <div class="mid-list-total-block">
+                        <div class="label"><i class="ph-bold ph-wallet"></i> <span id="dynamic-date-label">ご入会時金額</span></div>
+                        <div class="total-price-row">
+                            <span id="dynamic-total-price" class="price-large font-impact featured-price text-value-accent">--</span>
+                            <span class="unit-large">円(税込)</span>
+                        </div>
+                        <p class="total-prorate-note">※7月会費は日割り料金です</p>
+                    </div>
+                </div>
+
+                 <!-- 2027年1月以降 -->
+                <div class="monthly-fee">
+                    <div class="monthly-fee-label">2027年1月以降の通常月額</div>
+                    <div class="monthly-fee-row">
+                        <span class="price-large font-impact">9,350<span class="unit-large">円(税込)</span></span>
+                        <span class="monthly-fee-plus">+</span>
+                        <span class="monthly-fee-option">オプション料金</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 条件リスト -->
+            <div class="digital-step-card condition-card lp-framed lp-framed--hover reveal-up">
+                <div class="step-badge red lp-frame-badge lp-frame-badge--brand">キャンペーン注意事項</div>
+                <div class="condition-list-content">
+                    <div class="condition-item">
+                        <i class="ph-bold ph-check" style="color: var(--brand); font-size: 1.2rem;"></i><span>満6カ月の在籍が条件となります（2027年1月末日まで）</span>
+                    </div>
+                    <div class="condition-item">
+                        <i class="ph-bold ph-check" style="color: var(--brand); font-size: 1.2rem;"></i><span>期間内に退会された場合、解約金として34,320円(税込)が発生いたします</span>
+                    </div>
+                    <div class="condition-item">
+                        <i class="ph-bold ph-check" style="color: var(--brand); font-size: 1.2rem;"></i><span>無料オプションは入会時、全て自動契約となります</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="how-to-join-container reveal-up">
+                <!-- ステップ1: 追加特典 -->
+                <div class="digital-step-card lp-framed lp-framed--hover">
+                    <div class="step-badge gold lp-frame-badge lp-frame-badge--gold">STEP 1 追加特典</div>
+                    <div class="step-main-content">
+                        <i class="ph-duotone ph-pencil-line" style="font-size: 2.5rem; color: var(--gold-dark);"></i>
+                        <div class="step-info">
+                            <span class="step-card-lead">お得な追加特典はこちら</span>
+                            <div class="step-title" style="font-size: 0.95rem;">紹介・学割・他クラブ移籍等</div>
+                            <p class="step-desc" style="font-size: 0.75rem; color: #666;">該当する方はこちらから事前申請<br><span class="lp-note-pill">※学割は12月から適用となります</span></p>
+                        </div>
+                        <a href="https://24kyodo-special-plan.vercel.app/" target="_blank" rel="noopener noreferrer" class="step-action-btn btn-gold-flat cta-emphasis">申請する</a>
+                    </div>
+                </div>
+                
+                <!-- ステップ2: アプリ入会 -->
+                <div class="digital-step-card lp-framed lp-framed--hover">
+                    <div class="step-badge red lp-frame-badge lp-frame-badge--brand">STEP 2 アプリ入会</div>
+                    <div class="step-main-content">
+                        <i class="ph-duotone ph-device-mobile" style="font-size: 2.5rem; color: var(--brand);"></i>
+                        <div class="step-info">
+                            <div class="step-title">APPでカンタン入会</div>
+                            <p class="step-desc" style="font-size: 0.75rem; color: #666;">JOYFIT APPをDLして入会【最短5分】</p>
+                        </div>
+                        <a href="https://joyfit.jp/kyodo/app_join/" target="_blank" rel="noopener noreferrer" class="step-action-btn btn-red-flat cta-emphasis">アプリDL</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- オプション＋注意事項（一体化・白背景） -->
+    <section class="options-unified-section reveal-up" id="options-group-section">
+        <div class="options-unified-inner lp-framed">
+            <section class="options-carousel-section">
+                <div class="text-box">
+                    <h2 class="section-title">
+                        <span class="highlight font-impact">8</span>つの無料オプション
+                    </h2>
+                    <p>
+                        キャンペーン期間中<br><span class="highlight-text" id="campaign-option-highlight">7月分が0円</span>で使い放題！<br>
+                        <span class="text-box-note" id="campaign-option-note">※8つのオプションは入会時自動契約されます。<br>不要な場合は<span id="campaign-option-cancel-deadline">7月末</span>までに解約をお願いいたします。</span>
+                    </p>
+                </div>
+                <div class="scene">
+                    <div id="card-carousel-free" class="card-carousel"></div>
+                </div>
+                <div class="carousel-nav">
+                    <button type="button" id="carousel-prev-free" aria-label="前の無料オプション"><i class="ph-bold ph-caret-left" aria-hidden="true"></i></button>
+                    <button type="button" id="carousel-next-free" aria-label="次の無料オプション"><i class="ph-bold ph-caret-right" aria-hidden="true"></i></button>
+                </div>
+            </section>
+
+            <section class="options-carousel-section">
+                <div class="text-box">
+                    <h2 class="section-title">
+                        <span class="highlight font-impact">3</span>つの有料オプション
+                    </h2>
+                    <p style="margin-top: 10px;">
+                        ※こちらはご希望の方のみ契約いただけます
+                    </p>
+                </div>
+                <div class="scene">
+                    <div id="card-carousel-paid" class="card-carousel"></div>
+                </div>
+                <div class="carousel-nav">
+                    <button type="button" id="carousel-prev-paid" aria-label="前の有料オプション"><i class="ph-bold ph-caret-left" aria-hidden="true"></i></button>
+                    <button type="button" id="carousel-next-paid" aria-label="次の有料オプション"><i class="ph-bold ph-caret-right" aria-hidden="true"></i></button>
+                </div>
+            </section>
+
+            <div class="options-notice-block" id="notice-section">
+                <div class="notice-title-v22">
+                    <span>注意事項</span>
+                </div>
+                <div class="notice-body">
+                    オプションは入会時に<strong style="background: var(--gold-light); padding: 2px 6px; border-radius: 4px;">自動契約</strong>となります<br />
+                    不要な場合<strong style="background: var(--gold-light); padding: 2px 6px; border-radius: 4px;" id="campaign-notice-deadline">7月末迄</strong>に解約をお願いいたします<br /><br />
+                    入会後<strong>[JOYFIT APP]</strong>から解約が可能です<br />
+                    解約後も月末迄サービスをご利用頂けます
+                </div>
+                <span class="notice-warning-v22">※解約忘れによる返金は出来ません</span>
+                <a href="https://www.youtube.com/shorts/qpvkmWi-vTM" class="cta-button-video" target="_blank" rel="noopener noreferrer">
+                    <i class="ph-fill ph-youtube-logo" style="font-size: 1.5rem;"></i>
+                    <span>解約方法はコチラをタップ</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- アクセスマップセクション -->
+    <div class="access-section-wrap reveal-up">
+    <section class="access-section lp-framed">
+        <header>
+            <img src="joylogo.jpg" alt="JOYFIT24経堂" style="width: 100%; display: block;" onerror="this.onerror=null; this.src='https://placehold.co/600x200/C21632/ffffff?text=JOYFIT24+KYODO';">
+        </header>
+        <div class="map-embed-container">
+            <iframe src="https://www.google.com/maps?q=JOYFIT24経堂,東京都世田谷区経堂5-23-13&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div style="padding: 25px; background: #fff; border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
+            <p style="font-size: 0.85rem; color: #666; font-weight: 700; text-align: left; margin-bottom: 10px;">店舗外観</p>
+            <img src="entrance.jpg" alt="店舗外観" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);" onerror="this.onerror=null; this.src='https://placehold.co/600x400/e0e0e0/C21632?text=Store+Exterior';">
+        </div>
+        <div style="padding: 25px; text-align: left; background: #fff;">
+            <strong style="display: block; font-size: 1.35rem; font-weight: 900; margin-bottom: 20px; text-align: center; color: var(--brand);">JOYFIT24経堂</strong>
+            <div style="display: flex; gap: 15px; margin-bottom: 15px; font-size: 0.9rem; color: #333; line-height: 1.7; font-weight: 500;">
+                <i class="ph-fill ph-map-pin" style="color: var(--brand); font-size: 1.3rem; flex-shrink: 0; margin-top: 2px;"></i>
+                <span>〒156-0052<br>東京都世田谷区経堂5-23-13 2F・3F</span>
+            </div>
+            <div style="display: flex; gap: 15px; margin-bottom: 15px; font-size: 0.9rem; color: #333; line-height: 1.7; font-weight: 500;">
+                <i class="ph-fill ph-train" style="color: var(--brand); font-size: 1.3rem; flex-shrink: 0; margin-top: 2px;"></i>
+                <div><strong>アクセス</strong><br>小田急線「経堂駅」より徒歩9分</div>
+            </div>
+            <div style="display: flex; gap: 15px; margin-bottom: 15px; font-size: 0.9rem; color: #333; line-height: 1.7; font-weight: 500;">
+                <i class="ph-fill ph-clock" style="color: var(--brand); font-size: 1.3rem; flex-shrink: 0; margin-top: 2px;"></i>
+                <div><strong>受付時間</strong><br><span>平日 10:00～21:00</span><br><span>土日祝 12:00～20:00</span><br><small style="color: #888;">※毎週月・木曜日は終日スタッフ不在</small></div>
+            </div>
+            <div class="facilities-grid">
+                <div><img src="a.jpg" alt="ジム" onerror="this.onerror=null; this.src='https://placehold.co/100x100/e0e0e0/C21632?text=Gym';"><strong style="font-size: 0.8rem; font-weight: 900;">2Fジムエリア</strong><p style="font-size: 0.7rem; color: #666; margin-top: 5px;">広々空間×充実マシン</p></div>
+                <div><img src="b.jpg" alt="スタジオ" onerror="this.onerror=null; this.src='https://placehold.co/100x100/e0e0e0/C21632?text=Studio';"><strong style="font-size: 0.8rem; font-weight: 900;">3Fスタジオ</strong><p style="font-size: 0.7rem; color: #666; margin-top: 5px;">ホットスタジオ</p></div>
+                <div><img src="c.jpg" alt="24H" onerror="this.onerror=null; this.src='https://placehold.co/100x100/e0e0e0/C21632?text=24H';"><strong style="font-size: 0.8rem; font-weight: 900;">24時間営業</strong><p style="font-size: 0.7rem; color: #666; margin-top: 5px;">※2Fジムエリア</p></div>
+                <div><img src="d.jpg" alt="土足" onerror="this.onerror=null; this.src='https://placehold.co/100x100/e0e0e0/C21632?text=Shoes';"><strong style="font-size: 0.8rem; font-weight: 900;">土足OK</strong><p style="font-size: 0.7rem; color: #666; margin-top: 5px;">※サンダル＆裸足は×</p></div>
+                <div><img src="h.jpg" alt="駐車場" onerror="this.onerror=null; this.src='https://placehold.co/100x100/e0e0e0/C21632?text=Parking';"><strong style="font-size: 0.8rem; font-weight: 900;">無料駐車場6台</strong><p style="font-size: 0.7rem; color: #666; margin-top: 5px;">※駐輪場もあります</p></div>
+                <div><img src="e.jpg" alt="シャワー" onerror="this.onerror=null; this.src='https://placehold.co/100x100/e0e0e0/C21632?text=Shower';"><strong style="font-size: 0.8rem; font-weight: 900;">シャワールーム</strong><p style="font-size: 0.7rem; color: #666; margin-top: 5px;">男女別計19部屋</p></div>
+                <div><img src="g.jpg" alt="ミスト" onerror="this.onerror=null; this.src='https://placehold.co/100x100/e0e0e0/C21632?text=Mist';"><strong style="font-size: 0.8rem; font-weight: 900;">女性ミストサウナ</strong><p style="font-size: 0.7rem; color: #666; margin-top: 5px;">約40℃設定</p></div>
+                <div><img src="f.jpg" alt="サウナ" onerror="this.onerror=null; this.src='https://placehold.co/100x100/e0e0e0/C21632?text=Sauna';"><strong style="font-size: 0.8rem; font-weight: 900;">男性ドライサウナ</strong><p style="font-size: 0.7rem; color: #666; margin-top: 5px;">約80℃設定</p></div>
+            </div>
+        </div>
+        <div class="access-map-cta">
+            <a href="https://www.google.com/maps/search/?api=1&query=JOYFIT24経堂,東京都世田谷区経堂5-23-13" target="_blank" rel="noopener noreferrer" class="access-map-btn">
+                <i class="ph-bold ph-navigation-arrow" style="font-size: 1.2rem;"></i>
+                <span>Googleマップでルートを確認</span>
+            </a>
+        </div>
+    </section>
+    </div>
+
+</div>
+
+<!-- 固定バナー -->
+<div class="fixed-banner">
+    <a href="https://24-kyodo-freetrial.vercel.app/" class="banner-btn trial" target="_blank" rel="noopener noreferrer">
+        <i class="ph-bold ph-calendar-plus" style="font-size: 1.2rem;"></i><span data-i18n="banner.trial">無料見学・体験</span>
+    </a>
+    <a href="https://joyfit.jp/kyodo/app_join/" class="banner-btn app" target="_blank" rel="noopener noreferrer">
+        <i class="ph-bold ph-device-mobile" style="font-size: 1.2rem;"></i><span data-i18n="banner.appJoin">APP入会はこちら</span>
+    </a>
+</div>
+
+<div id="banner-toggle-container">
+    <button type="button" id="banner-toggle-btn" aria-label="下部バナーを表示・非表示"><i class="ph-bold ph-x" id="toggle-icon" style="font-size: 20px;" aria-hidden="true"></i></button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    // キャンペーン設定（締切・カウントダウン用）
+    window.CAMPAIGN_CONFIG = {
+        endAt: new Date('2026-07-12T23:59:59+09:00'),
+        displayFrom: new Date('2026-07-01T00:00:00+09:00')
+    };
+
+    // ====================================================
+    // オープニング（1枚・自動再生 約5.5秒）
+    // ====================================================
+    (function initOpening() {
+        const OPENING_MS = 5500;
+        const FADE_MS = 650;
+        const CURTAIN_MS = 450;
+        const scrollRoot = document.getElementById('lp-opening-scroll');
+        const opening = document.getElementById('lp-opening');
+        const skipBtn = document.getElementById('lp-opening-skip');
+        const progressBar = document.getElementById('lp-o-progress');
+        const curtain = document.getElementById('lp-o-curtain');
+        const introBox = document.getElementById('lp-o-intro-box');
+        if (!scrollRoot || !opening) return;
+
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const displayMs = prefersReduced ? 3200 : OPENING_MS;
+        let finished = false;
+        let exiting = false;
+        let startTime = null;
+        let rafId = null;
+        let countdownTimer = null;
+        const URGENCY_END = window.CAMPAIGN_CONFIG?.endAt || new Date('2026-07-12T23:59:59+09:00');
+        const cdDaysEl = document.getElementById('lp-o-cd-days');
+        const cdHoursEl = document.getElementById('lp-o-cd-hours');
+        const cdMinsEl = document.getElementById('lp-o-cd-mins');
+        const cdSecsEl = document.getElementById('lp-o-cd-secs');
+
+        function updateOpeningCountdown() {
+            if (!cdDaysEl || !cdHoursEl || !cdMinsEl || !cdSecsEl) return;
+            const now = new Date();
+            let diff = URGENCY_END.getTime() - now.getTime();
+            if (diff < 0) diff = 0;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+            cdDaysEl.textContent = String(days).padStart(2, '0');
+            cdHoursEl.textContent = String(hours).padStart(2, '0');
+            cdMinsEl.textContent = String(mins).padStart(2, '0');
+            cdSecsEl.textContent = String(secs).padStart(2, '0');
+        }
+
+        function startCountdown() {
+            if (countdownTimer) return;
+            updateOpeningCountdown();
+            countdownTimer = setInterval(updateOpeningCountdown, 1000);
+        }
+
+        function stopCountdown() {
+            if (!countdownTimer) return;
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+        }
+
+        function doFinishOpeningNow() {
+            if (finished) return;
+            finished = true;
+            stopCountdown();
+            if (rafId) cancelAnimationFrame(rafId);
+            document.documentElement.classList.remove('lp-opening-lock');
+            document.body.classList.remove('lp-opening-active');
+            document.body.classList.remove('lp-opening-reveal');
+            scrollRoot.remove();
+            document.documentElement.style.scrollBehavior = 'auto';
+            window.scrollTo(0, 0);
+            document.documentElement.style.scrollBehavior = '';
+        }
+
+        function finishOpening() {
+            if (finished || exiting) return;
+            exiting = true;
+            stopCountdown();
+            if (rafId) cancelAnimationFrame(rafId);
+            scrollRoot.classList.add('lp-opening-exit-play');
+            document.body.classList.add('lp-opening-reveal');
+            setTimeout(doFinishOpeningNow, prefersReduced ? 0 : FADE_MS);
+        }
+
+        function tick(now) {
+            if (finished) return;
+            if (!startTime) startTime = now;
+            const elapsed = now - startTime;
+            const progress = Math.min(1, elapsed / displayMs);
+            if (progressBar) progressBar.style.width = (progress * 100) + '%';
+            if (curtain) {
+                const co = elapsed >= CURTAIN_MS ? 0 : 1 - elapsed / CURTAIN_MS;
+                curtain.style.opacity = String(Math.max(0, co));
+            }
+            if (elapsed >= displayMs) {
+                finishOpening();
+                return;
+            }
+            rafId = requestAnimationFrame(tick);
+        }
+
+        document.documentElement.classList.add('lp-opening-lock');
+        document.body.classList.add('lp-opening-active');
+        skipBtn?.addEventListener('click', finishOpening);
+        startCountdown();
+        if (curtain) curtain.style.opacity = '1';
+        introBox?.classList.add('is-visible');
+        rafId = requestAnimationFrame(tick);
+    })();
+
+    
+    // ====================================================
+    // スクロール連動Reveal
+    // ====================================================
+    const revealElements = document.querySelectorAll('.reveal-up');
+    const revealOptions = { root: null, rootMargin: '0px 0px -100px 0px', threshold: 0.1 };
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, revealOptions);
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // ====================================================
+    // 入会時金額の動的表示（7/1〜表示・7月は日割）
+    // ====================================================
+    function calcJulyProrateFee(joinDay) {
+        const year = 2026;
+        const month = 7;
+        const campaignMonthly = 3630;
+        const daysInMonth = new Date(year, month, 0).getDate();
+        const remainingDays = daysInMonth - joinDay + 1;
+        return Math.round((campaignMonthly / daysInMonth) * remainingDays);
+    }
+
+    function updateProratedFee() {
+        const today = new Date();
+        const jst = new Date(today.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
+        const year = jst.getFullYear();
+        const month = jst.getMonth() + 1;
+        const date = jst.getDate();
+
+        const dateLabelEl = document.getElementById('dynamic-date-label');
+        const totalPriceEl = document.getElementById('dynamic-total-price');
+
+        if (dateLabelEl && totalPriceEl) {
+            window.__lastJoinMonth = month;
+            window.__lastJoinDate = date;
+            if (window.JoyfitI18n && JoyfitI18n.getLanguage() !== 'ja') {
+                dateLabelEl.innerHTML = JoyfitI18n.t('pricing.joinAmountAt', '(<span class="join-date">{m}/{d}</span>)ご入会時金額')
+                    .replace('{m}', month).replace('{d}', date);
+            } else {
+                dateLabelEl.innerHTML = `(<span class="join-date">${month}/${date}</span>)ご入会時金額`;
+            }
+
+            const initial = 5500;
+            const campaignMonthly = 3630;
+            const regularMonthly = 9350;
+            let monthFee = 0;
+
+            if (year === 2026 && month === 7) {
+                monthFee = calcJulyProrateFee(date);
+            } else if (year === 2026 && month >= 8 && month <= 12) {
+                monthFee = campaignMonthly;
+            } else {
+                monthFee = regularMonthly;
+            }
+
+            const total = initial + monthFee;
+            totalPriceEl.textContent = total.toLocaleString();
+        }
+    }
+    // ロジックを実行
+    updateProratedFee();
+
+    // ====================================================
+    // 残り人数の自動カウントダウン
+    // ====================================================
+    function updateRemainingCount() {
+        // 7/1以前：20名固定 → 7/1〜7/12：20名から1名（7/12が1名）
+        const decreaseStart = new Date('2026-07-01T00:00:00+09:00');
+        const decreaseEnd = new Date('2026-07-12T00:00:00+09:00');
+        const now = new Date();
+        const startRemaining = 20;
+        const minRemaining = 1;
+
+        let remaining;
+        if (now.getTime() < decreaseStart.getTime()) {
+            remaining = startRemaining;
+        } else {
+            const totalMs = decreaseEnd.getTime() - decreaseStart.getTime();
+            const elapsedMs = Math.min(Math.max(0, now.getTime() - decreaseStart.getTime()), totalMs);
+            const progress = totalMs > 0 ? elapsedMs / totalMs : 1;
+            remaining = Math.round(startRemaining - progress * (startRemaining - minRemaining));
+            if (remaining < minRemaining) remaining = minRemaining;
+        }
+
+        const countEls = document.querySelectorAll('.dynamic-remaining-count');
+        countEls.forEach(el => {
+            el.textContent = remaining;
+        });
+    }
+    // ロジックを実行
+    updateRemainingCount();
+
+    // ====================================================
+    // オプションカルーセル
+    // ====================================================
+    const allOptions = [
+        { name: '水素水 & プロテイン', price: '月額 3,240円', icon_img: '37.png', description: '水素水＋プロテイン<br>[１日６杯迄]のお得なセット' },
+        { name: 'ホットスタジオ', price: '月額 1,100円', icon_img: '36.png', description: '世田谷エリア最大級<br>のレッスンで滝汗体験!' },
+        { name: 'あんしんサポートVIP', price: '月額 825円', icon_img: '41.png', description: '万が一の時にも安心な<br>JOYFIT専用サポートプラン' },
+        { name: 'オンラインレッスン', price: '月額 1,100円', icon_img: '42.png', description: '自宅で本格的なレッスンが出来る!<br>ジムに来れない日でも安心' },
+        { name: 'タンニングマシン', price: '月額 5,500円', icon_img: '44.png', description: '理想の日焼け肌を手に入れたい方へ!<br>※1日20分まで' },
+        { name: 'セルフエステ', price: '月額 3,300円', icon_img: '45.png', description: 'エステサロンと同じ<br>業務用マシンが使い放題' },
+        { name: 'レンタルマット', price: '月額 1,100円', icon_img: '38.png', description: 'マットを持ってこなくてＯＫ!<br>ホットスタジオ参加には必須!' },
+        { name: 'レンタルタオル', price: '月額 1,650円', icon_img: '40.png', description: '汗をかいても安心レンタル<br>フェイスタオル・バスタオル' },
+        { name: '体組成計', price: '月額 550円', icon_img: '39.png', description: '体脂肪、筋肉量を測定し<br>トレーニングを最適化' }
+    ];
+
+    const paidOptions = [
+        { name: '契約ロッカー', price: '月額 1,650円', icon_img: '43.png', description: 'ウェアやシューズを置いたままに<br>あなた専用のロッカー' },
+        { name: 'ピラティスリフォーマー', price: '月額 3,300円', icon_img: '46.png', description: 'ピラティスマシンを使い<br>体幹等を鍛える本格レッスン' },
+        { name: 'ヨガマットロッカー', price: '月額 1,100円', icon_img: '47.png', description: 'ご自身のヨガマットを保管<br>荷物を減らしたい方へ' }
+    ];
+
+    function initializeCarousel(options, containerId, navPrevId, navNextId, isPaid = false) {
+        const carouselContainer = document.getElementById(containerId);
+        const prevBtn = document.getElementById(navPrevId);
+        const nextBtn = document.getElementById(navNextId);
+        if (!carouselContainer) return;
+        
+        const createCardHTML = (option) => `
+            <div class="option-card-3d">
+                <div class="card-badge ${isPaid ? 'paid' : 'free'}">${isPaid ? '有料オプション' : '無料オプション'}</div>
+                <div style="width: 100%; flex-grow: 1; display: flex; justify-content: center; align-items: center; padding-bottom: 1rem;">
+                    <img src="./${option.icon_img}" alt="${option.name}" class="card-icon" onerror="this.onerror=null; this.src='https://placehold.co/150x150/transparent/cccccc?text=Option';">
+                </div>
+                <div style="width: 100%; flex-shrink: 0;">
+                    <h4 class="card-title">${option.name}</h4>
+                    <p class="card-price font-impact text-xl" style="color: var(--brand);">${option.price.split(' ')[1]}<span style="font-size: 0.75rem; font-weight: normal; color: #555; font-family: 'Noto Sans JP', sans-serif;"> / ${option.price.split(' ')[0]}(税込)</span></p>
+                    <p style="font-size: 0.75rem; color: #666; margin-top: 0.75rem; line-height: 1.5; min-height: 3.6rem;">${option.description}</p>
+                </div>
+            </div>`;
+        carouselContainer.innerHTML = options.map(createCardHTML).join('');
+        const cards = carouselContainer.querySelectorAll('.option-card-3d');
+        const totalCards = cards.length;
+        let currentIndex = 0;
+        let autoPlayInterval;
+
+        function updateCarousel() {
+            const activeIndex = (currentIndex % totalCards + totalCards) % totalCards;
+            cards.forEach((card, index) => {
+                const relativePos = ((index - activeIndex + totalCards) % totalCards);
+                let transform = ''; let opacity = 0; let zIndex = 0;
+                switch (relativePos) {
+                    case 0: transform = 'translateX(-50%) scale(1)'; opacity = 1; zIndex = 20; break;
+                    case 1: transform = 'translateX(20%) scale(0.85)'; opacity = 0.6; zIndex = 10; break;
+                    case totalCards - 1: transform = 'translateX(-120%) scale(0.85)'; opacity = 0.6; zIndex = 10; break;
+                    default: transform = relativePos < totalCards / 2 ? 'translateX(50%) scale(0.6)' : 'translateX(-150%) scale(0.6)'; opacity = 0; zIndex = 0; break;
+                }
+                card.style.transform = transform; card.style.opacity = opacity; card.style.zIndex = zIndex;
+            });
+        }
+
+        function startAutoPlay() {
+            stopAutoPlay();
+            autoPlayInterval = setInterval(() => { currentIndex++; updateCarousel(); }, 4000);
+        }
+        function stopAutoPlay() { if (autoPlayInterval) clearInterval(autoPlayInterval); }
+
+        if(prevBtn) prevBtn.addEventListener('click', () => { currentIndex--; updateCarousel(); stopAutoPlay(); startAutoPlay(); });
+        if(nextBtn) nextBtn.addEventListener('click', () => { currentIndex++; updateCarousel(); stopAutoPlay(); startAutoPlay(); });
+
+        let startX = 0;
+        let isDragging = false;
+        carouselContainer.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; isDragging = true; stopAutoPlay(); }, {passive: true});
+        carouselContainer.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            const diff = startX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 50) { if (diff > 0) currentIndex++; else currentIndex--; updateCarousel(); }
+            isDragging = false; startAutoPlay();
+        });
+
+        updateCarousel();
+        startAutoPlay();
+    }
+    initializeCarousel(allOptions, 'card-carousel-free', 'carousel-prev-free', 'carousel-next-free');
+    initializeCarousel(paidOptions, 'card-carousel-paid', 'carousel-prev-paid', 'carousel-next-paid', true);
+
+    // ====================================================
+    // スクロールで上下固定バナーを自動非表示（下は×で固定オフも可）
+    // ====================================================
+    let bottomBannerLockedHidden = false;
+    const SCROLL_HIDE_Y = 56;
+    const SCROLL_SHOW_Y = 24;
+
+    function setBottomBannerHidden(hidden) {
+        document.body.classList.toggle('banner-hidden', hidden);
+    }
+
+    function updateScrollBanners() {
+        const y = window.scrollY;
+        if (y > SCROLL_HIDE_Y) {
+            if (!bottomBannerLockedHidden) {
+                setBottomBannerHidden(true);
+            }
+        } else if (y <= SCROLL_SHOW_Y) {
+            if (!bottomBannerLockedHidden) {
+                setBottomBannerHidden(false);
+            }
+        }
+    }
+
+    window.addEventListener('scroll', updateScrollBanners, { passive: true });
+
+    const toggleBtn = document.getElementById('banner-toggle-btn');
+    const toggleIcon = document.getElementById('toggle-icon');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function() {
+            bottomBannerLockedHidden = !bottomBannerLockedHidden;
+            const isHidden = bottomBannerLockedHidden;
+            setBottomBannerHidden(isHidden);
+            if (isHidden) {
+                toggleIcon.classList.replace('ph-x', 'ph-caret-up');
+            } else {
+                toggleIcon.classList.replace('ph-caret-up', 'ph-x');
+            }
+            toggleBtn.setAttribute('aria-expanded', isHidden ? 'false' : 'true');
+            toggleBtn.setAttribute('aria-label', isHidden ? '下部バナーを表示' : '下部バナーを閉じる');
+        });
+        toggleBtn.setAttribute('aria-expanded', 'true');
+    }
+});
+</script>
+
+<script src="locales.bundle.js"></script>
+<script src="i18n.js"></script>
+<script src="campaign-i18n.js"></script>
+<script>JoyfitI18n.init('campaign');</script>
+
+</body>
+</html>

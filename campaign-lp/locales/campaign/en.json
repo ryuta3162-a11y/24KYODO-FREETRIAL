@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "title": "JOYFIT24 Kyodo Summer Deal | Until Sun 7/12"
+  },
+  "opening": {
+    "label": "Still in time!<br><span class=\"lp-o-label-summer\">Summer Deal Campaign!</span>",
+    "lead": "Limited until Sun 7/12",
+    "cdDay": "Days",
+    "cdHour": "Hrs",
+    "cdMin": "Min",
+    "cdSec": "Sec",
+    "remaining": "Left",
+    "remainingUnit": "spots",
+    "note": "※Campaign ends when <span class=\"dynamic-remaining-count\">--</span> more members join"
+  },
+  "hero": {
+    "title": "Still in time!<br><span class=\"campaign-title-summer\">Summer Deal Campaign!</span>",
+    "appBadge": "Join via app in 5 min — use today!",
+    "halfYearCatch": "Save all <em>half year</em> long"
+  },
+  "pricing": {
+    "optionLabel": "July options",
+    "optionLabelSub": "8 free options auto-enrolled",
+    "optionHighlight": "July is ¥0",
+    "optionNote": "※All 8 options are auto-enrolled at signup.<br>Cancel unwanted options by <span id=\"campaign-option-cancel-deadline\">end of July</span>.",
+    "optionCancelDeadline": "end of July",
+    "joinAmountLabel": "Amount due at signup",
+    "joinAmountAt": "(<span class=\"join-date\">{m}/{d}</span>) Amount due at signup"
+  },
+  "banner": {
+    "trial": "Free tour & trial",
+    "appJoin": "Join via app"
+  }
+}

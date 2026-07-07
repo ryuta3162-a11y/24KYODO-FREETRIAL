@@ -1,0 +1,30 @@
+キャンペーンLP 多言語化トライアル用フォルダ
+==========================================
+
+■ LP本体の貼り付け先
+  campaign-lp/index.html
+
+  kyodo-lp-deta の index.html をそのまま貼り付けてOKです。
+  貼り替え後、以下だけ再適用してください（またはこのフォルダの index.html を参照）:
+    - head: 多言語フォント + i18n.css
+    - body直後: Language スイッチャー
+    - 末尾: locales.bundle.js / i18n.js / campaign-i18n.js / JoyfitI18n.init('campaign')
+    - data-i18n 属性（オープニング・ヒーロー・下部バナー等）
+
+■ kyodo-lp-deta への共有
+  完成した campaign-lp/index.html を kyodo-lp-deta のルート index.html に
+  貼り付けて共有してください（7月/index.html への同期も忘れずに）。
+
+■ 画像ファイル
+  index.html と同じフォルダに d.jpg 等の画像が必要です。
+  kyodo-lp-deta からコピーするか、本番リポジトリの画像を並べてください。
+
+■ ローカル確認
+  campaign-lp フォルダで index.html をブラウザで開く
+  （locales.bundle.js があるので file:// でも動作します）
+
+■ 翻訳JSONの更新
+  python build_locales.py
+
+■ 言語設定
+  他LPと共通キー joyfit-kyodo-lang（localStorage）

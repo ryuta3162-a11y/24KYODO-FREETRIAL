@@ -1,0 +1,89 @@
+/* Language switcher — 白背景・黒文字（サイズは初版準拠） */
+.lang-switcher {
+    position: fixed;
+    top: max(0.75rem, env(safe-area-inset-top));
+    right: max(0.75rem, env(safe-area-inset-right));
+    z-index: 10050;
+}
+.lang-switcher__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.62rem 0.95rem;
+    border-radius: 0.35rem;
+    border: 1px solid #111827;
+    background: #ffffff;
+    color: #111827;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    box-shadow: 0 1px 2px rgba(17, 24, 39, 0.08);
+    cursor: pointer;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+.lang-switcher__btn:hover {
+    background: #f9fafb;
+    box-shadow: 0 2px 5px rgba(17, 24, 39, 0.1);
+}
+.lang-switcher__btn:active {
+    background: #f3f4f6;
+}
+.lang-switcher__icon {
+    font-size: 0.9rem;
+    line-height: 1;
+}
+.lang-switcher__label {
+    color: #111827;
+    font-weight: 800;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+.lang-switcher__sep {
+    color: #9ca3af;
+    font-weight: 400;
+}
+.lang-switcher__current {
+    color: #111827;
+    font-weight: 900;
+    font-size: 0.78rem;
+}
+.lang-switcher__caret {
+    color: #6b7280;
+    font-size: 0.62rem;
+    margin-left: 0.1rem;
+}
+.lang-switcher__menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 10.5rem;
+    padding: 0.35rem;
+    border-radius: 0.4rem;
+    border: 1px solid #111827;
+    background: #ffffff;
+    box-shadow: 0 16px 36px rgba(17, 24, 39, 0.12);
+}
+.lang-switcher.is-open .lang-switcher__menu { display: block; }
+.lang-switcher__item {
+    width: 100%;
+    text-align: left;
+    padding: 0.58rem 0.72rem;
+    border: none;
+    border-radius: 0.28rem;
+    background: transparent;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #111827;
+    cursor: pointer;
+    transition: background 0.12s ease;
+}
+.lang-switcher__item:hover {
+    background: #f3f4f6;
+}
+.lang-switcher__item.is-active {
+    background: #e5e7eb;
+    color: #111827;
+    font-weight: 700;
+}
