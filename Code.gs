@@ -3,7 +3,8 @@
  * 送信時にスプレッドシートのメール重複を判定（1メール1回）。認証コードなし。
  */
 
-var RESERVE_SHEET_NAME = '予約';
+var RESERVE_SHEET_NAME = '見学体験申請';
+var EMAIL_COL = 4; // D列
 
 function doGet(e) {
   var p = (e && e.parameter) ? e.parameter : {};
@@ -57,40 +58,20 @@ function submitReservation_(p) {
 }
 
 function isEmailAlreadyBooked_(email) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheets = ss.getSheets();
-  for (var s = 0; s < sheets.length; s++) {
-    var sh = sheets[s];
-    var lastRow = sh.getLastRow();
-    if (lastRow < 1) continue;
-    var lastCol = Math.max(sh.getLastColumn(), 1);
-    var values = sh.getRange(1, 1, lastRow, lastCol).getValues();
-    var start = looksLikeHeader_(values[0]) ? 1 : 0;
-    for (var r = start; r < values.length; r++) {
-      for (var c = 0; c < values[r].length; c++) {
-        var cell = String(values[r][c] || '');
-        if (cell.indexOf('@') === -1) continue;
-        if (normalizeEmail_(cell) === email) return true;
-      }
-    }
+  var sh = getReserveSheet_();
+  var lastRow = sh.getLastRow();
+  if (lastRow < 2) return false;
+  var values = sh.getRange(2, EMAIL_COL, lastRow - 1, 1).getValues();
+  for (var i = 0; i < values.length; i++) {
+    if (normalizeEmail_(values[i][0]) === email) return true;
   }
   return false;
-}
-
-function looksLikeHeader_(row) {
-  var joined = row.join(' ');
-  return /メール|email|お名前|受付/i.test(joined);
 }
 
 function getReserveSheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName(RESERVE_SHEET_NAME);
   if (!sh) sh = ss.getSheets()[0];
-  if (sh.getLastRow() === 0) {
-    sh.appendRow(['受付日時', '種別', 'お名前', 'メール', '電話', '性別', '年代', '希望日', '時刻']);
-    sh.getRange(1, 1, 1, 9).setFontWeight('bold');
-    sh.setFrozenRows(1);
-  }
   return sh;
 }
 
