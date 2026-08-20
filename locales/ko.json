@@ -48,12 +48,30 @@
     "honorific": "",
     "screenshotTitle": "이 화면을 스크린샷으로<br>반드시 저장해 주세요",
     "screenshotNote": "예약 당일에는 저장한 화면을 확인한 후 방문해 주세요.",
-    "resultNameSuffix": " 님"
+    "resultNameSuffix": " 님",
+    "sendCode": "인증 코드 보내기",
+    "sendingCode": "전송 중...",
+    "emailHint": "이 주소로 6자리 인증 코드를 보냅니다. 이메일당 예약은 1회만 가능합니다.",
+    "code": "인증 코드(6자리)",
+    "codePlaceholder": "123456",
+    "verifyCode": "코드 인증하기",
+    "verifying": "인증 중...",
+    "codeSent": "인증 코드를 보냈습니다. 메일을 확인해 주세요.",
+    "verified": "이메일 인증이 완료되었습니다",
+    "submitHint": "이메일 인증 후 신청할 수 있습니다",
+    "notice4": "<span class=\"font-bold text-brand-red\">이메일 주소당 예약은 1회만</span> 가능합니다. 인증 코드로 본인 확인을 합니다."
   },
   "errors": {
     "monThuClosed": "월·목 휴무 (스태프 부재)",
     "gasMissing": "오류: 웹앱 URL이 설정되지 않았습니다.",
-    "system": "시스템 오류가 발생했습니다. 다시 시도해 주세요."
+    "system": "시스템 오류가 발생했습니다. 다시 시도해 주세요.",
+    "alreadyBooked": "이미 예약된 이메일입니다(1회만 가능).",
+    "invalidEmail": "올바른 이메일 주소를 입력해 주세요.",
+    "tooSoon": "인증 코드 재전송은 1분 후에 해 주세요.",
+    "invalidCode": "인증 코드가 올바르지 않습니다.",
+    "expired": "인증 코드가 만료되었습니다. 다시 보내 주세요.",
+    "notVerified": "먼저 이메일 인증을 완료해 주세요.",
+    "missingFields": "필수 항목을 입력해 주세요."
   },
   "lang": {
     "label": "언어"

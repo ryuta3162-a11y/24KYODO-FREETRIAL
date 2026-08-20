@@ -49,12 +49,30 @@ window.JOYFIT_LOCALES = {
       "honorific": "",
       "screenshotTitle": "Please take a screenshot of this screen<br>and save it.",
       "screenshotNote": "On the day of your visit, please check the saved screen before coming to the gym.",
-      "resultNameSuffix": ""
+      "resultNameSuffix": "",
+      "sendCode": "Send verification code",
+      "sendingCode": "Sending...",
+      "emailHint": "We will send a 6-digit code to this address. One reservation per email.",
+      "code": "Verification code (6 digits)",
+      "codePlaceholder": "123456",
+      "verifyCode": "Verify code",
+      "verifying": "Verifying...",
+      "codeSent": "Verification code sent. Please check your email.",
+      "verified": "Email verified",
+      "submitHint": "You can submit after email verification",
+      "notice4": "<span class=\"font-bold text-brand-red\">One reservation per email address</span>. We verify with a code."
     },
     "errors": {
       "monThuClosed": "MON & THU CLOSED (No staff on Mondays and Thursdays)",
       "gasMissing": "Error: Web app URL is not configured.",
-      "system": "A system error occurred. Please try again."
+      "system": "A system error occurred. Please try again.",
+      "alreadyBooked": "This email already has a reservation (one per email).",
+      "invalidEmail": "Please enter a valid email address.",
+      "tooSoon": "Please wait 1 minute before requesting another code.",
+      "invalidCode": "The verification code is incorrect.",
+      "expired": "The code has expired. Please request a new one.",
+      "notVerified": "Please complete email verification first.",
+      "missingFields": "Please fill in all required fields."
     },
     "lang": {
       "label": "Language"
@@ -110,12 +128,30 @@ window.JOYFIT_LOCALES = {
       "honorific": " 先生/女士",
       "screenshotTitle": "请截图保存此页面<br>务必留存。",
       "screenshotNote": "到访当天请先确认保存的截图内容后再前来。",
-      "resultNameSuffix": " 先生/女士"
+      "resultNameSuffix": " 先生/女士",
+      "sendCode": "发送验证码",
+      "sendingCode": "发送中...",
+      "emailHint": "将向此邮箱发送6位验证码。每个邮箱仅可预约1次。",
+      "code": "验证码（6位）",
+      "codePlaceholder": "123456",
+      "verifyCode": "验证代码",
+      "verifying": "验证中...",
+      "codeSent": "验证码已发送，请查收邮件。",
+      "verified": "邮箱验证完成",
+      "submitHint": "完成邮箱验证后即可提交",
+      "notice4": "<span class=\"font-bold text-brand-red\">每个邮箱仅可预约1次</span>。通过验证码确认本人。"
     },
     "errors": {
       "monThuClosed": "周一·周四休息（无工作人员）",
       "gasMissing": "错误：未设置系统URL。",
-      "system": "发生系统错误，请重试。"
+      "system": "发生系统错误，请重试。",
+      "alreadyBooked": "该邮箱已预约过（仅限1次）。",
+      "invalidEmail": "请输入正确的邮箱地址。",
+      "tooSoon": "请1分钟后再重新发送验证码。",
+      "invalidCode": "验证码不正确。",
+      "expired": "验证码已过期，请重新发送。",
+      "notVerified": "请先完成邮箱验证。",
+      "missingFields": "请填写必填项。"
     },
     "lang": {
       "label": "语言"
@@ -171,12 +207,30 @@ window.JOYFIT_LOCALES = {
       "honorific": " 先生/女士",
       "screenshotTitle": "請截圖保存此畫面<br>務必留存。",
       "screenshotNote": "預約當天請先確認保存的截圖內容後再前來。",
-      "resultNameSuffix": " 先生/女士"
+      "resultNameSuffix": " 先生/女士",
+      "sendCode": "傳送驗證碼",
+      "sendingCode": "傳送中...",
+      "emailHint": "將向此信箱發送6位數驗證碼。每個信箱僅可預約1次。",
+      "code": "驗證碼（6位數）",
+      "codePlaceholder": "123456",
+      "verifyCode": "驗證代碼",
+      "verifying": "驗證中...",
+      "codeSent": "驗證碼已傳送，請查看郵件。",
+      "verified": "電子郵件驗證完成",
+      "submitHint": "完成電子郵件驗證後即可送出",
+      "notice4": "<span class=\"font-bold text-brand-red\">每個電子郵件僅可預約1次</span>。以驗證碼進行本人確認。"
     },
     "errors": {
       "monThuClosed": "週一·週四休館（無工作人員）",
       "gasMissing": "錯誤：未設定系統URL。",
-      "system": "發生系統錯誤，請再試一次。"
+      "system": "發生系統錯誤，請再試一次。",
+      "alreadyBooked": "此電子郵件已預約過（僅限1次）。",
+      "invalidEmail": "請輸入正確的電子郵件。",
+      "tooSoon": "請於1分鐘後再重新傳送驗證碼。",
+      "invalidCode": "驗證碼不正確。",
+      "expired": "驗證碼已過期，請重新傳送。",
+      "notVerified": "請先完成電子郵件驗證。",
+      "missingFields": "請填寫必填項目。"
     },
     "lang": {
       "label": "語言"
@@ -232,12 +286,30 @@ window.JOYFIT_LOCALES = {
       "honorific": "",
       "screenshotTitle": "이 화면을 스크린샷으로<br>반드시 저장해 주세요",
       "screenshotNote": "예약 당일에는 저장한 화면을 확인한 후 방문해 주세요.",
-      "resultNameSuffix": " 님"
+      "resultNameSuffix": " 님",
+      "sendCode": "인증 코드 보내기",
+      "sendingCode": "전송 중...",
+      "emailHint": "이 주소로 6자리 인증 코드를 보냅니다. 이메일당 예약은 1회만 가능합니다.",
+      "code": "인증 코드(6자리)",
+      "codePlaceholder": "123456",
+      "verifyCode": "코드 인증하기",
+      "verifying": "인증 중...",
+      "codeSent": "인증 코드를 보냈습니다. 메일을 확인해 주세요.",
+      "verified": "이메일 인증이 완료되었습니다",
+      "submitHint": "이메일 인증 후 신청할 수 있습니다",
+      "notice4": "<span class=\"font-bold text-brand-red\">이메일 주소당 예약은 1회만</span> 가능합니다. 인증 코드로 본인 확인을 합니다."
     },
     "errors": {
       "monThuClosed": "월·목 휴무 (스태프 부재)",
       "gasMissing": "오류: 웹앱 URL이 설정되지 않았습니다.",
-      "system": "시스템 오류가 발생했습니다. 다시 시도해 주세요."
+      "system": "시스템 오류가 발생했습니다. 다시 시도해 주세요.",
+      "alreadyBooked": "이미 예약된 이메일입니다(1회만 가능).",
+      "invalidEmail": "올바른 이메일 주소를 입력해 주세요.",
+      "tooSoon": "인증 코드 재전송은 1분 후에 해 주세요.",
+      "invalidCode": "인증 코드가 올바르지 않습니다.",
+      "expired": "인증 코드가 만료되었습니다. 다시 보내 주세요.",
+      "notVerified": "먼저 이메일 인증을 완료해 주세요.",
+      "missingFields": "필수 항목을 입력해 주세요."
     },
     "lang": {
       "label": "언어"

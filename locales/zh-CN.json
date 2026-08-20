@@ -48,12 +48,30 @@
     "honorific": " 先生/女士",
     "screenshotTitle": "请截图保存此页面<br>务必留存。",
     "screenshotNote": "到访当天请先确认保存的截图内容后再前来。",
-    "resultNameSuffix": " 先生/女士"
+    "resultNameSuffix": " 先生/女士",
+    "sendCode": "发送验证码",
+    "sendingCode": "发送中...",
+    "emailHint": "将向此邮箱发送6位验证码。每个邮箱仅可预约1次。",
+    "code": "验证码（6位）",
+    "codePlaceholder": "123456",
+    "verifyCode": "验证代码",
+    "verifying": "验证中...",
+    "codeSent": "验证码已发送，请查收邮件。",
+    "verified": "邮箱验证完成",
+    "submitHint": "完成邮箱验证后即可提交",
+    "notice4": "<span class=\"font-bold text-brand-red\">每个邮箱仅可预约1次</span>。通过验证码确认本人。"
   },
   "errors": {
     "monThuClosed": "周一·周四休息（无工作人员）",
     "gasMissing": "错误：未设置系统URL。",
-    "system": "发生系统错误，请重试。"
+    "system": "发生系统错误，请重试。",
+    "alreadyBooked": "该邮箱已预约过（仅限1次）。",
+    "invalidEmail": "请输入正确的邮箱地址。",
+    "tooSoon": "请1分钟后再重新发送验证码。",
+    "invalidCode": "验证码不正确。",
+    "expired": "验证码已过期，请重新发送。",
+    "notVerified": "请先完成邮箱验证。",
+    "missingFields": "请填写必填项。"
   },
   "lang": {
     "label": "语言"

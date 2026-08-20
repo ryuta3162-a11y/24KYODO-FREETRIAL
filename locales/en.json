@@ -48,12 +48,30 @@
     "honorific": "",
     "screenshotTitle": "Please take a screenshot of this screen<br>and save it.",
     "screenshotNote": "On the day of your visit, please check the saved screen before coming to the gym.",
-    "resultNameSuffix": ""
+    "resultNameSuffix": "",
+    "sendCode": "Send verification code",
+    "sendingCode": "Sending...",
+    "emailHint": "We will send a 6-digit code to this address. One reservation per email.",
+    "code": "Verification code (6 digits)",
+    "codePlaceholder": "123456",
+    "verifyCode": "Verify code",
+    "verifying": "Verifying...",
+    "codeSent": "Verification code sent. Please check your email.",
+    "verified": "Email verified",
+    "submitHint": "You can submit after email verification",
+    "notice4": "<span class=\"font-bold text-brand-red\">One reservation per email address</span>. We verify with a code."
   },
   "errors": {
     "monThuClosed": "MON & THU CLOSED (No staff on Mondays and Thursdays)",
     "gasMissing": "Error: Web app URL is not configured.",
-    "system": "A system error occurred. Please try again."
+    "system": "A system error occurred. Please try again.",
+    "alreadyBooked": "This email already has a reservation (one per email).",
+    "invalidEmail": "Please enter a valid email address.",
+    "tooSoon": "Please wait 1 minute before requesting another code.",
+    "invalidCode": "The verification code is incorrect.",
+    "expired": "The code has expired. Please request a new one.",
+    "notVerified": "Please complete email verification first.",
+    "missingFields": "Please fill in all required fields."
   },
   "lang": {
     "label": "Language"

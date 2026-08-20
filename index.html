@@ -160,10 +160,40 @@
                 0 4px 12px rgba(17, 24, 39, 0.08);
             clip-path: none;
         }
-        .btn-solid:hover {
+        .btn-solid:hover:not(:disabled) {
             transform: translateY(-1px);
             background-color: var(--brand-red-dark) !important;
             box-shadow: 0 14px 26px rgba(220, 38, 38, 0.34);
+        }
+        .btn-solid:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        .btn-outline {
+            width: 100%;
+            background: #fff;
+            color: var(--brand-red);
+            font-weight: 800;
+            border: 2px solid var(--brand-red);
+            border-radius: var(--radius);
+            padding: 0.7rem 1rem;
+            letter-spacing: 0.04em;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+        .btn-outline:hover:not(:disabled) {
+            background: var(--brand-red);
+            color: #fff;
+        }
+        .btn-outline:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .verify-ok {
+            color: #047857;
+            font-weight: 800;
+            font-size: 0.75rem;
         }
 
         .notice-card {
@@ -358,7 +388,15 @@
                         </div>
                         <div class="group">
                             <label class="block text-xs font-bold text-gray-600 mb-1" data-i18n="form.email">メールアドレス</label>
-                            <input type="email" id="email" name="email" required data-i18n-placeholder="form.emailPlaceholder" placeholder="joyfit@example.com" class="input-underline px-4 py-3">
+                            <input type="email" id="email" name="email" required autocomplete="email" data-i18n-placeholder="form.emailPlaceholder" placeholder="joyfit@example.com" class="input-underline px-4 py-3">
+                            <button type="button" id="send-code-button" class="btn-outline mt-3 text-sm" data-i18n="form.sendCode">認証コードを送信</button>
+                            <p class="text-[11px] text-gray-600 mt-2 font-medium" data-i18n="form.emailHint">このアドレスに6桁の認証コードを送ります。予約は1回のみです。</p>
+                        </div>
+                        <div class="group hidden" id="code-block">
+                            <label class="block text-xs font-bold text-gray-600 mb-1" data-i18n="form.code">認証コード（6桁）</label>
+                            <input type="text" id="verify-code" name="verifyCode" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code" data-i18n-placeholder="form.codePlaceholder" placeholder="123456" class="input-underline px-4 py-3 font-eng tracking-[0.3em]">
+                            <button type="button" id="verify-code-button" class="btn-outline mt-3 text-sm" data-i18n="form.verifyCode">コードを認証する</button>
+                            <p id="verify-status" class="text-xs mt-2 font-bold min-h-[1rem]"></p>
                         </div>
                         <div class="group">
                             <label class="block text-xs font-bold text-gray-600 mb-1" data-i18n="form.tel">電話番号</label>
@@ -398,6 +436,7 @@
                             <li data-i18n="form.notice1">館内は土足でのご利用が可能です。</li>
                             <li data-i18n-html="form.notice2">体験は<span class="font-bold text-gray-900">60分を目安</span>にご利用頂いております。</li>
                             <li data-i18n-html="form.notice3"><span class="font-bold text-brand-red">月曜日・木曜日はスタッフ不在のため予約不可。</span></li>
+                            <li data-i18n-html="form.notice4"><span class="font-bold text-brand-red">予約はメールアドレスにつき1回のみ</span>です。認証コードで本人確認します。</li>
                         </ul>
 
                         <div class="mt-4 pt-3 border-t" style="border-color: var(--line-strong);">
@@ -434,7 +473,8 @@
                     </div>
 
                     <div class="pt-4">
-                        <button type="submit" id="submit-button" class="btn-solid text-white font-black text-lg py-4 tracking-widest" data-i18n="form.submit">上記の内容で申し込む</button>
+                        <button type="submit" id="submit-button" class="btn-solid text-white font-black text-lg py-4 tracking-widest" data-i18n="form.submit" disabled>上記の内容で申し込む</button>
+                        <p class="text-[11px] text-gray-600 mt-2 text-center font-medium" data-i18n="form.submitHint">メール認証が完了すると申し込めます</p>
                         <p id="submit-error" class="text-red-600 text-xs h-4 mt-3 text-center font-bold"></p>
                     </div>
                 </form>
@@ -555,6 +595,15 @@
                 timeInput.disabled = false;
             });
 
+            const sendCodeButton = document.getElementById('send-code-button');
+            const verifyCodeButton = document.getElementById('verify-code-button');
+            const emailInput = document.getElementById('email');
+            const codeBlock = document.getElementById('code-block');
+            const codeInput = document.getElementById('verify-code');
+            const verifyStatus = document.getElementById('verify-status');
+            let verifiedEmail = '';
+            let verifiedToken = '';
+
             window.addEventListener('joyfit:langchange', function() {
                 if (timeInput.options.length && timeInput.options[0].value === '') {
                     timeInput.options[0].textContent = timeInput.disabled
@@ -567,13 +616,169 @@
                 if (!submitButton.disabled && successMessage.classList.contains('hidden')) {
                     submitButton.textContent = JoyfitI18n.t('form.submit', '上記の内容で申し込む');
                 }
+                if (!sendCodeButton.disabled) {
+                    sendCodeButton.textContent = JoyfitI18n.t('form.sendCode', '認証コードを送信');
+                }
+                if (!verifyCodeButton.disabled) {
+                    verifyCodeButton.textContent = JoyfitI18n.t('form.verifyCode', 'コードを認証する');
+                }
+                if (verifiedToken) {
+                    verifyStatus.className = 'verify-ok mt-2 min-h-[1rem]';
+                    verifyStatus.textContent = JoyfitI18n.t('form.verified', 'メール認証が完了しました');
+                }
             });
 
-            form.addEventListener('submit', function(e) {
+            function mapGasError(code) {
+                const keys = {
+                    alreadyBooked: 'errors.alreadyBooked',
+                    invalidEmail: 'errors.invalidEmail',
+                    tooSoon: 'errors.tooSoon',
+                    invalidCode: 'errors.invalidCode',
+                    expired: 'errors.expired',
+                    notVerified: 'errors.notVerified',
+                    missingFields: 'errors.missingFields'
+                };
+                const fallbacks = {
+                    alreadyBooked: 'このメールアドレスはすでに予約済みです（1回のみ）。',
+                    invalidEmail: 'メールアドレスを正しく入力してください。',
+                    tooSoon: '認証コードの再送信は1分後にお願いします。',
+                    invalidCode: '認証コードが違います。',
+                    expired: '認証コードの有効期限が切れています。再送信してください。',
+                    notVerified: '先にメール認証を完了してください。',
+                    missingFields: '必須項目を入力してください。'
+                };
+                const key = keys[code] || 'errors.system';
+                return JoyfitI18n.t(key, fallbacks[code] || 'システムエラーが発生しました。再度お試しください。');
+            }
+
+            function gasJsonp(params) {
+                return new Promise(function(resolve, reject) {
+                    const cbName = 'joyfitCb_' + Date.now() + '_' + Math.floor(Math.random() * 1e9);
+                    const script = document.createElement('script');
+                    const timeout = setTimeout(function() {
+                        cleanup();
+                        reject(new Error('timeout'));
+                    }, 25000);
+                    function cleanup() {
+                        clearTimeout(timeout);
+                        try { delete window[cbName]; } catch (err) { window[cbName] = undefined; }
+                        if (script.parentNode) script.parentNode.removeChild(script);
+                    }
+                    window[cbName] = function(result) {
+                        cleanup();
+                        resolve(result);
+                    };
+                    const usp = new URLSearchParams(params);
+                    usp.set('callback', cbName);
+                    script.src = GAS_WEB_APP_URL + '?' + usp.toString();
+                    script.onerror = function() {
+                        cleanup();
+                        reject(new Error('network'));
+                    };
+                    document.body.appendChild(script);
+                });
+            }
+
+            function resetVerification() {
+                verifiedEmail = '';
+                verifiedToken = '';
+                submitButton.disabled = true;
+                verifyStatus.textContent = '';
+                verifyStatus.className = 'text-xs mt-2 font-bold min-h-[1rem]';
+            }
+
+            function markVerified(email, token) {
+                verifiedEmail = email;
+                verifiedToken = token;
+                submitButton.disabled = false;
+                verifyStatus.className = 'verify-ok mt-2 min-h-[1rem]';
+                verifyStatus.textContent = JoyfitI18n.t('form.verified', 'メール認証が完了しました');
+                emailInput.readOnly = true;
+            }
+
+            emailInput.addEventListener('input', function() {
+                if (verifiedEmail && emailInput.value.trim().toLowerCase() !== verifiedEmail) {
+                    emailInput.readOnly = false;
+                    resetVerification();
+                }
+            });
+
+            sendCodeButton.addEventListener('click', async function() {
+                submitError.textContent = '';
+                verifyStatus.textContent = '';
+                if (!emailInput.checkValidity()) {
+                    emailInput.reportValidity();
+                    return;
+                }
+                sendCodeButton.disabled = true;
+                sendCodeButton.textContent = JoyfitI18n.t('form.sendingCode', '送信中...');
+                try {
+                    const result = await gasJsonp({ action: 'sendCode', email: emailInput.value });
+                    if (!result || !result.ok) {
+                        verifyStatus.className = 'text-red-600 text-xs mt-2 font-bold min-h-[1rem]';
+                        verifyStatus.textContent = mapGasError(result && result.error);
+                        if (result && result.error === 'alreadyBooked') {
+                            codeBlock.classList.add('hidden');
+                        }
+                        return;
+                    }
+                    resetVerification();
+                    codeBlock.classList.remove('hidden');
+                    codeInput.value = '';
+                    codeInput.focus();
+                    verifyStatus.className = 'text-gray-700 text-xs mt-2 font-bold min-h-[1rem]';
+                    verifyStatus.textContent = JoyfitI18n.t('form.codeSent', '認証コードを送信しました。メールをご確認ください。');
+                } catch (err) {
+                    console.error(err);
+                    verifyStatus.className = 'text-red-600 text-xs mt-2 font-bold min-h-[1rem]';
+                    verifyStatus.textContent = JoyfitI18n.t('errors.system', 'システムエラーが発生しました。再度お試しください。');
+                } finally {
+                    sendCodeButton.disabled = false;
+                    sendCodeButton.textContent = JoyfitI18n.t('form.sendCode', '認証コードを送信');
+                }
+            });
+
+            verifyCodeButton.addEventListener('click', async function() {
+                submitError.textContent = '';
+                if (!/^\d{6}$/.test(String(codeInput.value || '').trim())) {
+                    verifyStatus.className = 'text-red-600 text-xs mt-2 font-bold min-h-[1rem]';
+                    verifyStatus.textContent = JoyfitI18n.t('errors.invalidCode', '認証コードが違います。');
+                    return;
+                }
+                verifyCodeButton.disabled = true;
+                verifyCodeButton.textContent = JoyfitI18n.t('form.verifying', '認証中...');
+                try {
+                    const result = await gasJsonp({
+                        action: 'verifyCode',
+                        email: emailInput.value,
+                        code: codeInput.value
+                    });
+                    if (!result || !result.ok || !result.token) {
+                        resetVerification();
+                        verifyStatus.className = 'text-red-600 text-xs mt-2 font-bold min-h-[1rem]';
+                        verifyStatus.textContent = mapGasError(result && result.error);
+                        return;
+                    }
+                    markVerified(emailInput.value.trim().toLowerCase(), result.token);
+                } catch (err) {
+                    console.error(err);
+                    verifyStatus.className = 'text-red-600 text-xs mt-2 font-bold min-h-[1rem]';
+                    verifyStatus.textContent = JoyfitI18n.t('errors.system', 'システムエラーが発生しました。再度お試しください。');
+                } finally {
+                    verifyCodeButton.disabled = false;
+                    verifyCodeButton.textContent = JoyfitI18n.t('form.verifyCode', 'コードを認証する');
+                }
+            });
+
+            form.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
                 if (!GAS_WEB_APP_URL) {
                     submitError.textContent = JoyfitI18n.t('errors.gasMissing', 'エラー: GASウェブアプリのURLが設定されていません。');
+                    return;
+                }
+                if (!verifiedToken || emailInput.value.trim().toLowerCase() !== verifiedEmail) {
+                    submitError.textContent = JoyfitI18n.t('errors.notVerified', '先にメール認証を完了してください。');
                     return;
                 }
 
@@ -586,13 +791,27 @@
                 const data = Object.fromEntries(formData.entries());
                 const planLabel = JoyfitI18n.planLabel(data.plan);
 
-                fetch(GAS_WEB_APP_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: JSON.stringify(data)
-                })
-                .then(() => {
+                try {
+                    const result = await gasJsonp({
+                        action: 'submit',
+                        token: verifiedToken,
+                        plan: data.plan,
+                        name: data.name,
+                        email: data.email,
+                        tel: data.tel,
+                        gender: data.gender,
+                        age: data.age,
+                        date: data.date,
+                        time: data.time
+                    });
+                    if (!result || !result.ok) {
+                        submitError.textContent = mapGasError(result && result.error);
+                        submitButton.disabled = false;
+                        submitButton.textContent = JoyfitI18n.t('form.submit', '上記の内容で申し込む');
+                        submitButton.classList.remove('opacity-70');
+                        return;
+                    }
+
                     document.getElementById('result-plan-message').textContent = planLabel;
                     document.getElementById('result-name-message').textContent = data.name;
                     document.getElementById('result-plan').textContent = planLabel;
@@ -605,18 +824,13 @@
                     formContainer.classList.add('hidden');
                     successMessage.classList.remove('hidden');
                     formSection.scrollIntoView({ behavior: 'smooth' });
-                })
-                .catch(error => {
+                } catch (error) {
                     console.error('Error:', error);
                     submitError.textContent = JoyfitI18n.t('errors.system', 'システムエラーが発生しました。再度お試しください。');
-                })
-                .finally(() => {
-                    if (successMessage.classList.contains('hidden')) {
-                        submitButton.disabled = false;
-                        submitButton.textContent = JoyfitI18n.t('form.submit', '上記の内容で申し込む');
-                        submitButton.classList.remove('opacity-70');
-                    }
-                });
+                    submitButton.disabled = false;
+                    submitButton.textContent = JoyfitI18n.t('form.submit', '上記の内容で申し込む');
+                    submitButton.classList.remove('opacity-70');
+                }
             });
         });
     </script>
