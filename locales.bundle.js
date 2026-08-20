@@ -4,12 +4,13 @@ window.JOYFIT_LOCALES = {
       "title": "Free Gym Tour & Trial - JOYFIT24 Kyodo"
     },
     "hero": {
-      "subtitle": "Tour or try our 24-hour gym for free",
-      "title": "Free Gym Tour & Trial",
+      "subtitle": "Please visit during staffed hours",
+      "title": "Free tour & trial reservation",
       "formLabel": "RESERVATION FORM"
     },
     "form": {
       "planPrompt": "Please choose a tour or trial session",
+      "datetimePrompt": "Preferred date and time",
       "visit": "Tour",
       "trial": "Trial",
       "customerInfo": "Please enter your details",
@@ -83,12 +84,13 @@ window.JOYFIT_LOCALES = {
       "title": "免费参观·体验 - JOYFIT24经堂"
     },
     "hero": {
-      "subtitle": "可免费参观·体验24小时健身房",
-      "title": "健身房免费参观·体验",
+      "subtitle": "请在工作人员在馆时间内到店",
+      "title": "免费参观·体验预约",
       "formLabel": "RESERVATION FORM"
     },
     "form": {
       "planPrompt": "请选择参观或体验",
+      "datetimePrompt": "希望日期与时间",
       "visit": "参观",
       "trial": "体验",
       "customerInfo": "请填写您的信息",
@@ -162,12 +164,13 @@ window.JOYFIT_LOCALES = {
       "title": "免費參觀·體驗 - JOYFIT24經堂"
     },
     "hero": {
-      "subtitle": "可免費參觀·體驗24小時健身房",
-      "title": "健身房免費參觀·體驗",
+      "subtitle": "請於工作人員在館時間內到店",
+      "title": "免費參觀·體驗預約",
       "formLabel": "RESERVATION FORM"
     },
     "form": {
       "planPrompt": "請選擇參觀或體驗",
+      "datetimePrompt": "希望日期與時間",
       "visit": "參觀",
       "trial": "體驗",
       "customerInfo": "請填寫您的資訊",
@@ -241,12 +244,13 @@ window.JOYFIT_LOCALES = {
       "title": "무료 견학·체험 - JOYFIT24 경당"
     },
     "hero": {
-      "subtitle": "24시간 헬스장을 무료로 견학·체험할 수 있습니다",
-      "title": "헬스장 무료 견학·체험",
+      "subtitle": "스태프 상주 시간에 방문해 주세요",
+      "title": "무료 견학·체험 예약",
       "formLabel": "RESERVATION FORM"
     },
     "form": {
       "planPrompt": "견학 또는 체험 중 선택해 주세요",
+      "datetimePrompt": "희망 날짜와 시간",
       "visit": "견학",
       "trial": "체험",
       "customerInfo": "고객 정보를 입력해 주세요",

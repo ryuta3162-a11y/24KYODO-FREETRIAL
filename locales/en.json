@@ -3,12 +3,13 @@
     "title": "Free Gym Tour & Trial - JOYFIT24 Kyodo"
   },
   "hero": {
-    "subtitle": "Tour or try our 24-hour gym for free",
-    "title": "Free Gym Tour & Trial",
+    "subtitle": "Please visit during staffed hours",
+    "title": "Free tour & trial reservation",
     "formLabel": "RESERVATION FORM"
   },
   "form": {
     "planPrompt": "Please choose a tour or trial session",
+    "datetimePrompt": "Preferred date and time",
     "visit": "Tour",
     "trial": "Trial",
     "customerInfo": "Please enter your details",

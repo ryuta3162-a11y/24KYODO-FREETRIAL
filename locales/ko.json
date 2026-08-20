@@ -3,12 +3,13 @@
     "title": "무료 견학·체험 - JOYFIT24 경당"
   },
   "hero": {
-    "subtitle": "24시간 헬스장을 무료로 견학·체험할 수 있습니다",
-    "title": "헬스장 무료 견학·체험",
+    "subtitle": "스태프 상주 시간에 방문해 주세요",
+    "title": "무료 견학·체험 예약",
     "formLabel": "RESERVATION FORM"
   },
   "form": {
     "planPrompt": "견학 또는 체험 중 선택해 주세요",
+    "datetimePrompt": "희망 날짜와 시간",
     "visit": "견학",
     "trial": "체험",
     "customerInfo": "고객 정보를 입력해 주세요",

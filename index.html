@@ -48,22 +48,27 @@
         .lp-card {
             background: var(--surface) !important;
             color: var(--ink);
-            border: 2px solid var(--brand-red);
-            border-radius: 1.25rem;
-            border-top: 4px solid var(--brand-red);
-            box-shadow:
-                0 22px 45px -18px rgba(17, 24, 39, 0.10),
-                0 8px 18px rgba(17, 24, 39, 0.06),
-                0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+            border: 1px solid rgba(17, 24, 39, 0.10);
+            border-radius: 1.5rem;
+            border-top: 3px solid var(--brand-red);
+            box-shadow: 0 10px 22px rgba(17, 24, 39, 0.08);
         }
 
         .page-title-card {
-            background: #FAFBFC;
-            border: 1px solid rgba(17, 24, 39, 0.12);
+            margin-top: 1.25rem;
+            background: #FFFFFF;
+            border: 1px solid rgba(17, 24, 39, 0.10);
             border-radius: 1rem;
-            box-shadow:
-                0 10px 22px rgba(17, 24, 39, 0.12),
-                0 0 0 1px rgba(17, 24, 39, 0.04) inset;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 10px 22px rgba(17, 24, 39, 0.08);
+        }
+        .section-kicker {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            color: var(--brand-red);
+            margin-bottom: 0.45rem;
         }
         .hero-brand-line {
             display: inline-flex;
@@ -76,18 +81,19 @@
         .hero-brand-main {
             font-weight: 900;
             letter-spacing: 0.04em;
-            font-size: clamp(1.8rem, 4.6vw, 2.4rem);
+            font-size: clamp(2rem, 5vw, 3.2rem);
         }
         .hero-brand-sub {
             font-weight: 800;
             color: var(--brand-red);
             letter-spacing: 0.12em;
-            font-size: clamp(1.2rem, 3.6vw, 1.65rem);
+            font-size: clamp(1.35rem, 3.8vw, 2.2rem);
         }
         .hero-subtitle {
-            margin-top: 1rem;
+            margin-top: 0.55rem;
+            margin-bottom: 0;
             color: #374151;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
             letter-spacing: 0.03em;
         }
@@ -171,37 +177,23 @@
             box-shadow: none;
             transform: none;
         }
-        .btn-outline {
-            width: 100%;
-            background: #fff;
-            color: var(--brand-red);
-            font-weight: 800;
-            border: 2px solid var(--brand-red);
-            border-radius: var(--radius);
-            padding: 0.7rem 1rem;
-            letter-spacing: 0.04em;
-            transition: background-color 0.15s ease, color 0.15s ease;
-        }
-        .btn-outline:hover:not(:disabled) {
-            background: var(--brand-red);
-            color: #fff;
-        }
-        .btn-outline:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .verify-ok {
-            color: #047857;
-            font-weight: 800;
-            font-size: 0.75rem;
-        }
 
         .notice-card {
             border-radius: var(--radius);
-            border: 1px solid rgba(17, 24, 39, 0.14);
+            border: 1px solid rgba(17, 24, 39, 0.10);
             background: #FAFBFC;
-            border-top: 3px solid var(--brand-red);
-            box-shadow: 0 10px 22px rgba(17, 24, 39, 0.10);
+        }
+        .success-mark {
+            width: 4.5rem;
+            height: 4.5rem;
+            background-color: var(--brand-red);
+            color: #fff;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 12px 24px rgba(220, 38, 38, 0.28);
         }
 
         .divider-line {
@@ -338,47 +330,61 @@
         </div>
     </div>
 
-    <main class="w-full max-w-2xl z-10 space-y-6 mx-auto pt-10 px-4 pb-16 sm:pb-20">
+    <main class="w-full max-w-2xl z-10 space-y-8 mx-auto pt-16 px-4 pb-16 sm:pb-20">
 
-        <section class="lp-card p-6 md:p-8 text-center">
+        <header class="text-center">
             <h1 class="hero-brand-line">
                 <span class="hero-brand-main">JOYFIT24</span>
                 <span class="hero-brand-sub">経堂</span>
             </h1>
-            <p class="hero-subtitle" data-i18n="hero.subtitle">24時間ジムを無料で見学・体験できます</p>
-
-            <div class="mt-4 page-title-card p-4">
-                <h2 class="text-2xl font-black text-brand-red leading-tight" data-i18n="hero.title">
-                    ジム無料見学・体験
+            <div class="page-title-card max-w-xl mx-auto">
+                <h2 class="text-2xl md:text-3xl font-black text-brand-red leading-tight" data-i18n="hero.title">
+                    無料見学・体験予約
                 </h2>
-                <p class="text-sm text-gray-600 mt-1 font-eng tracking-wider">RESERVATION FORM</p>
+                <p class="hero-subtitle" data-i18n="hero.subtitle">スタッフ在館時間にご来館ください</p>
             </div>
-        </section>
+        </header>
 
         <section id="form-section" class="lp-card p-6 md:p-10">
             <div id="form-container">
                 <form id="inquiry-form" class="space-y-8">
 
                     <div class="space-y-6">
-                        <div class="divider-line mb-4"></div>
-
                         <div class="space-y-3">
+                            <span class="section-kicker">01</span>
                             <p class="text-sm font-black text-gray-900 tracking-wide" data-i18n="form.planPrompt">見学・体験どちらかご選択ください</p>
                             <div class="grid grid-cols-2 gap-4">
                                 <input type="radio" id="tour" name="plan" value="見学" class="hidden plan-radio" required checked>
                                 <label for="tour" class="block text-center cursor-pointer py-4 px-2 font-bold text-lg">
-                                    <span class="block text-xs font-normal mb-1 font-eng">VISIT</span>
                                     <span data-i18n="form.visit">見学</span>
                                 </label>
                                 <input type="radio" id="trial" name="plan" value="体験" class="hidden plan-radio">
                                 <label for="trial" class="block text-center cursor-pointer py-4 px-2 font-bold text-lg">
-                                    <span class="block text-xs font-normal mb-1 font-eng">TRIAL</span>
                                     <span data-i18n="form.trial">体験</span>
                                 </label>
                             </div>
                         </div>
 
-                        <div class="border-t pt-4 mt-6" style="border-color: var(--line-strong);">
+                        <div class="space-y-3 pt-2">
+                            <span class="section-kicker">02</span>
+                            <p class="text-sm font-black text-gray-900 tracking-wide" data-i18n="form.datetimePrompt">ご希望の日時</p>
+                            <div class="grid grid-cols-2 gap-4 sm:gap-6">
+                                <div class="group">
+                                    <label class="block text-xs font-bold text-gray-600 mb-1" data-i18n="form.preferredDate">ご希望日</label>
+                                    <input type="date" id="date" name="date" required class="input-underline px-4 py-3 font-eng">
+                                </div>
+                                <div class="group">
+                                    <label class="block text-xs font-bold text-gray-600 mb-1" data-i18n="form.preferredTime">ご来館時刻</label>
+                                    <select id="time" name="time" required class="input-underline px-4 py-3 font-eng bg-transparent" disabled>
+                                        <option value="" data-i18n="form.timeEmpty">---</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <p id="date-error" class="text-red-600 text-xs min-h-4 font-bold text-center"></p>
+                        </div>
+
+                        <div class="pt-2">
+                            <span class="section-kicker">03</span>
                             <p class="text-sm font-black text-gray-900 mb-4 tracking-wide" data-i18n="form.customerInfo">お客様情報をご入力ください</p>
                         </div>
 
@@ -424,6 +430,7 @@
                     </div>
 
                     <div class="notice-card p-4 text-sm text-gray-700 space-y-2">
+                        <span class="section-kicker">04</span>
                         <p class="font-bold text-xs text-brand-red mb-2" data-i18n="form.noticeTitle">ご確認事項</p>
                         <ul class="list-disc list-inside space-y-1 text-xs">
                             <li data-i18n="form.notice1">館内は土足でのご利用が可能です。</li>
@@ -447,25 +454,7 @@
                         </div>
                     </div>
 
-                    <div class="space-y-4">
-                        <div class="divider-line mb-4"></div>
-
-                        <div class="grid grid-cols-2 gap-6">
-                            <div class="group">
-                                <label class="block text-xs font-bold text-gray-600 mb-1" data-i18n="form.preferredDate">ご希望日</label>
-                                <input type="date" id="date" name="date" required class="input-underline px-4 py-3 font-eng">
-                            </div>
-                            <div class="group">
-                                <label class="block text-xs font-bold text-gray-600 mb-1" data-i18n="form.preferredTime">ご来館時刻</label>
-                                <select id="time" name="time" required class="input-underline px-4 py-3 font-eng bg-transparent" disabled>
-                                    <option value="" data-i18n="form.timeEmpty">---</option>
-                                </select>
-                            </div>
-                        </div>
-                        <p id="date-error" class="text-red-600 text-xs h-4 mt-1 font-bold text-center"></p>
-                    </div>
-
-                    <div class="pt-4">
+                    <div class="pt-2">
                         <button type="submit" id="submit-button" class="btn-solid text-white font-black text-lg py-4 tracking-widest" data-i18n="form.submit">上記の内容で申し込む</button>
                         <p id="submit-error" class="text-red-600 text-xs h-4 mt-3 text-center font-bold"></p>
                     </div>
@@ -473,13 +462,13 @@
             </div>
 
             <div id="success-message" class="hidden text-center py-10">
-                <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg text-white">
+                <div class="success-mark">
                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
                 </div>
                 <h2 class="text-3xl font-black text-gray-900 mb-2"><span id="result-plan-message"></span><span data-i18n="form.successReceived">予約を承りました。</span></h2>
                 <p class="text-gray-700 mb-8 font-medium"><span id="result-name-message"></span><span data-i18n="form.successWelcome">様のご来館をお待ちしております。</span></p>
 
-                <div class="lp-card text-left p-6 rounded-xl max-w-md mx-auto">
+                <div class="notice-card text-left p-6 max-w-md mx-auto">
                     <div class="space-y-4">
                         <div class="flex justify-between items-center border-b pb-2" style="border-color: var(--line-strong);">
                             <span class="text-xs text-gray-600 font-bold">PLAN</span>

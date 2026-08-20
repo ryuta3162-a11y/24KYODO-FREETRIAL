@@ -3,12 +3,13 @@
     "title": "免費參觀·體驗 - JOYFIT24經堂"
   },
   "hero": {
-    "subtitle": "可免費參觀·體驗24小時健身房",
-    "title": "健身房免費參觀·體驗",
+    "subtitle": "請於工作人員在館時間內到店",
+    "title": "免費參觀·體驗預約",
     "formLabel": "RESERVATION FORM"
   },
   "form": {
     "planPrompt": "請選擇參觀或體驗",
+    "datetimePrompt": "希望日期與時間",
     "visit": "參觀",
     "trial": "體驗",
     "customerInfo": "請填寫您的資訊",
