@@ -60,13 +60,13 @@ window.JOYFIT_LOCALES = {
       "codeSent": "Verification code sent. Please check your email.",
       "verified": "Email verified",
       "submitHint": "You can submit after email verification",
-      "notice4": "<span class=\"font-bold text-brand-red\">One reservation per email address</span>. We verify with a code."
+      "notice4": "<span class=\"font-bold text-brand-red\">One reservation per email address</span>."
     },
     "errors": {
       "monThuClosed": "MON & THU CLOSED (No staff on Mondays and Thursdays)",
       "gasMissing": "Error: Web app URL is not configured.",
       "system": "A system error occurred. Please try again.",
-      "alreadyBooked": "This email already has a reservation (one per email).",
+      "alreadyBooked": "This email already has a reservation. Only one reservation is allowed.",
       "invalidEmail": "Please enter a valid email address.",
       "tooSoon": "Please wait 1 minute before requesting another code.",
       "invalidCode": "The verification code is incorrect.",
@@ -139,13 +139,13 @@ window.JOYFIT_LOCALES = {
       "codeSent": "验证码已发送，请查收邮件。",
       "verified": "邮箱验证完成",
       "submitHint": "完成邮箱验证后即可提交",
-      "notice4": "<span class=\"font-bold text-brand-red\">每个邮箱仅可预约1次</span>。通过验证码确认本人。"
+      "notice4": "<span class=\"font-bold text-brand-red\">每个邮箱仅可预约1次</span>。"
     },
     "errors": {
       "monThuClosed": "周一·周四休息（无工作人员）",
       "gasMissing": "错误：未设置系统URL。",
       "system": "发生系统错误，请重试。",
-      "alreadyBooked": "该邮箱已预约过（仅限1次）。",
+      "alreadyBooked": "该邮箱已预约过。每个邮箱仅可预约1次。",
       "invalidEmail": "请输入正确的邮箱地址。",
       "tooSoon": "请1分钟后再重新发送验证码。",
       "invalidCode": "验证码不正确。",
@@ -218,13 +218,13 @@ window.JOYFIT_LOCALES = {
       "codeSent": "驗證碼已傳送，請查看郵件。",
       "verified": "電子郵件驗證完成",
       "submitHint": "完成電子郵件驗證後即可送出",
-      "notice4": "<span class=\"font-bold text-brand-red\">每個電子郵件僅可預約1次</span>。以驗證碼進行本人確認。"
+      "notice4": "<span class=\"font-bold text-brand-red\">每個電子郵件僅可預約1次</span>。"
     },
     "errors": {
       "monThuClosed": "週一·週四休館（無工作人員）",
       "gasMissing": "錯誤：未設定系統URL。",
       "system": "發生系統錯誤，請再試一次。",
-      "alreadyBooked": "此電子郵件已預約過（僅限1次）。",
+      "alreadyBooked": "此電子郵件已預約過。每個電子郵件僅可預約1次。",
       "invalidEmail": "請輸入正確的電子郵件。",
       "tooSoon": "請於1分鐘後再重新傳送驗證碼。",
       "invalidCode": "驗證碼不正確。",
@@ -297,13 +297,13 @@ window.JOYFIT_LOCALES = {
       "codeSent": "인증 코드를 보냈습니다. 메일을 확인해 주세요.",
       "verified": "이메일 인증이 완료되었습니다",
       "submitHint": "이메일 인증 후 신청할 수 있습니다",
-      "notice4": "<span class=\"font-bold text-brand-red\">이메일 주소당 예약은 1회만</span> 가능합니다. 인증 코드로 본인 확인을 합니다."
+      "notice4": "<span class=\"font-bold text-brand-red\">이메일 주소당 예약은 1회만</span> 가능합니다."
     },
     "errors": {
       "monThuClosed": "월·목 휴무 (스태프 부재)",
       "gasMissing": "오류: 웹앱 URL이 설정되지 않았습니다.",
       "system": "시스템 오류가 발생했습니다. 다시 시도해 주세요.",
-      "alreadyBooked": "이미 예약된 이메일입니다(1회만 가능).",
+      "alreadyBooked": "이미 예약된 이메일입니다. 예약은 1회만 가능합니다.",
       "invalidEmail": "올바른 이메일 주소를 입력해 주세요.",
       "tooSoon": "인증 코드 재전송은 1분 후에 해 주세요.",
       "invalidCode": "인증 코드가 올바르지 않습니다.",

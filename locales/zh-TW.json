@@ -59,13 +59,13 @@
     "codeSent": "驗證碼已傳送，請查看郵件。",
     "verified": "電子郵件驗證完成",
     "submitHint": "完成電子郵件驗證後即可送出",
-    "notice4": "<span class=\"font-bold text-brand-red\">每個電子郵件僅可預約1次</span>。以驗證碼進行本人確認。"
+    "notice4": "<span class=\"font-bold text-brand-red\">每個電子郵件僅可預約1次</span>。"
   },
   "errors": {
     "monThuClosed": "週一·週四休館（無工作人員）",
     "gasMissing": "錯誤：未設定系統URL。",
     "system": "發生系統錯誤，請再試一次。",
-    "alreadyBooked": "此電子郵件已預約過（僅限1次）。",
+    "alreadyBooked": "此電子郵件已預約過。每個電子郵件僅可預約1次。",
     "invalidEmail": "請輸入正確的電子郵件。",
     "tooSoon": "請於1分鐘後再重新傳送驗證碼。",
     "invalidCode": "驗證碼不正確。",

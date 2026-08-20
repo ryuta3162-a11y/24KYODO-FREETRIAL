@@ -59,13 +59,13 @@
     "codeSent": "验证码已发送，请查收邮件。",
     "verified": "邮箱验证完成",
     "submitHint": "完成邮箱验证后即可提交",
-    "notice4": "<span class=\"font-bold text-brand-red\">每个邮箱仅可预约1次</span>。通过验证码确认本人。"
+    "notice4": "<span class=\"font-bold text-brand-red\">每个邮箱仅可预约1次</span>。"
   },
   "errors": {
     "monThuClosed": "周一·周四休息（无工作人员）",
     "gasMissing": "错误：未设置系统URL。",
     "system": "发生系统错误，请重试。",
-    "alreadyBooked": "该邮箱已预约过（仅限1次）。",
+    "alreadyBooked": "该邮箱已预约过。每个邮箱仅可预约1次。",
     "invalidEmail": "请输入正确的邮箱地址。",
     "tooSoon": "请1分钟后再重新发送验证码。",
     "invalidCode": "验证码不正确。",
