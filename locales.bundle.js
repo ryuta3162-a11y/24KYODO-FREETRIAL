@@ -4,6 +4,8 @@ window.JOYFIT_LOCALES = {
       "title": "Free Gym Tour & Trial - JOYFIT24 Kyodo"
     },
     "hero": {
+      "lineBlack": "Check the gym before joining",
+      "lineRed": "Free tour & trial now open",
       "subtitle": "Please visit during staffed hours",
       "title": "Free tour & trial reservation",
       "formLabel": "RESERVATION FORM"
@@ -13,7 +15,7 @@ window.JOYFIT_LOCALES = {
       "datetimePrompt": "Preferred date and time",
       "visit": "Tour",
       "trial": "Trial",
-      "customerInfo": "Please enter your details",
+      "customerInfo": "Your details",
       "name": "Full name",
       "namePlaceholder": "Taro Kyodo",
       "email": "Email address",
@@ -33,8 +35,8 @@ window.JOYFIT_LOCALES = {
       "age60": "60+",
       "noticeTitle": "Please note",
       "notice1": "Street shoes are allowed in the facility.",
-      "notice2": "Trial sessions are typically up to <span class=\"font-bold text-gray-900\">60 minutes</span>.",
-      "notice3": "<span class=\"font-bold text-brand-red\">No reservations on Mondays and Thursdays (no staff on site).</span>",
+      "notice2": "Trial sessions are typically up to <span class=\"font-bold\">60 minutes</span>.",
+      "notice3": "<span class=\"text-brand-red font-bold\">No reservations on Mondays and Thursdays (no staff on site).</span>",
       "staffHours": "Staffed hours",
       "weekday": "Weekdays",
       "weekend": "Sat / Sun / Holidays",
@@ -61,7 +63,7 @@ window.JOYFIT_LOCALES = {
       "codeSent": "Verification code sent. Please check your email.",
       "verified": "Email verified",
       "submitHint": "You can submit after email verification",
-      "notice4": "<span class=\"font-bold text-brand-red\">One reservation per email address</span>."
+      "notice4": "<span class=\"text-brand-red font-bold\">One reservation per email address</span>."
     },
     "errors": {
       "monThuClosed": "MON & THU CLOSED (No staff on Mondays and Thursdays)",
@@ -84,6 +86,8 @@ window.JOYFIT_LOCALES = {
       "title": "免费参观·体验 - JOYFIT24经堂"
     },
     "hero": {
+      "lineBlack": "入会前先了解场馆",
+      "lineRed": "免费参观·体验预约中",
       "subtitle": "请在工作人员在馆时间内到店",
       "title": "免费参观·体验预约",
       "formLabel": "RESERVATION FORM"
@@ -93,7 +97,7 @@ window.JOYFIT_LOCALES = {
       "datetimePrompt": "希望日期与时间",
       "visit": "参观",
       "trial": "体验",
-      "customerInfo": "请填写您的信息",
+      "customerInfo": "顾客信息",
       "name": "姓名",
       "namePlaceholder": "经堂 太郎",
       "email": "电子邮箱",
@@ -113,8 +117,8 @@ window.JOYFIT_LOCALES = {
       "age60": "60岁以上",
       "noticeTitle": "注意事项",
       "notice1": "馆内可穿着外出鞋使用。",
-      "notice2": "体验时间以<span class=\"font-bold text-gray-900\">约60分钟</span>为参考。",
-      "notice3": "<span class=\"font-bold text-brand-red\">周一、周四无工作人员，无法预约。</span>",
+      "notice2": "体验时间以<span class=\"font-bold\">约60分钟</span>为参考。",
+      "notice3": "<span class=\"text-brand-red font-bold\">周一、周四无工作人员，无法预约。</span>",
       "staffHours": "工作人员在岗时间",
       "weekday": "工作日",
       "weekend": "周六·周日·节假日",
@@ -141,7 +145,7 @@ window.JOYFIT_LOCALES = {
       "codeSent": "验证码已发送，请查收邮件。",
       "verified": "邮箱验证完成",
       "submitHint": "完成邮箱验证后即可提交",
-      "notice4": "<span class=\"font-bold text-brand-red\">每个邮箱仅可预约1次</span>。"
+      "notice4": "<span class=\"text-brand-red font-bold\">每个邮箱仅可预约1次</span>。"
     },
     "errors": {
       "monThuClosed": "周一·周四休息（无工作人员）",
@@ -164,6 +168,8 @@ window.JOYFIT_LOCALES = {
       "title": "免費參觀·體驗 - JOYFIT24經堂"
     },
     "hero": {
+      "lineBlack": "入會前先了解場館",
+      "lineRed": "免費參觀·體驗預約中",
       "subtitle": "請於工作人員在館時間內到店",
       "title": "免費參觀·體驗預約",
       "formLabel": "RESERVATION FORM"
@@ -173,7 +179,7 @@ window.JOYFIT_LOCALES = {
       "datetimePrompt": "希望日期與時間",
       "visit": "參觀",
       "trial": "體驗",
-      "customerInfo": "請填寫您的資訊",
+      "customerInfo": "顧客資訊",
       "name": "姓名",
       "namePlaceholder": "經堂 太郎",
       "email": "電子郵件",
@@ -193,8 +199,8 @@ window.JOYFIT_LOCALES = {
       "age60": "60歲以上",
       "noticeTitle": "注意事項",
       "notice1": "館內可穿著外出鞋使用。",
-      "notice2": "體驗時間以<span class=\"font-bold text-gray-900\">約60分鐘</span>為參考。",
-      "notice3": "<span class=\"font-bold text-brand-red\">週一、週四無工作人員，無法預約。</span>",
+      "notice2": "體驗時間以<span class=\"font-bold\">約60分鐘</span>為參考。",
+      "notice3": "<span class=\"text-brand-red font-bold\">週一、週四無工作人員，無法預約。</span>",
       "staffHours": "工作人員在館時間",
       "weekday": "平日",
       "weekend": "週六·週日·國定假日",
@@ -221,7 +227,7 @@ window.JOYFIT_LOCALES = {
       "codeSent": "驗證碼已傳送，請查看郵件。",
       "verified": "電子郵件驗證完成",
       "submitHint": "完成電子郵件驗證後即可送出",
-      "notice4": "<span class=\"font-bold text-brand-red\">每個電子郵件僅可預約1次</span>。"
+      "notice4": "<span class=\"text-brand-red font-bold\">每個電子郵件僅可預約1次</span>。"
     },
     "errors": {
       "monThuClosed": "週一·週四休館（無工作人員）",
@@ -244,6 +250,8 @@ window.JOYFIT_LOCALES = {
       "title": "무료 견학·체험 - JOYFIT24 경당"
     },
     "hero": {
+      "lineBlack": "입회 전 매장을 확인해 보세요",
+      "lineRed": "무료 견학·체험 예약 접수 중",
       "subtitle": "스태프 상주 시간에 방문해 주세요",
       "title": "무료 견학·체험 예약",
       "formLabel": "RESERVATION FORM"
@@ -253,7 +261,7 @@ window.JOYFIT_LOCALES = {
       "datetimePrompt": "희망 날짜와 시간",
       "visit": "견학",
       "trial": "체험",
-      "customerInfo": "고객 정보를 입력해 주세요",
+      "customerInfo": "고객 정보",
       "name": "이름",
       "namePlaceholder": "교도 타로",
       "email": "이메일 주소",
@@ -273,8 +281,8 @@ window.JOYFIT_LOCALES = {
       "age60": "60대 이상",
       "noticeTitle": "확인 사항",
       "notice1": "시설 내에서는 외출화 착용이 가능합니다.",
-      "notice2": "체험은 <span class=\"font-bold text-gray-900\">약 60분</span>을 기준으로 이용해 주세요.",
-      "notice3": "<span class=\"font-bold text-brand-red\">월·목요일은 스태프 부재로 예약 불가입니다.</span>",
+      "notice2": "체험은 <span class=\"font-bold\">약 60분</span>을 기준으로 이용해 주세요.",
+      "notice3": "<span class=\"text-brand-red font-bold\">월·목요일은 스태프 부재로 예약 불가입니다.</span>",
       "staffHours": "스태프 상주 시간",
       "weekday": "평일",
       "weekend": "토·일·공휴일",
@@ -301,7 +309,7 @@ window.JOYFIT_LOCALES = {
       "codeSent": "인증 코드를 보냈습니다. 메일을 확인해 주세요.",
       "verified": "이메일 인증이 완료되었습니다",
       "submitHint": "이메일 인증 후 신청할 수 있습니다",
-      "notice4": "<span class=\"font-bold text-brand-red\">이메일 주소당 예약은 1회만</span> 가능합니다."
+      "notice4": "<span class=\"text-brand-red font-bold\">이메일 주소당 예약은 1회만</span> 가능합니다."
     },
     "errors": {
       "monThuClosed": "월·목 휴무 (스태프 부재)",

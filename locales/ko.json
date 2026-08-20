@@ -3,6 +3,8 @@
     "title": "무료 견학·체험 - JOYFIT24 경당"
   },
   "hero": {
+    "lineBlack": "입회 전 매장을 확인해 보세요",
+    "lineRed": "무료 견학·체험 예약 접수 중",
     "subtitle": "스태프 상주 시간에 방문해 주세요",
     "title": "무료 견학·체험 예약",
     "formLabel": "RESERVATION FORM"
@@ -12,7 +14,7 @@
     "datetimePrompt": "희망 날짜와 시간",
     "visit": "견학",
     "trial": "체험",
-    "customerInfo": "고객 정보를 입력해 주세요",
+    "customerInfo": "고객 정보",
     "name": "이름",
     "namePlaceholder": "교도 타로",
     "email": "이메일 주소",
@@ -32,8 +34,8 @@
     "age60": "60대 이상",
     "noticeTitle": "확인 사항",
     "notice1": "시설 내에서는 외출화 착용이 가능합니다.",
-    "notice2": "체험은 <span class=\"font-bold text-gray-900\">약 60분</span>을 기준으로 이용해 주세요.",
-    "notice3": "<span class=\"font-bold text-brand-red\">월·목요일은 스태프 부재로 예약 불가입니다.</span>",
+    "notice2": "체험은 <span class=\"font-bold\">약 60분</span>을 기준으로 이용해 주세요.",
+    "notice3": "<span class=\"text-brand-red font-bold\">월·목요일은 스태프 부재로 예약 불가입니다.</span>",
     "staffHours": "스태프 상주 시간",
     "weekday": "평일",
     "weekend": "토·일·공휴일",
@@ -60,7 +62,7 @@
     "codeSent": "인증 코드를 보냈습니다. 메일을 확인해 주세요.",
     "verified": "이메일 인증이 완료되었습니다",
     "submitHint": "이메일 인증 후 신청할 수 있습니다",
-    "notice4": "<span class=\"font-bold text-brand-red\">이메일 주소당 예약은 1회만</span> 가능합니다."
+    "notice4": "<span class=\"text-brand-red font-bold\">이메일 주소당 예약은 1회만</span> 가능합니다."
   },
   "errors": {
     "monThuClosed": "월·목 휴무 (스태프 부재)",

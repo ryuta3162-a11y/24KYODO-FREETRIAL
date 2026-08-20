@@ -3,6 +3,8 @@
     "title": "免費參觀·體驗 - JOYFIT24經堂"
   },
   "hero": {
+    "lineBlack": "入會前先了解場館",
+    "lineRed": "免費參觀·體驗預約中",
     "subtitle": "請於工作人員在館時間內到店",
     "title": "免費參觀·體驗預約",
     "formLabel": "RESERVATION FORM"
@@ -12,7 +14,7 @@
     "datetimePrompt": "希望日期與時間",
     "visit": "參觀",
     "trial": "體驗",
-    "customerInfo": "請填寫您的資訊",
+    "customerInfo": "顧客資訊",
     "name": "姓名",
     "namePlaceholder": "經堂 太郎",
     "email": "電子郵件",
@@ -32,8 +34,8 @@
     "age60": "60歲以上",
     "noticeTitle": "注意事項",
     "notice1": "館內可穿著外出鞋使用。",
-    "notice2": "體驗時間以<span class=\"font-bold text-gray-900\">約60分鐘</span>為參考。",
-    "notice3": "<span class=\"font-bold text-brand-red\">週一、週四無工作人員，無法預約。</span>",
+    "notice2": "體驗時間以<span class=\"font-bold\">約60分鐘</span>為參考。",
+    "notice3": "<span class=\"text-brand-red font-bold\">週一、週四無工作人員，無法預約。</span>",
     "staffHours": "工作人員在館時間",
     "weekday": "平日",
     "weekend": "週六·週日·國定假日",
@@ -60,7 +62,7 @@
     "codeSent": "驗證碼已傳送，請查看郵件。",
     "verified": "電子郵件驗證完成",
     "submitHint": "完成電子郵件驗證後即可送出",
-    "notice4": "<span class=\"font-bold text-brand-red\">每個電子郵件僅可預約1次</span>。"
+    "notice4": "<span class=\"text-brand-red font-bold\">每個電子郵件僅可預約1次</span>。"
   },
   "errors": {
     "monThuClosed": "週一·週四休館（無工作人員）",
