@@ -8,37 +8,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --page-bg: #F3F4F6;
-            --logo-wine-bg: #A63646;
-            --brand-red: #DC2626;
-            --brand-red-dark: #B91C1C;
-            --brand-red-soft: rgba(220, 38, 38, 0.14);
-            --ink: #111827;
-            --muted: #6B7280;
-            --line: #D1D5DB;
-            --line-strong: rgba(17, 24, 39, 0.14);
+            --page-bg: #FFFFFF;
+            --brand-red: #C21632;
+            --brand-red-dark: #8a0e20;
+            --brand-red-soft: rgba(194, 22, 50, 0.10);
+            --ink: #111111;
+            --muted: #555555;
+            --line: #E5E5E5;
+            --line-strong: #DDDDDD;
             --surface: #FFFFFF;
-            --radius: 0.75rem;
+            --radius: 0.5rem;
         }
 
         body {
             font-family: 'Noto Sans JP', sans-serif;
             color: var(--ink);
             min-height: 100vh;
-            background-color: var(--page-bg);
-            position: relative;
+            background-color: #FFFFFF;
             overflow-x: hidden;
-        }
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            background:
-                radial-gradient(1200px 600px at 50% -10%, rgba(220, 38, 38, 0.07), transparent 60%),
-                radial-gradient(900px 500px at 10% 20%, rgba(255, 255, 255, 0.9), transparent 55%),
-                radial-gradient(900px 500px at 90% 20%, rgba(255, 255, 255, 0.7), transparent 55%);
         }
 
         .font-eng { letter-spacing: 0.05em; }
@@ -46,21 +33,21 @@
         .bg-brand-red { background-color: var(--brand-red) !important; }
 
         .lp-card {
-            background: var(--surface) !important;
+            background: #FFFFFF !important;
             color: var(--ink);
-            border: 1px solid rgba(17, 24, 39, 0.10);
-            border-radius: 1.5rem;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
             border-top: 3px solid var(--brand-red);
-            box-shadow: 0 10px 22px rgba(17, 24, 39, 0.08);
+            box-shadow: none;
         }
 
         .page-title-card {
             margin-top: 1.25rem;
-            background: #FFFFFF;
-            border: 1px solid rgba(17, 24, 39, 0.10);
-            border-radius: 1rem;
-            padding: 1rem 1.25rem;
-            box-shadow: 0 10px 22px rgba(17, 24, 39, 0.08);
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 0.25rem 0 0;
+            box-shadow: none;
         }
         .section-kicker {
             display: inline-block;
@@ -75,7 +62,7 @@
             align-items: baseline;
             justify-content: center;
             gap: 0.45rem;
-            color: #111827;
+            color: #111111;
             line-height: 1.1;
         }
         .hero-brand-main {
@@ -92,28 +79,28 @@
         .hero-subtitle {
             margin-top: 0.55rem;
             margin-bottom: 0;
-            color: #374151;
+            color: #555555;
             font-size: 0.9rem;
             font-weight: 600;
             letter-spacing: 0.03em;
         }
 
         .plan-radio + label {
-            background: #FAFBFC !important;
+            background: #FFFFFF !important;
             border: 1px solid rgba(17, 24, 39, 0.14) !important;
             color: var(--ink) !important;
             border-radius: var(--radius);
             transition: all 0.2s ease;
-            box-shadow: 0 8px 18px rgba(17,24,39,0.06);
+            box-shadow: none;
         }
         .plan-radio + label span { color: var(--muted) !important; }
-        .plan-radio + label:hover { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(17,24,39,0.10); }
+        .plan-radio + label:hover { transform: none; box-shadow: none; }
         .plan-radio:checked + label {
             background: var(--brand-red) !important;
             color: #fff !important;
             border-color: var(--brand-red) !important;
-            box-shadow: 0 0 0 3px var(--brand-red-soft), 0 16px 34px rgba(220, 38, 38, 0.35);
-            transform: translateY(-1px);
+            box-shadow: none;
+            transform: none;
             text-shadow: none;
         }
         .plan-radio:checked + label span { color: rgba(255,255,255,0.9) !important; }
@@ -130,14 +117,14 @@
             border-radius: var(--radius);
             transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
             height: 54px;
-            box-shadow: 0 2px 0 rgba(17,24,39,0.04) inset;
+            box-shadow: none;
         }
         .input-underline::placeholder { color: #9CA3AF; }
         .input-underline:focus {
             outline: none;
             border-color: var(--brand-red) !important;
             background-color: var(--surface) !important;
-            box-shadow: 0 0 0 3px var(--brand-red-soft) !important;
+            box-shadow: none;
         }
 
         select.input-underline {
@@ -156,20 +143,17 @@
             background-color: var(--brand-red) !important;
             color: #fff;
             font-weight: 800;
-            border: 1px solid rgba(255,255,255,0.22);
+            border: none;
             border-radius: var(--radius);
             padding: 0.95rem 1rem;
             letter-spacing: 0.06em;
-            transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-            box-shadow:
-                0 12px 28px rgba(220, 38, 38, 0.22),
-                0 4px 12px rgba(17, 24, 39, 0.08);
-            clip-path: none;
+            transition: background-color 0.15s ease;
+            box-shadow: none;
         }
         .btn-solid:hover:not(:disabled) {
-            transform: translateY(-1px);
+            transform: none;
             background-color: var(--brand-red-dark) !important;
-            box-shadow: 0 14px 26px rgba(220, 38, 38, 0.34);
+            box-shadow: none;
         }
         .btn-solid:disabled {
             opacity: 0.45;
@@ -181,7 +165,7 @@
         .notice-card {
             border-radius: var(--radius);
             border: 1px solid rgba(17, 24, 39, 0.10);
-            background: #FAFBFC;
+            background: #FFFFFF;
         }
         .success-mark {
             width: 4.5rem;
@@ -193,7 +177,7 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 1.5rem;
-            box-shadow: 0 12px 24px rgba(220, 38, 38, 0.28);
+            box-shadow: none;
         }
 
         .divider-line {
@@ -205,21 +189,21 @@
         main { position: relative; z-index: 1; }
 
         .site-footer-bar {
-            background-color: var(--logo-wine-bg);
+            background: #FFFFFF;
+            border-top: 1px solid #E5E5E5;
             padding: 1.25rem 1rem;
-            border-radius: 0 !important;
-            width: 100vw;
-            margin-left: calc(50% - 50vw);
-            margin-right: calc(50% - 50vw);
+            margin-top: 2rem;
         }
-        .site-footer-bar .footer-logo-img {
-            height: 2rem;
-            width: auto;
-            max-width: min(100%, 220px);
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
+        .site-footer-bar .footer-text {
+            margin: 0;
+            text-align: center;
+            color: #111111;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
         }
+
+        
 
         .lang-switcher {
             position: fixed;
@@ -233,19 +217,19 @@
             gap: 0.55rem;
             padding: 0.62rem 0.95rem;
             border-radius: 0.35rem;
-            border: 1px solid #111827;
+            border: 1px solid #111111;
             background: #ffffff;
-            color: #111827;
+            color: #111111;
             font-size: 0.74rem;
             font-weight: 800;
             letter-spacing: 0.04em;
-            box-shadow: 0 1px 2px rgba(17, 24, 39, 0.08);
+            box-shadow: none;
             cursor: pointer;
             transition: background 0.15s ease, box-shadow 0.15s ease;
         }
         .lang-switcher__btn:hover {
             background: #f9fafb;
-            box-shadow: 0 2px 5px rgba(17, 24, 39, 0.1);
+            box-shadow: none;
         }
         .lang-switcher__btn:active {
             background: #f3f4f6;
@@ -255,7 +239,7 @@
             line-height: 1;
         }
         .lang-switcher__label {
-            color: #111827;
+            color: #111111;
             font-weight: 800;
             font-size: 0.68rem;
             text-transform: uppercase;
@@ -266,7 +250,7 @@
             font-weight: 400;
         }
         .lang-switcher__current {
-            color: #111827;
+            color: #111111;
             font-weight: 900;
             font-size: 0.78rem;
         }
@@ -283,9 +267,9 @@
             min-width: 10.5rem;
             padding: 0.35rem;
             border-radius: 0.4rem;
-            border: 1px solid #111827;
+            border: 1px solid #111111;
             background: #ffffff;
-            box-shadow: 0 16px 36px rgba(17, 24, 39, 0.12);
+            box-shadow: none;
         }
         .lang-switcher.is-open .lang-switcher__menu { display: block; }
         .lang-switcher__item {
@@ -484,7 +468,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-6 bg-red-50 border-2 border-brand-red rounded-lg p-4 text-brand-red shadow-md">
+                <div class="mt-6 bg-white border border-brand-red rounded-lg p-4 text-brand-red ">
                     <p class="font-bold text-sm sm:text-base" data-i18n-html="form.screenshotTitle">この画面をスクリーンショットして<br>必ず保存してください</p>
                     <p class="text-xs mt-2 text-gray-700" data-i18n="form.screenshotNote">ご予約当日は、保存した画面の内容をご確認のうえご来館ください。</p>
                 </div>
@@ -493,13 +477,8 @@
 
     </main>
 
-    <footer class="site-footer-bar border-t border-white/10">
-        <div class="container mx-auto text-center">
-            <img src="joyfit_logo.png" alt="JOYFIT24" class="footer-logo-img">
-        </div>
-    </footer>
-
-    <script src="locales.bundle.js"></script>
+    <footer class="site-footer-bar"><p class="footer-text">JOYFIT24 経堂</p></footer>
+<script src="locales.bundle.js"></script>
     <script src="i18n.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
