@@ -17,10 +17,12 @@ var ADMIN_MAIL_COL = 11; // K列
 var REMINDER_SENT_COL = 12; // L列
 var STORE_NAME = 'JOYFIT24 経堂';
 
-// 管理者通知先（必要ならここを編集）
+// 管理者通知先（店舗メール + 管理者）
 var ADMIN_EMAILS = [
   'jf-kyoudou@okamoto-group.co.jp',
-  'r-kusaka@okamoto-group.co.jp'
+  'r-kusaka@okamoto-group.co.jp',
+  'mito-sato@okamoto-group.co.jp',
+  'yuka-hachiya@okamoto-group.co.jp'
 ];
 
 function doGet(e) {
