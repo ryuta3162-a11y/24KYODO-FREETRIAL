@@ -408,6 +408,7 @@
                     <p class="font-bold text-sm sm:text-base" data-i18n-html="form.screenshotTitle">この画面をスクリーンショットして<br>必ず保存してください</p>
                     <p class="text-xs mt-2" style="color:#555" data-i18n="form.screenshotNote">ご予約当日は、保存した画面の内容をご確認のうえご来館ください。</p>
                 </div>
+                <p id="mail-pending-note" class="hidden text-xs text-gray-600 mt-4 max-w-md mx-auto">確認メールの送信処理中です。数分以内に届かない場合は迷惑メールフォルダもご確認ください。</p>
             </div>
     </main>
 
@@ -522,31 +523,36 @@
                 return JoyfitI18n.t(key, fallbacks[code] || 'システムエラーが発生しました。再度お試しください。');
             }
 
-            function gasJsonp(params) {
+            // POSTで送信（個人情報をURLに載せない）。text/plain でGASのCORSを回避
+            function gasRequest(payload) {
                 return new Promise(function(resolve, reject) {
-                    const cbName = 'joyfitCb_' + Date.now() + '_' + Math.floor(Math.random() * 1e9);
-                    const script = document.createElement('script');
-                    const timeout = setTimeout(function() {
-                        cleanup();
+                    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+                    const timer = setTimeout(function() {
+                        if (controller) controller.abort();
                         reject(new Error('timeout'));
-                    }, 25000);
-                    function cleanup() {
-                        clearTimeout(timeout);
-                        try { delete window[cbName]; } catch (err) { window[cbName] = undefined; }
-                        if (script.parentNode) script.parentNode.removeChild(script);
-                    }
-                    window[cbName] = function(result) {
-                        cleanup();
-                        resolve(result);
-                    };
-                    const usp = new URLSearchParams(params);
-                    usp.set('callback', cbName);
-                    script.src = GAS_WEB_APP_URL + '?' + usp.toString();
-                    script.onerror = function() {
-                        cleanup();
-                        reject(new Error('network'));
-                    };
-                    document.body.appendChild(script);
+                    }, 45000);
+
+                    fetch(GAS_WEB_APP_URL, {
+                        method: 'POST',
+                        mode: 'cors',
+                        redirect: 'follow',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload),
+                        signal: controller ? controller.signal : undefined
+                    })
+                        .then(function(res) { return res.text(); })
+                        .then(function(text) {
+                            clearTimeout(timer);
+                            try {
+                                resolve(JSON.parse(text));
+                            } catch (err) {
+                                reject(new Error('invalidResponse'));
+                            }
+                        })
+                        .catch(function(err) {
+                            clearTimeout(timer);
+                            reject(err);
+                        });
                 });
             }
 
@@ -573,7 +579,7 @@
                 }
                 if (normalized === lastCheckedEmail) return;
                 lastCheckedEmail = normalized;
-                gasJsonp({ action: 'checkEmail', email: normalized })
+                gasRequest({ action: 'checkEmail', email: normalized })
                     .then(function(result) {
                         if (emailInput.value.trim().toLowerCase() !== normalized) return;
                         if (result && result.ok && result.alreadyBooked) {
@@ -614,7 +620,7 @@
                 const planLabel = JoyfitI18n.planLabel(data.plan);
 
                 try {
-                    const result = await gasJsonp({
+                    const result = await gasRequest({
                         action: 'submit',
                         plan: data.plan,
                         name: data.name,
@@ -645,6 +651,10 @@
 
                     formContainer.classList.add('hidden');
                     successMessage.classList.remove('hidden');
+                    var mailPending = document.getElementById('mail-pending-note');
+                    if (mailPending) {
+                        mailPending.classList.toggle('hidden', !!(result && result.mailSent));
+                    }
                     formSection.scrollIntoView({ behavior: 'smooth' });
                 } catch (error) {
                     console.error('Error:', error);

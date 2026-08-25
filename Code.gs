@@ -2,22 +2,27 @@
  * JOYFIT24経堂 見学・体験予約 GAS
  * Script ID: 1DzpjNAV0xDt4GVdaVZzMBMVfjEsWyOiOrQh8sOdKZxD6P0jx-q20kRCi
  *
- * 初回セットアップ:
- * 1. スプレッドシート → 拡張機能 → Apps Script
- * 2. sendTestMail_ を実行してメール権限を承認
- * 3. メニュー「見学体験メール」→ 前日リマインドトリガーを設定
+ * 初回セットアップ（スプレッドシートを開いて1回だけ）:
+ * 1. メニュー「見学体験メール」→ 初期セットアップ（トリガー一括設定）
+ * 2. メニュー「見学体験メール」→ テストメール送信（権限承認）
+ * ※前日リマインドは廃止
  */
 
 var RESERVE_SHEET_NAME = '見学体験申請';
+var MAIL_LOG_SHEET_NAME = '_メール送信';
 var EMAIL_COL = 4; // D列
 var DATE_COL = 8; // H列
 var TIME_COL = 9; // I列
-var CUSTOMER_MAIL_COL = 10; // J列
-var ADMIN_MAIL_COL = 11; // K列
-var REMINDER_SENT_COL = 12; // L列
+var RESERVE_LAST_COL = 9; // A〜I のみ
 var STORE_NAME = 'JOYFIT24 経堂';
+var STORE_NAME_SHORT = 'JOYFIT24経堂';
+var STORE_EMAIL = 'jf-kyoudou@okamoto-group.co.jp';
+var WEEKDAYS_JA = ['日', '月', '火', '水', '木', '金', '土'];
+var MAIL_RETRY_MAX = 2;
+var MAIL_RETRY_WAIT_MS = 800;
+var TRIGGER_PROP_KEY = 'MAIL_SYSTEM_CONFIGURED_AT';
 
-// 管理者通知先（店舗メール + 管理者）
+// 管理者通知先（店舗 + 社員）。お客さま宛メールには社員を出さない
 var ADMIN_EMAILS = [
   'jf-kyoudou@okamoto-group.co.jp',
   'r-kusaka@okamoto-group.co.jp',
@@ -38,6 +43,7 @@ function doGet(e) {
       result = { ok: false, error: 'unknownAction' };
     }
   } catch (err) {
+    Logger.log('doGet error: ' + err);
     result = { ok: false, error: 'system', detail: String(err) };
   }
   return jsonp_(p.callback, result);
@@ -49,11 +55,20 @@ function doPost(e) {
       throw new Error('postData missing');
     }
     var data = JSON.parse(e.postData.contents);
-    var result = submitReservation_(data);
+    var action = String(data.action || 'submit');
+    var result;
+    if (action === 'checkEmail') {
+      result = checkEmail_(data.email);
+    } else if (action === 'submit') {
+      result = submitReservation_(data);
+    } else {
+      result = { ok: false, error: 'unknownAction' };
+    }
     return ContentService
       .createTextOutput(JSON.stringify(result))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
+    Logger.log('doPost error: ' + err);
     return ContentService
       .createTextOutput(JSON.stringify({ ok: false, error: 'system', detail: String(err) }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -86,10 +101,16 @@ function submitReservation_(p) {
       return { ok: false, error: 'missingFields' };
     }
 
+    var timeText = formatTimeValue_(time);
+    var dateText = formatDateInputValue_(date);
+    var visitDate = parseVisitDate_(dateText);
+
     var sh = getReserveSheet_();
-    ensureMailHeaders_(sh);
-    sh.appendRow([new Date(), plan, name, email, tel, gender, age, date, time, '', '', '']);
+    sh.appendRow([new Date(), plan, name, email, tel, gender, age, dateText, timeText]);
     var row = sh.getLastRow();
+    sh.getRange(row, DATE_COL).setNumberFormat('@').setValue(dateText);
+    sh.getRange(row, TIME_COL).setNumberFormat('@').setValue(timeText);
+    SpreadsheetApp.flush();
 
     var booking = {
       row: row,
@@ -99,18 +120,29 @@ function submitReservation_(p) {
       tel: tel,
       gender: gender,
       age: age,
-      date: date,
-      time: time,
-      displayDate: formatDisplayDateFromText_(date)
+      date: dateText,
+      time: timeText,
+      displayDate: visitDate ? formatDisplayDate_(visitDate) : dateText,
+      visitDateKey: visitDate ? formatDateKey_(visitDate) : ''
     };
 
-    var mailResult = sendBookingMails_(booking);
-    writeMailStatus_(sh, row, mailResult);
+    // メール失敗でも申込自体は成功にする（LPのシステムエラー防止）
+    var mailResult = { customer: { ok: false }, admin: { ok: false } };
+    try {
+      mailResult = sendBookingMails_(booking);
+    } catch (mailErr) {
+      Logger.log('sendBookingMails_ error row=' + row + ' ' + mailErr);
+      mailResult = { customer: { ok: false, error: String(mailErr) }, admin: { ok: false, error: String(mailErr) } };
+    }
+    try {
+      writeMailStatus_(row, booking.email, mailResult);
+    } catch (logErr) {
+      Logger.log('writeMailStatus_ error: ' + logErr);
+    }
 
     return {
       ok: true,
-      mailSent: mailResult.customer.ok && mailResult.admin.ok,
-      mailDetail: mailResult
+      mailSent: !!(mailResult.customer && mailResult.customer.ok && mailResult.admin && mailResult.admin.ok)
     };
   } finally {
     lock.releaseLock();
@@ -118,45 +150,71 @@ function submitReservation_(p) {
 }
 
 function sendBookingMails_(booking) {
-  var customerSubject = '【' + STORE_NAME + '】見学・体験予約を承りました';
-  var adminSubject = '【' + STORE_NAME + '】見学・体験の新規予約（管理者通知）';
-
-  var customerBody = buildCustomerMailBody_(booking, false);
-  var adminBody = buildAdminMailBody_(booking);
-
-  var customer = sendMail_({
+  // お客さまへ（当初文面）※社員BCCなし
+  var customer = sendMailWithRetry_({
     to: booking.email,
-    subject: customerSubject,
-    body: customerBody
+    subject: '【' + STORE_NAME + '】見学・体験予約を承りました',
+    body: buildCustomerMailBody_(booking)
   });
 
-  var admin = sendMail_({
-    to: getAdminRecipients_().join(','),
-    subject: adminSubject,
-    body: adminBody
+  // 店舗宛 + 社員はBCC（スプシリンク付き管理者通知）
+  var admin = sendMailWithRetry_({
+    to: STORE_EMAIL,
+    bcc: getStaffBcc_(),
+    subject: '【' + STORE_NAME_SHORT + '】 見学・体験の申し込みがありました',
+    body: buildAdminMailBody_(booking)
   });
 
   return { customer: customer, admin: admin };
 }
 
-function sendMail_(options) {
+function sendMailWithRetry_(options) {
+  var lastResult = { ok: false, error: 'not attempted' };
+  for (var attempt = 1; attempt <= MAIL_RETRY_MAX; attempt++) {
+    lastResult = sendMailOnce_(options);
+    if (lastResult.ok) {
+      lastResult.attempts = attempt;
+      return lastResult;
+    }
+    if (attempt < MAIL_RETRY_MAX) {
+      Utilities.sleep(MAIL_RETRY_WAIT_MS * attempt);
+    }
+  }
+  lastResult.attempts = MAIL_RETRY_MAX;
+  return lastResult;
+}
+
+function sendMailOnce_(options) {
   var to = String(options.to || '').trim();
   var subject = String(options.subject || '').trim();
   var body = String(options.body || '');
+  var cc = String(options.cc || '').trim();
+  var bcc = String(options.bcc || '').trim();
   if (!to || !subject) {
     return { ok: false, error: 'missing to/subject' };
   }
 
+  // Fromは実行アカウントのまま。Reply-Toのみ店舗（send-as未設定でも落ちない）
+  var extras = {
+    name: STORE_NAME,
+    replyTo: STORE_EMAIL
+  };
+  if (cc) extras.cc = cc;
+  if (bcc) extras.bcc = bcc;
+
   try {
-    GmailApp.sendEmail(to, subject, body, { name: STORE_NAME });
+    GmailApp.sendEmail(to, subject, body, extras);
     return { ok: true, via: 'GmailApp', to: to };
   } catch (gmailErr) {
     try {
       MailApp.sendEmail({
         to: to,
+        cc: cc || undefined,
+        bcc: bcc || undefined,
         subject: subject,
         body: body,
-        name: STORE_NAME
+        name: STORE_NAME,
+        replyTo: STORE_EMAIL
       });
       return { ok: true, via: 'MailApp', to: to };
     } catch (mailErr) {
@@ -165,148 +223,84 @@ function sendMail_(options) {
   }
 }
 
-function buildCustomerMailBody_(data, isReminder) {
-  var lines = [
+function buildCustomerMailBody_(data) {
+  return [
     data.name + ' 様',
     '',
     STORE_NAME + 'です。',
-    isReminder
-      ? '明日のご来館について、リマインドのご連絡です。'
-      : '以下の内容で見学・体験の予約を承りました。',
-    '',
+    '以下の内容で見学・体験の予約を承りました。',
     '■ 種別：' + data.plan,
     '■ 日時：' + data.displayDate + ' ' + data.time,
     '■ お名前：' + data.name,
     '■ 電話番号：' + data.tel,
-    '',
     '【ご来館時のお願い】',
-    '・スタッフ常駐時間内にご来館ください',
-    '  平日 10:00-20:00 / 土日祝 12:00-19:00',
-    '・月曜・木曜はスタッフ不在のため予約不可',
+    '・キャンセル時はこちらのメールにご連絡ください。',
+    STORE_EMAIL,
     '・体験は60分を目安にご利用ください',
     '・館内は土足でのご利用が可能です',
+    '・当日は入口のインターホンを押してください。',
+    'スタッフがご案内します。',
     '',
     'ご来館をお待ちしております。',
-    '',
     STORE_NAME
-  ];
-  return lines.join('\n');
+  ].join('\n');
 }
 
 function buildAdminMailBody_(data) {
-  var lines = [
-    STORE_NAME + ' 管理者各位',
+  var sheetUrl = SpreadsheetApp.getActiveSpreadsheet().getUrl();
+  return [
+    '【' + STORE_NAME_SHORT + '】 見学・体験の申し込みがありました。下記の内容をご確認ください。',
     '',
-    '見学・体験の新規予約が入りました。',
+    '■ お申し込み内容',
+    'プラン：' + data.plan,
+    'お名前：' + data.name + ' 様',
+    'メールアドレス：' + data.email,
+    '電話番号：' + data.tel,
+    '性\u3000別：' + (data.gender || '-'),
+    '年\u3000代：' + (data.age || '-'),
+    'ご希望日時：' + formatAdminDateTime_(data.date, data.time),
     '',
-    '■ 種別：' + data.plan,
-    '■ 日時：' + data.displayDate + ' ' + data.time,
-    '■ お名前：' + data.name,
-    '■ メール：' + data.email,
-    '■ 電話：' + data.tel,
-    '■ 性別：' + (data.gender || '-'),
-    '■ 年代：' + (data.age || '-'),
-    '■ シート行：' + data.row,
-    '',
-    'スプレッドシート「' + RESERVE_SHEET_NAME + '」をご確認ください。'
-  ];
-  return lines.join('\n');
+    'スプレッドシートにも記録されています。',
+    sheetUrl
+  ].join('\n');
 }
 
-function sendDayBeforeReminders() {
+function retryFailedMails() {
   var sh = getReserveSheet_();
   var lastRow = sh.getLastRow();
   if (lastRow < 2) return;
 
-  ensureMailHeaders_(sh);
-  var tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  var tomorrowKey = formatDateKey_(tomorrow);
+  var logMap = getMailLogMap_();
+  var keys = Object.keys(logMap);
+  for (var k = 0; k < keys.length; k++) {
+    var rowNum = Number(keys[k]);
+    var status = logMap[rowNum];
+    if (isMailStatusOk_(status.customer) && isMailStatusOk_(status.admin)) continue;
+    if (rowNum < 2 || rowNum > lastRow) continue;
 
-  var values = sh.getRange(2, 1, lastRow, REMINDER_SENT_COL).getValues();
-  for (var i = 0; i < values.length; i++) {
-    var row = values[i];
-    var rowNum = i + 2;
-    if (String(row[REMINDER_SENT_COL - 1] || '').trim()) continue;
+    var row = sh.getRange(rowNum, 1, rowNum, RESERVE_LAST_COL).getValues()[0];
+    var booking = buildBookingFromValues_(row, rowNum, parseVisitDate_(row[DATE_COL - 1]));
+    if (!booking) continue;
 
-    var visitDate = parseVisitDate_(row[DATE_COL - 1]);
-    if (!visitDate || formatDateKey_(visitDate) !== tomorrowKey) continue;
-
-    var email = normalizeEmail_(row[EMAIL_COL - 1]);
-    if (!isValidEmail_(email)) continue;
-
-    var booking = {
-      row: rowNum,
-      plan: String(row[1] || '').trim(),
-      name: String(row[2] || '').trim(),
-      email: email,
-      tel: String(row[4] || '').trim(),
-      gender: String(row[5] || '').trim(),
-      age: String(row[6] || '').trim(),
-      date: String(row[DATE_COL - 1] || '').trim(),
-      time: String(row[TIME_COL - 1] || '').trim(),
-      displayDate: formatDisplayDate_(visitDate)
-    };
-
-    var customer = sendMail_({
-      to: booking.email,
-      subject: '【' + STORE_NAME + '】明日のご来館リマインド',
-      body: buildCustomerMailBody_(booking, true)
-    });
-    var admin = sendMail_({
-      to: getAdminRecipients_().join(','),
-      subject: '【' + STORE_NAME + '】明日来館予定（管理者リマインド）',
-      body: buildAdminMailBody_(booking)
-    });
-
-    if (customer.ok && admin.ok) {
-      sh.getRange(rowNum, REMINDER_SENT_COL).setValue(new Date());
-    } else {
-      sh.getRange(rowNum, REMINDER_SENT_COL).setValue('ERROR: ' + (customer.error || admin.error || 'unknown'));
+    try {
+      var mailResult = sendBookingMails_(booking);
+      writeMailStatus_(rowNum, booking.email, mailResult);
+    } catch (err) {
+      Logger.log('retry fail row=' + rowNum + ' ' + err);
     }
   }
 }
 
-function resendMissingBookingMails() {
-  var sh = getReserveSheet_();
-  var lastRow = sh.getLastRow();
-  if (lastRow < 2) return;
-
-  ensureMailHeaders_(sh);
-  var values = sh.getRange(2, 1, lastRow, REMINDER_SENT_COL).getValues();
-  var count = 0;
-
-  for (var i = 0; i < values.length; i++) {
-    var row = values[i];
-    var rowNum = i + 2;
-    var customerStatus = String(row[CUSTOMER_MAIL_COL - 1] || '').trim();
-    var adminStatus = String(row[ADMIN_MAIL_COL - 1] || '').trim();
-    if (customerStatus && adminStatus && customerStatus.indexOf('ERROR') !== 0 && adminStatus.indexOf('ERROR') !== 0) {
-      continue;
-    }
-
-    var email = normalizeEmail_(row[EMAIL_COL - 1]);
-    if (!isValidEmail_(email)) continue;
-
-    var booking = {
-      row: rowNum,
-      plan: String(row[1] || '').trim(),
-      name: String(row[2] || '').trim(),
-      email: email,
-      tel: String(row[4] || '').trim(),
-      gender: String(row[5] || '').trim(),
-      age: String(row[6] || '').trim(),
-      date: String(row[DATE_COL - 1] || '').trim(),
-      time: String(row[TIME_COL - 1] || '').trim(),
-      displayDate: formatDisplayDateFromText_(String(row[DATE_COL - 1] || '').trim())
-    };
-
-    var mailResult = sendBookingMails_(booking);
-    writeMailStatus_(sh, rowNum, mailResult);
-    if (mailResult.customer.ok && mailResult.admin.ok) count++;
-  }
-
-  SpreadsheetApp.getUi().alert('未送信メール再送完了: ' + count + '件');
+function setupAllTriggers() {
+  // 前日リマインドは廃止。既存トリガーも削除する
+  deleteTriggersForHandlers_(['sendDayBeforeReminders', 'retryFailedMails']);
+  ScriptApp.newTrigger('retryFailedMails').timeBased().everyHours(1).create();
+  clearLegacyMailColumns_(getReserveSheet_());
+  getMailLogSheet_();
+  PropertiesService.getScriptProperties().setProperty(TRIGGER_PROP_KEY, new Date().toISOString());
+  SpreadsheetApp.getUi().alert(
+    '初期セットアップ完了\n\n・毎時：送信失敗の自動リトライ\n・前日リマインド：削除済み\n\n続けて「テストメール送信」を実行してください。'
+  );
 }
 
 function sendTestMail_() {
@@ -321,79 +315,173 @@ function sendTestMail_() {
     tel: '09012345678',
     gender: '男性',
     age: '20代',
-    date: '2026-08-25',
+    date: '2026-08-28',
     time: '13:30',
-    displayDate: '8/25'
+    displayDate: '8/28'
   };
 
-  var customer = sendMail_({
+  var customer = sendMailWithRetry_({
     to: me,
     subject: '【' + STORE_NAME + '】テスト：申込者メール',
-    body: buildCustomerMailBody_(booking, false)
+    body: buildCustomerMailBody_(booking)
   });
-  var admin = sendMail_({
-    to: getAdminRecipients_().join(','),
-    subject: '【' + STORE_NAME + '】テスト：管理者通知',
+  var admin = sendMailWithRetry_({
+    to: STORE_EMAIL,
+    bcc: getStaffBcc_(),
+    subject: '【' + STORE_NAME_SHORT + '】テスト：管理者通知',
     body: buildAdminMailBody_(booking)
   });
 
   SpreadsheetApp.getUi().alert(
     'テスト送信結果\n' +
-    '申込者: ' + (customer.ok ? 'OK (' + customer.via + ')' : customer.error) + '\n' +
-    '管理者: ' + (admin.ok ? 'OK (' + admin.via + ')' : admin.error)
+    'お客さま宛: ' + (customer.ok ? 'OK (' + customer.via + ')' : customer.error) + '\n' +
+    '店舗・管理者: ' + (admin.ok ? 'OK (' + admin.via + ')' : admin.error)
   );
 }
 
-function setupReminderTrigger() {
-  var triggers = ScriptApp.getProjectTriggers();
-  for (var i = 0; i < triggers.length; i++) {
-    if (triggers[i].getHandlerFunction() === 'sendDayBeforeReminders') {
-      ScriptApp.deleteTrigger(triggers[i]);
-    }
-  }
-  ScriptApp.newTrigger('sendDayBeforeReminders')
-    .timeBased()
-    .everyDays(1)
-    .atHour(18)
-    .create();
-  SpreadsheetApp.getUi().alert('前日18時のリマインドトリガーを設定しました');
+function resendMissingBookingMails() {
+  retryFailedMails();
+  SpreadsheetApp.getUi().alert('未送信・エラー分の再送処理を実行しました。');
 }
 
 function onOpen() {
+  try { clearLegacyMailColumns_(getReserveSheet_()); } catch (e) {}
   SpreadsheetApp.getUi()
     .createMenu('見学体験メール')
+    .addItem('初期セットアップ（トリガー一括設定）', 'setupAllTriggers')
     .addItem('テストメール送信（権限承認）', 'sendTestMail_')
-    .addItem('未送信分を再送', 'resendMissingBookingMails')
     .addSeparator()
-    .addItem('前日リマインドトリガーを設定', 'setupReminderTrigger')
+    .addItem('未送信・エラー分を再送', 'resendMissingBookingMails')
     .addToUi();
 }
 
-function writeMailStatus_(sh, row, mailResult) {
-  var customerVal = mailResult.customer.ok
-    ? new Date()
-    : ('ERROR: ' + (mailResult.customer.error || 'unknown'));
-  var adminVal = mailResult.admin.ok
-    ? new Date()
-    : ('ERROR: ' + (mailResult.admin.error || 'unknown'));
-  sh.getRange(row, CUSTOMER_MAIL_COL).setValue(customerVal);
-  sh.getRange(row, ADMIN_MAIL_COL).setValue(adminVal);
+function writeMailStatus_(row, email, mailResult) {
+  var log = upsertMailLogRow_(row, email);
+  var sh = log.sheet;
+  var logRow = log.row;
+  sh.getRange(logRow, 3).setValue(
+    mailResult.customer && mailResult.customer.ok
+      ? new Date()
+      : ('ERROR: ' + ((mailResult.customer && mailResult.customer.error) || 'unknown'))
+  );
+  sh.getRange(logRow, 4).setValue(
+    mailResult.admin && mailResult.admin.ok
+      ? new Date()
+      : ('ERROR: ' + ((mailResult.admin && mailResult.admin.error) || 'unknown'))
+  );
 }
 
-function getAdminRecipients_() {
-  var list = ADMIN_EMAILS.slice();
-  var me = Session.getActiveUser().getEmail();
-  if (me && list.indexOf(me) === -1) list.push(me);
-  return list.filter(function(email) {
-    return isValidEmail_(normalizeEmail_(email));
-  });
+function getMailLogSheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(MAIL_LOG_SHEET_NAME);
+  if (!sh) {
+    sh = ss.insertSheet(MAIL_LOG_SHEET_NAME);
+    sh.hideSheet();
+  }
+  var headers = sh.getRange(1, 1, 1, 4).getValues()[0];
+  if (!headers[0]) sh.getRange(1, 1).setValue('予約行');
+  if (!headers[1]) sh.getRange(1, 2).setValue('メール');
+  if (!headers[2]) sh.getRange(1, 3).setValue('申込者送信');
+  if (!headers[3]) sh.getRange(1, 4).setValue('管理者送信');
+  return sh;
 }
 
-function ensureMailHeaders_(sh) {
-  var headers = sh.getRange(1, 1, 1, REMINDER_SENT_COL).getValues()[0];
-  if (!headers[CUSTOMER_MAIL_COL - 1]) sh.getRange(1, CUSTOMER_MAIL_COL).setValue('申込者メール');
-  if (!headers[ADMIN_MAIL_COL - 1]) sh.getRange(1, ADMIN_MAIL_COL).setValue('管理者通知');
-  if (!headers[REMINDER_SENT_COL - 1]) sh.getRange(1, REMINDER_SENT_COL).setValue('前日リマインド');
+function getMailLogMap_() {
+  var sh = getMailLogSheet_();
+  var lastRow = sh.getLastRow();
+  var map = {};
+  if (lastRow < 2) return map;
+  var values = sh.getRange(2, 1, lastRow, 4).getValues();
+  for (var i = 0; i < values.length; i++) {
+    var reserveRow = Number(values[i][0]);
+    if (!reserveRow) continue;
+    map[reserveRow] = {
+      logRow: i + 2,
+      email: String(values[i][1] || ''),
+      customer: values[i][2],
+      admin: values[i][3]
+    };
+  }
+  return map;
+}
+
+function upsertMailLogRow_(reserveRow, email) {
+  var sh = getMailLogSheet_();
+  var map = getMailLogMap_();
+  if (map[reserveRow]) {
+    if (email) sh.getRange(map[reserveRow].logRow, 2).setValue(email);
+    return { sheet: sh, row: map[reserveRow].logRow };
+  }
+  sh.appendRow([reserveRow, email || '', '', '', '']);
+  return { sheet: sh, row: sh.getLastRow() };
+}
+
+function clearLegacyMailColumns_(sh) {
+  if (!sh) return;
+  var lastCol = sh.getLastColumn();
+  if (lastCol < 10) return;
+  sh.getRange(1, 10, Math.max(sh.getLastRow(), 1), lastCol - 9).clearContent();
+}
+
+function buildBookingFromValues_(row, rowNum, visitDate) {
+  var email = normalizeEmail_(row[EMAIL_COL - 1]);
+  var name = String(row[2] || '').trim();
+  if (!isValidEmail_(email) || !name) return null;
+
+  var resolvedVisitDate = visitDate || parseVisitDate_(row[DATE_COL - 1]);
+  var dateText = resolvedVisitDate ? formatDateKey_(resolvedVisitDate) : formatDateInputValue_(row[DATE_COL - 1]);
+  var timeText = formatTimeValue_(row[TIME_COL - 1]);
+
+  return {
+    row: rowNum,
+    plan: String(row[1] || '').trim(),
+    name: name,
+    email: email,
+    tel: formatTelValue_(row[4]),
+    gender: String(row[5] || '').trim(),
+    age: String(row[6] || '').trim(),
+    date: dateText,
+    time: timeText,
+    displayDate: resolvedVisitDate ? formatDisplayDate_(resolvedVisitDate) : formatDisplayDateFromText_(dateText),
+    visitDateKey: resolvedVisitDate ? formatDateKey_(resolvedVisitDate) : ''
+  };
+}
+
+function getStaffBcc_() {
+  return getAdminRecipients_([STORE_EMAIL]).join(',');
+}
+
+function getAdminRecipients_(excludeEmails) {
+  var skip = {};
+  var excludes = excludeEmails || [];
+  for (var j = 0; j < excludes.length; j++) {
+    skip[normalizeEmail_(excludes[j])] = true;
+  }
+  var seen = {};
+  var list = [];
+  for (var i = 0; i < ADMIN_EMAILS.length; i++) {
+    var email = normalizeEmail_(ADMIN_EMAILS[i]);
+    if (!isValidEmail_(email) || seen[email] || skip[email]) continue;
+    seen[email] = true;
+    list.push(email);
+  }
+  return list;
+}
+
+function isMailStatusOk_(value) {
+  if (!value) return false;
+  if (value instanceof Date && !isNaN(value.getTime())) return true;
+  var text = String(value).trim();
+  return text && text.indexOf('ERROR') !== 0;
+}
+
+function deleteTriggersForHandlers_(handlers) {
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    if (handlers.indexOf(triggers[i].getHandlerFunction()) !== -1) {
+      ScriptApp.deleteTrigger(triggers[i]);
+    }
+  }
 }
 
 function isEmailAlreadyBooked_(email) {
@@ -416,7 +504,7 @@ function getReserveSheet_() {
 
 function parseVisitDate_(value) {
   if (value instanceof Date && !isNaN(value.getTime())) {
-    return new Date(value.getFullYear(), value.getMonth(), value.getDate());
+    return startOfDay_(value);
   }
   return parseVisitDateFromText_(String(value || '').trim());
 }
@@ -430,10 +518,10 @@ function parseVisitDateFromText_(text) {
     var m = Number(parts[1]) - 1;
     var d = Number(parts[2]);
     var dt = new Date(y, m, d);
-    return isNaN(dt.getTime()) ? null : dt;
+    return isNaN(dt.getTime()) ? null : startOfDay_(dt);
   }
   var dt = new Date(text);
-  return isNaN(dt.getTime()) ? null : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+  return isNaN(dt.getTime()) ? null : startOfDay_(dt);
 }
 
 function formatDisplayDateFromText_(text) {
@@ -450,6 +538,58 @@ function formatDateKey_(date) {
 
 function formatDisplayDate_(date) {
   return (date.getMonth() + 1) + '/' + date.getDate();
+}
+
+function formatTimeValue_(value) {
+  if (value instanceof Date && !isNaN(value.getTime())) {
+    return Utilities.formatDate(value, Session.getScriptTimeZone() || 'Asia/Tokyo', 'HH:mm');
+  }
+  if (typeof value === 'number' && isFinite(value)) {
+    var totalMinutes = Math.round((value % 1) * 24 * 60);
+    if (totalMinutes < 0) totalMinutes = 0;
+    var hh = Math.floor(totalMinutes / 60) % 24;
+    var mm = totalMinutes % 60;
+    return ('0' + hh).slice(-2) + ':' + ('0' + mm).slice(-2);
+  }
+  var text = String(value || '').trim();
+  if (!text) return '';
+  var hm = text.match(/(?:^|\s)(\d{1,2}):(\d{2})(?::\d{2})?(?:\s|$)/);
+  if (hm) {
+    return ('0' + Number(hm[1])).slice(-2) + ':' + ('0' + Number(hm[2])).slice(-2);
+  }
+  return text;
+}
+
+function formatDateInputValue_(value) {
+  var dt = parseVisitDate_(value);
+  if (dt) return formatDateKey_(dt);
+  return String(value || '').trim();
+}
+
+function formatTelValue_(value) {
+  if (typeof value === 'number' && isFinite(value)) {
+    var digits = String(Math.floor(Math.abs(value)));
+    if (digits.length === 10 && /^[789]0/.test(digits)) digits = '0' + digits;
+    return digits;
+  }
+  return String(value || '').trim();
+}
+
+function formatAdminDateTime_(dateValue, timeValue) {
+  var dt = parseVisitDate_(dateValue);
+  var time = formatTimeValue_(timeValue);
+  if (!dt) {
+    var fallback = formatDisplayDateFromText_(String(dateValue || '').trim());
+    return (fallback + (time ? ' ' + time : '')).trim();
+  }
+  var m = ('0' + (dt.getMonth() + 1)).slice(-2);
+  var d = ('0' + dt.getDate()).slice(-2);
+  var w = WEEKDAYS_JA[dt.getDay()];
+  return m + '/' + d + ' (' + w + ')' + (time ? ' ' + time : '');
+}
+
+function startOfDay_(date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
 function normalizeEmail_(raw) {
