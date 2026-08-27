@@ -107,6 +107,10 @@
             border-color: var(--brand-red);
             color: #fff;
         }
+        select.input-underline option:disabled {
+            color: #9ca3af;
+            background: #f3f4f6;
+        }
 
         .input-underline {
             width: 100%;
@@ -443,6 +447,47 @@
                 timeInput.options[0].textContent = JoyfitI18n.t('form.timeEmpty', '---');
             }
 
+            const bookedSlotsCache = {};
+            let bookedSlotsRequestId = 0;
+
+            function bookedLabel(timeString) {
+                return timeString + JoyfitI18n.t('form.slotTakenSuffix', '（予約済）');
+            }
+
+            function applyBookedSlots(dateValue, times) {
+                if (dateInput.value !== dateValue) return;
+                const booked = {};
+                (times || []).forEach(function(t) { booked[t] = true; });
+                Array.from(timeInput.options).forEach(function(option) {
+                    if (!option.value) return;
+                    if (booked[option.value]) {
+                        option.disabled = true;
+                        option.textContent = bookedLabel(option.value);
+                        if (timeInput.value === option.value) timeInput.value = '';
+                    } else {
+                        option.disabled = false;
+                        option.textContent = option.value;
+                    }
+                });
+            }
+
+            function fetchBookedSlots(dateValue) {
+                if (!dateValue) return;
+                if (bookedSlotsCache[dateValue]) {
+                    applyBookedSlots(dateValue, bookedSlotsCache[dateValue]);
+                    return;
+                }
+                const requestId = ++bookedSlotsRequestId;
+                gasRequest({ action: 'getBookedSlots', date: dateValue })
+                    .then(function(result) {
+                        if (requestId !== bookedSlotsRequestId) return;
+                        if (!result || !result.ok) return;
+                        bookedSlotsCache[dateValue] = result.times || [];
+                        applyBookedSlots(dateValue, bookedSlotsCache[dateValue]);
+                    })
+                    .catch(function() {});
+            }
+
             function populateTimeSlots(startHour, endHour) {
                 timeInput.innerHTML = '';
 
@@ -489,6 +534,8 @@
                     populateTimeSlots(10, 20);
                 }
                 timeInput.disabled = false;
+                // 時刻一覧は即表示し、予約済みだけ後からグレーアウト（待ちストレスを減らす）
+                fetchBookedSlots(this.value);
             });
 
             window.addEventListener('joyfit:langchange', function() {
@@ -497,6 +544,10 @@
                         ? JoyfitI18n.t('form.timeEmpty', '---')
                         : JoyfitI18n.t('form.timeSelect', 'TIME SELECT');
                 }
+                Array.from(timeInput.options).forEach(function(option) {
+                    if (!option.value) return;
+                    option.textContent = option.disabled ? bookedLabel(option.value) : option.value;
+                });
                 if (dateError.textContent) {
                     dateError.textContent = JoyfitI18n.t('errors.monThuClosed', 'MON & THU CLOSED (月曜・木曜はスタッフ不在)');
                 }
@@ -512,12 +563,14 @@
                 const keys = {
                     alreadyBooked: 'errors.alreadyBooked',
                     invalidEmail: 'errors.invalidEmail',
-                    missingFields: 'errors.missingFields'
+                    missingFields: 'errors.missingFields',
+                    slotTaken: 'errors.slotTaken'
                 };
                 const fallbacks = {
                     alreadyBooked: 'このメールアドレスはすでに予約済みです。予約は1回のみです。',
                     invalidEmail: 'メールアドレスを正しく入力してください。',
-                    missingFields: '必須項目を入力してください。'
+                    missingFields: '必須項目を入力してください。',
+                    slotTaken: 'その日時はすでに予約が入っています。別の時間を選んでください。'
                 };
                 const key = keys[code] || 'errors.system';
                 return JoyfitI18n.t(key, fallbacks[code] || 'システムエラーが発生しました。再度お試しください。');
@@ -633,11 +686,22 @@
                     });
                     if (!result || !result.ok) {
                         if (result && result.error === 'alreadyBooked') showEmailDup(true);
+                        if (result && result.error === 'slotTaken' && data.date) {
+                            delete bookedSlotsCache[data.date];
+                            fetchBookedSlots(data.date);
+                        }
                         submitError.textContent = mapGasError(result && result.error);
                         submitButton.disabled = false;
                         submitButton.textContent = JoyfitI18n.t('form.submit', '上記の内容で申し込む');
                         submitButton.classList.remove('opacity-70');
                         return;
+                    }
+
+                    if (data.date) {
+                        if (!bookedSlotsCache[data.date]) bookedSlotsCache[data.date] = [];
+                        if (data.time && bookedSlotsCache[data.date].indexOf(data.time) === -1) {
+                            bookedSlotsCache[data.date].push(data.time);
+                        }
                     }
 
                     document.getElementById('result-plan-message').textContent = planLabel;

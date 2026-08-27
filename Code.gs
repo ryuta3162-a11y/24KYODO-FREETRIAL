@@ -37,6 +37,8 @@ function doGet(e) {
     var action = String(p.action || '');
     if (action === 'checkEmail') {
       result = checkEmail_(p.email);
+    } else if (action === 'getBookedSlots') {
+      result = getBookedSlots_(p.date);
     } else if (action === 'submit') {
       result = submitReservation_(p);
     } else {
@@ -59,6 +61,8 @@ function doPost(e) {
     var result;
     if (action === 'checkEmail') {
       result = checkEmail_(data.email);
+    } else if (action === 'getBookedSlots') {
+      result = getBookedSlots_(data.date);
     } else if (action === 'submit') {
       result = submitReservation_(data);
     } else {
@@ -79,6 +83,15 @@ function checkEmail_(rawEmail) {
   var email = normalizeEmail_(rawEmail);
   if (!isValidEmail_(email)) return { ok: false, error: 'invalidEmail' };
   return { ok: true, alreadyBooked: isEmailAlreadyBooked_(email) };
+}
+
+/** 指定日の予約済み時刻一覧（UIグレーアウト用・軽量） */
+function getBookedSlots_(rawDate) {
+  var dateText = formatDateInputValue_(rawDate);
+  if (!dateText) return { ok: false, error: 'missingFields' };
+  var visitDate = parseVisitDate_(dateText);
+  var dateKey = visitDate ? formatDateKey_(visitDate) : dateText;
+  return { ok: true, date: dateKey, times: getBookedTimesForDate_(dateKey) };
 }
 
 function submitReservation_(p) {
@@ -104,6 +117,12 @@ function submitReservation_(p) {
     var timeText = formatTimeValue_(time);
     var dateText = formatDateInputValue_(date);
     var visitDate = parseVisitDate_(dateText);
+    if (!timeText || !dateText) return { ok: false, error: 'missingFields' };
+
+    // 同時刻の二重予約防止（画面のグレーアウトと併用）
+    if (isSlotAlreadyBooked_(dateText, timeText)) {
+      return { ok: false, error: 'slotTaken' };
+    }
 
     var sh = getReserveSheet_();
     sh.appendRow([new Date(), plan, name, email, tel, gender, age, dateText, timeText]);
@@ -491,6 +510,38 @@ function isEmailAlreadyBooked_(email) {
   var values = sh.getRange(2, EMAIL_COL, lastRow, EMAIL_COL).getValues();
   for (var i = 0; i < values.length; i++) {
     if (normalizeEmail_(values[i][0]) === email) return true;
+  }
+  return false;
+}
+
+function getBookedTimesForDate_(dateKey) {
+  var sh = getReserveSheet_();
+  var lastRow = sh.getLastRow();
+  if (lastRow < 2) return [];
+
+  var values = sh.getRange(2, DATE_COL, lastRow, TIME_COL).getValues();
+  var seen = {};
+  var times = [];
+  for (var i = 0; i < values.length; i++) {
+    var rowDate = parseVisitDate_(values[i][0]);
+    if (!rowDate || formatDateKey_(rowDate) !== dateKey) continue;
+    var t = formatTimeValue_(values[i][1]);
+    if (!t || seen[t]) continue;
+    seen[t] = true;
+    times.push(t);
+  }
+  times.sort();
+  return times;
+}
+
+function isSlotAlreadyBooked_(dateText, timeText) {
+  var visitDate = parseVisitDate_(dateText);
+  var dateKey = visitDate ? formatDateKey_(visitDate) : formatDateInputValue_(dateText);
+  var wantTime = formatTimeValue_(timeText);
+  if (!dateKey || !wantTime) return false;
+  var booked = getBookedTimesForDate_(dateKey);
+  for (var i = 0; i < booked.length; i++) {
+    if (booked[i] === wantTime) return true;
   }
   return false;
 }
