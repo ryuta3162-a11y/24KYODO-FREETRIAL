@@ -422,23 +422,32 @@ function repairPreferredDateTimeFromGmail_() {
     if (email && mailMap.byEmail[email]) preferred = mailMap.byEmail[email];
     if (!preferred && name && mailMap.byName[name]) preferred = mailMap.byName[name];
 
-    var looksWrong = isPreferredDateTimeWrong_(submittedAt, curDate, curTime);
-    if (!looksWrong && curDate && curTime) {
-      // 正しい値でもテキスト書式に揃える
-      sh.getRange(r, DATE_COL).setNumberFormat('@').setValue(curDate);
-      sh.getRange(r, TIME_COL).setNumberFormat('@').setValue(curTime);
-      ok++;
+    // Gmailに希望日時がある場合はそれを正とする（空・送信時刻混入・ズレを上書き）
+    if (preferred && preferred.date && preferred.time) {
+      if (curDate === preferred.date && curTime === preferred.time) {
+        sh.getRange(r, DATE_COL).setNumberFormat('@').setValue(curDate);
+        sh.getRange(r, TIME_COL).setNumberFormat('@').setValue(curTime);
+        ok++;
+      } else {
+        sh.getRange(r, DATE_COL).setNumberFormat('@').setValue(preferred.date);
+        sh.getRange(r, TIME_COL).setNumberFormat('@').setValue(preferred.time);
+        fixed++;
+      }
       continue;
     }
 
-    if (!preferred || !preferred.date || !preferred.time) {
+    // メールが無い行は、送信時刻っぽいものだけ空扱いにしてテキスト整形
+    if (isPreferredDateTimeWrong_(submittedAt, curDate, curTime)) {
       miss++;
       continue;
     }
-
-    sh.getRange(r, DATE_COL).setNumberFormat('@').setValue(preferred.date);
-    sh.getRange(r, TIME_COL).setNumberFormat('@').setValue(preferred.time);
-    fixed++;
+    if (curDate && curTime) {
+      sh.getRange(r, DATE_COL).setNumberFormat('@').setValue(curDate);
+      sh.getRange(r, TIME_COL).setNumberFormat('@').setValue(curTime);
+      ok++;
+    } else {
+      miss++;
+    }
   }
 
   SpreadsheetApp.flush();
@@ -449,19 +458,12 @@ function isPreferredDateTimeWrong_(submittedAt, dateText, timeText) {
   if (!dateText || !timeText) return true;
   if (!(submittedAt instanceof Date) || isNaN(submittedAt.getTime())) return false;
 
-  // I列が「申込時刻」そのもの（分まで一致）なら誤り
-  var submitTime = Utilities.formatDate(
-    submittedAt,
-    Session.getScriptTimeZone() || 'Asia/Tokyo',
-    'HH:mm'
-  );
-  var submitDate = Utilities.formatDate(
-    submittedAt,
-    Session.getScriptTimeZone() || 'Asia/Tokyo',
-    'yyyy-MM-dd'
-  );
-  if (timeText === submitTime && dateText === submitDate) return true;
-  if (timeText === submitTime && (!dateText || dateText === submitDate)) return true;
+  var tz = Session.getScriptTimeZone() || 'Asia/Tokyo';
+  var submitTime = Utilities.formatDate(submittedAt, tz, 'HH:mm');
+  var submitDate = Utilities.formatDate(submittedAt, tz, 'yyyy-MM-dd');
+  // I列が申込時刻と同じなら誤り（希望時間ではない）
+  if (timeText === submitTime) return true;
+  if (dateText === submitDate && timeText === submitTime) return true;
   return false;
 }
 
