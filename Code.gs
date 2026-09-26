@@ -372,8 +372,185 @@ function onOpen() {
     .addItem('初期セットアップ（トリガー一括設定）', 'setupAllTriggers')
     .addItem('テストメール送信（権限承認）', 'sendTestMail_')
     .addSeparator()
+    .addItem('希望日時をGmailから修復（H/I列）', 'repairPreferredDateTimeFromGmail')
     .addItem('未送信・エラー分を再送', 'resendMissingBookingMails')
     .addToUi();
+}
+
+/**
+ * 過去行の H/I を、店舗通知メールの「ご希望日時」から埋める／直す。
+ * A列タイムスタンプと H/I 希望日時が食い違っている・空・送信時刻っぽい行が対象。
+ */
+function repairPreferredDateTimeFromGmail() {
+  var ui = SpreadsheetApp.getUi();
+  try {
+    var result = repairPreferredDateTimeFromGmail_();
+    ui.alert(
+      '希望日時の修復',
+      '修復: ' + result.fixed + ' 件\n' +
+        '既に正しい: ' + result.ok + ' 件\n' +
+        'メールなし/不一致: ' + result.miss + ' 件\n' +
+        'Gmail照合: ' + result.mailHits + ' 通',
+      ui.ButtonSet.OK
+    );
+  } catch (e) {
+    Logger.log(e);
+    ui.alert('希望日時の修復', 'エラー: ' + e.message, ui.ButtonSet.OK);
+  }
+}
+
+function repairPreferredDateTimeFromGmail_() {
+  var sh = getReserveSheet_();
+  ensureReserveHeaders_(sh);
+  var lastRow = sh.getLastRow();
+  if (lastRow < 2) return { fixed: 0, ok: 0, miss: 0, mailHits: 0 };
+
+  var mailMap = buildFreetrialPreferredMapFromGmail_();
+  var fixed = 0;
+  var ok = 0;
+  var miss = 0;
+
+  for (var r = 2; r <= lastRow; r++) {
+    var row = sh.getRange(r, 1, r, RESERVE_LAST_COL).getValues()[0];
+    var submittedAt = row[0];
+    var name = kyodoNormNameForMatch_(row[2]);
+    var email = normalizeEmail_(row[3]);
+    var curDate = formatDateInputValue_(row[DATE_COL - 1]);
+    var curTime = formatTimeValue_(row[TIME_COL - 1]);
+
+    var preferred = null;
+    if (email && mailMap.byEmail[email]) preferred = mailMap.byEmail[email];
+    if (!preferred && name && mailMap.byName[name]) preferred = mailMap.byName[name];
+
+    var looksWrong = isPreferredDateTimeWrong_(submittedAt, curDate, curTime);
+    if (!looksWrong && curDate && curTime) {
+      // 正しい値でもテキスト書式に揃える
+      sh.getRange(r, DATE_COL).setNumberFormat('@').setValue(curDate);
+      sh.getRange(r, TIME_COL).setNumberFormat('@').setValue(curTime);
+      ok++;
+      continue;
+    }
+
+    if (!preferred || !preferred.date || !preferred.time) {
+      miss++;
+      continue;
+    }
+
+    sh.getRange(r, DATE_COL).setNumberFormat('@').setValue(preferred.date);
+    sh.getRange(r, TIME_COL).setNumberFormat('@').setValue(preferred.time);
+    fixed++;
+  }
+
+  SpreadsheetApp.flush();
+  return { fixed: fixed, ok: ok, miss: miss, mailHits: mailMap.count };
+}
+
+function isPreferredDateTimeWrong_(submittedAt, dateText, timeText) {
+  if (!dateText || !timeText) return true;
+  if (!(submittedAt instanceof Date) || isNaN(submittedAt.getTime())) return false;
+
+  // I列が「申込時刻」そのもの（分まで一致）なら誤り
+  var submitTime = Utilities.formatDate(
+    submittedAt,
+    Session.getScriptTimeZone() || 'Asia/Tokyo',
+    'HH:mm'
+  );
+  var submitDate = Utilities.formatDate(
+    submittedAt,
+    Session.getScriptTimeZone() || 'Asia/Tokyo',
+    'yyyy-MM-dd'
+  );
+  if (timeText === submitTime && dateText === submitDate) return true;
+  if (timeText === submitTime && (!dateText || dateText === submitDate)) return true;
+  return false;
+}
+
+function buildFreetrialPreferredMapFromGmail_() {
+  var byEmail = {};
+  var byName = {};
+  var count = 0;
+  var query =
+    'subject:"見学・体験の申し込みがありました" OR subject:"見学・体験予約を承りました" newer_than:400d';
+  var threads = GmailApp.search(query, 0, 300);
+  for (var t = 0; t < threads.length; t++) {
+    var messages = threads[t].getMessages();
+    for (var m = 0; m < messages.length; m++) {
+      var body = String(messages[m].getPlainBody() || messages[m].getBody() || '');
+      var parsed = parseFreetrialPreferredFromMailBody_(body);
+      if (!parsed) continue;
+      count++;
+      if (parsed.email) byEmail[parsed.email] = parsed;
+      if (parsed.name) byName[parsed.name] = parsed;
+    }
+  }
+  return { byEmail: byEmail, byName: byName, count: count };
+}
+
+function parseFreetrialPreferredFromMailBody_(body) {
+  var text = String(body || '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<[^>]+>/g, '');
+
+  var emailMatch = text.match(/メールアドレス[：:]\s*([^\s\n]+)/);
+  var nameMatch = text.match(/お名前[：:]\s*([^\n]+)/);
+  var preferredMatch =
+    text.match(/ご希望日時[：:]\s*([^\n]+)/) ||
+    text.match(/■\s*日時[：:]\s*([^\n]+)/) ||
+    text.match(/日時[：:]\s*([^\n]+)/);
+
+  if (!preferredMatch) return null;
+  var parsedDt = parseAdminPreferredText_(preferredMatch[1]);
+  if (!parsedDt.date && !parsedDt.time) return null;
+
+  var name = '';
+  if (nameMatch) {
+    name = kyodoNormNameForMatch_(String(nameMatch[1]).replace(/様\s*$/, ''));
+  }
+  return {
+    email: emailMatch ? normalizeEmail_(emailMatch[1]) : '',
+    name: name,
+    date: parsedDt.date,
+    time: parsedDt.time
+  };
+}
+
+/** 「09/27 (土) 14:30」や「2026-09-27 14:30」を分解。年が無い場合は実行年を補う */
+function parseAdminPreferredText_(raw) {
+  var s = String(raw || '').trim();
+  var out = { date: '', time: '' };
+  var timeM = s.match(/(\d{1,2}):(\d{2})/);
+  if (timeM) {
+    out.time = ('0' + Number(timeM[1])).slice(-2) + ':' + timeM[2];
+  }
+  var ymd = s.match(/(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})/);
+  if (ymd) {
+    out.date =
+      ymd[1] +
+      '-' +
+      ('0' + ymd[2]).slice(-2) +
+      '-' +
+      ('0' + ymd[3]).slice(-2);
+    return out;
+  }
+  var md = s.match(/(\d{1,2})[\/\-.](\d{1,2})/);
+  if (md) {
+    var y = new Date().getFullYear();
+    out.date =
+      y +
+      '-' +
+      ('0' + md[1]).slice(-2) +
+      '-' +
+      ('0' + md[2]).slice(-2);
+  }
+  return out;
+}
+
+function kyodoNormNameForMatch_(raw) {
+  return String(raw || '')
+    .replace(/\s*様\s*$/g, '')
+    .replace(/[ \u3000]+/g, ' ')
+    .trim();
 }
 
 function writeMailStatus_(row, email, mailResult) {
