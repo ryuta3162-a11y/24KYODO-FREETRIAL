@@ -125,8 +125,10 @@ function submitReservation_(p) {
     }
 
     var sh = getReserveSheet_();
-    sh.appendRow([new Date(), plan, name, email, tel, gender, age, dateText, timeText]);
+    ensureReserveHeaders_(sh);
+    sh.appendRow([new Date(), plan, name, email, tel, gender, age, '', '']);
     var row = sh.getLastRow();
+    // H列=希望日, I列=希望時間（A列の申込タイムスタンプとは別。テキスト固定）
     sh.getRange(row, DATE_COL).setNumberFormat('@').setValue(dateText);
     sh.getRange(row, TIME_COL).setNumberFormat('@').setValue(timeText);
     SpreadsheetApp.flush();
@@ -551,6 +553,28 @@ function getReserveSheet_() {
   var sh = ss.getSheetByName(RESERVE_SHEET_NAME);
   if (!sh) sh = ss.getSheets()[0];
   return sh;
+}
+
+/** 見出しを固定。H=希望日 / I=希望時間（Aの申込時刻と混同しない） */
+function ensureReserveHeaders_(sh) {
+  var headers = [
+    'タイムスタンプ',
+    'プラン',
+    'お名前',
+    'メール',
+    '電話',
+    '性別',
+    '年代',
+    '希望日',
+    '希望時間'
+  ];
+  sh.getRange(1, 1, 1, headers.length).setValues([headers]);
+  sh.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+  if (sh.getFrozenRows() < 1) sh.setFrozenRows(1);
+  // H/I 列全体をテキスト扱い（日付自動変換で送信時刻に見えるのを防止）
+  var lastRow = Math.max(sh.getLastRow(), 2);
+  sh.getRange(2, DATE_COL, lastRow, 1).setNumberFormat('@');
+  sh.getRange(2, TIME_COL, lastRow, 1).setNumberFormat('@');
 }
 
 function parseVisitDate_(value) {
