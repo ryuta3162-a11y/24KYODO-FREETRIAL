@@ -170,23 +170,32 @@ function submitReservation_(p) {
   }
 }
 
-function sendBookingMails_(booking) {
-  // お客さまへ（当初文面）※社員BCCなし
-  var customer = sendMailWithRetry_({
+function sendBookingMails_(booking, prev) {
+  prev = prev || {};
+  // お客さまへ（当初文面）※社員BCCなし。店舗アドレス以外からは絶対に送らない
+  var customer = prev.customerOk ? { ok: true, via: 'already sent' } : sendMailWithRetry_({
     to: booking.email,
     subject: '【' + STORE_NAME + '】見学・体験予約を承りました',
-    body: buildCustomerMailBody_(booking)
+    body: buildCustomerMailBody_(booking),
+    storeOnly: true
   });
 
   // 店舗宛 + 社員はBCC（スプシリンク付き管理者通知）
-  var admin = sendMailWithRetry_({
+  var admin = prev.adminOk ? { ok: true, via: 'already sent' } : sendMailWithRetry_({
     to: STORE_EMAIL,
     bcc: getStaffBcc_(),
     subject: '【' + STORE_NAME_SHORT + '】 見学・体験の申し込みがありました',
-    body: buildAdminMailBody_(booking)
+    body: buildAdminMailBody_(booking, customer)
   });
 
   return { customer: customer, admin: admin };
+}
+
+function canSendAsStore_() {
+  try {
+    if (String(Session.getEffectiveUser().getEmail() || '').toLowerCase() === STORE_EMAIL) return 'self';
+  } catch (e) {}
+  return '';
 }
 
 function sendMailWithRetry_(options) {
@@ -197,6 +206,7 @@ function sendMailWithRetry_(options) {
       lastResult.attempts = attempt;
       return lastResult;
     }
+    if (String(lastResult.error || '').indexOf('NOT_STORE_ACCOUNT') === 0) break;
     if (attempt < MAIL_RETRY_MAX) {
       Utilities.sleep(MAIL_RETRY_WAIT_MS * attempt);
     }
@@ -222,15 +232,8 @@ function sendMailOnce_(options) {
   if (cc) extras.cc = cc;
   if (bcc) extras.bcc = bcc;
 
-  // 実行アカウントのGmailに店舗アドレスが「送信元(send-as)」登録済みなら店舗アドレスで送る
-  try {
-    var fromExtras = {};
-    for (var k in extras) fromExtras[k] = extras[k];
-    fromExtras.from = STORE_EMAIL;
-    GmailApp.sendEmail(to, subject, body, fromExtras);
-    return { ok: true, via: 'GmailApp(from store)', to: to };
-  } catch (fromErr) {
-    Logger.log('send-as store failed, fallback: ' + fromErr);
+  if (options.storeOnly && canSendAsStore_() !== 'self') {
+    return { ok: false, error: 'NOT_STORE_ACCOUNT: 店舗アカウントでデプロイされていないためお客さまメールを送信しませんでした' };
   }
 
   try {
@@ -277,9 +280,12 @@ function buildCustomerMailBody_(data) {
   ].join('\n');
 }
 
-function buildAdminMailBody_(data) {
+function buildAdminMailBody_(data, customerResult) {
   var sheetUrl = SpreadsheetApp.getActiveSpreadsheet().getUrl();
-  return [
+  var warn = (customerResult && !customerResult.ok)
+    ? ['※お客さまへの自動返信メールは送信されていません。店舗から直接ご連絡ください。', '']
+    : [];
+  return warn.concat([
     '【' + STORE_NAME_SHORT + '】 見学・体験の申し込みがありました。下記の内容をご確認ください。',
     '',
     '■ お申し込み内容',
@@ -293,7 +299,7 @@ function buildAdminMailBody_(data) {
     '',
     'スプレッドシートにも記録されています。',
     sheetUrl
-  ].join('\n');
+  ]).join('\n');
 }
 
 function retryFailedMails() {
@@ -314,7 +320,10 @@ function retryFailedMails() {
     if (!booking) continue;
 
     try {
-      var mailResult = sendBookingMails_(booking);
+      var mailResult = sendBookingMails_(booking, {
+        customerOk: isMailStatusOk_(status.customer),
+        adminOk: isMailStatusOk_(status.admin)
+      });
       writeMailStatus_(rowNum, booking.email, mailResult);
     } catch (err) {
       Logger.log('retry fail row=' + rowNum + ' ' + err);
