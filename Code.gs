@@ -215,13 +215,23 @@ function sendMailOnce_(options) {
     return { ok: false, error: 'missing to/subject' };
   }
 
-  // Fromは実行アカウントのまま。Reply-Toのみ店舗（send-as未設定でも落ちない）
   var extras = {
     name: STORE_NAME,
     replyTo: STORE_EMAIL
   };
   if (cc) extras.cc = cc;
   if (bcc) extras.bcc = bcc;
+
+  // 実行アカウントのGmailに店舗アドレスが「送信元(send-as)」登録済みなら店舗アドレスで送る
+  try {
+    var fromExtras = {};
+    for (var k in extras) fromExtras[k] = extras[k];
+    fromExtras.from = STORE_EMAIL;
+    GmailApp.sendEmail(to, subject, body, fromExtras);
+    return { ok: true, via: 'GmailApp(from store)', to: to };
+  } catch (fromErr) {
+    Logger.log('send-as store failed, fallback: ' + fromErr);
+  }
 
   try {
     GmailApp.sendEmail(to, subject, body, extras);
