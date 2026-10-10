@@ -551,8 +551,37 @@ function getBookedTimesForDate_(dateKey) {
     seen[t] = true;
     times.push(t);
   }
+  getMachineLectureBookedTimes_(dateKey).forEach(function (mt) {
+    if (seen[mt]) return;
+    seen[mt] = true;
+    times.push(mt);
+  });
   times.sort();
   return times;
+}
+
+/** マシンレクチャーの予約時刻（同じ時間帯は見学・体験も受け付けない） */
+var MACHINE_LECTURE_SPREADSHEET_ID = '1wntzhyPGcz9hW4saswppYmVG-zHINbjAibu9VkCyEQ8';
+var MACHINE_LECTURE_SHEET_NAME = 'マシンレクチャー申込';
+
+function getMachineLectureBookedTimes_(dateKey) {
+  try {
+    var sh = SpreadsheetApp.openById(MACHINE_LECTURE_SPREADSHEET_ID).getSheetByName(MACHINE_LECTURE_SHEET_NAME);
+    if (!sh || sh.getLastRow() < 2) return [];
+    // F:予約日 G:予約時間
+    var values = sh.getRange(2, 6, sh.getLastRow() - 1, 2).getValues();
+    var out = [];
+    for (var i = 0; i < values.length; i++) {
+      var d = parseVisitDate_(values[i][0]);
+      if (!d || formatDateKey_(d) !== dateKey) continue;
+      var t = formatTimeValue_(values[i][1]);
+      if (t) out.push(t);
+    }
+    return out;
+  } catch (err) {
+    Logger.log('getMachineLectureBookedTimes_ error: ' + err);
+    return [];
+  }
 }
 
 function isSlotAlreadyBooked_(dateText, timeText) {
