@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>ご予約の確認・変更・キャンセル - JOYFIT24経堂 見学・体験</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --red: #C21632; --red-dark: #8a0e20; --ink: #111; --muted: #555; --line: #E5E5E5; }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Noto Sans JP', sans-serif; color: var(--ink); background: #fafafa; }
+        .wrap { max-width: 520px; margin: 0 auto; padding: 32px 16px 64px; }
+        .brand { text-align: center; font-size: 12px; font-weight: 900; letter-spacing: .14em; }
+        h1 { text-align: center; font-size: 20px; font-weight: 900; margin: 8px 0 24px; }
+        .card { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+        .row { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+        .row:last-child { border-bottom: 0; }
+        .row .k { font-size: 12px; font-weight: 700; color: var(--muted); }
+        .row .v { font-weight: 700; text-align: right; }
+        .v.big { font-size: 18px; color: var(--red); }
+        .badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px; }
+        .badge.active { background: #e8f5e9; color: #1b5e20; }
+        .badge.cancelled { background: #eee; color: #555; }
+        .badge.past { background: #fff3e0; color: #8a4b00; }
+        .btn { display: block; width: 100%; padding: 14px; border-radius: 6px; font-size: 15px; font-weight: 700; cursor: pointer; border: 2px solid var(--red); margin-top: 10px; font-family: inherit; }
+        .btn.primary { background: var(--red); color: #fff; }
+        .btn.primary:hover { background: var(--red-dark); }
+        .btn.outline { background: #fff; color: var(--red); }
+        .btn.ghost { background: #fff; color: var(--muted); border-color: var(--line); }
+        .btn:disabled { opacity: .6; cursor: default; }
+        label { display: block; font-size: 13px; font-weight: 700; margin: 12px 0 6px; }
+        input, select { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; background: #fff; }
+        .msg { font-size: 13px; margin-top: 10px; min-height: 1em; }
+        .msg.err { color: var(--red); font-weight: 700; }
+        .msg.ok { color: #1b5e20; font-weight: 700; }
+        .note { font-size: 12px; color: var(--muted); line-height: 1.7; }
+        .hidden { display: none !important; }
+        .center { text-align: center; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="brand">JOYFIT24 経堂</div>
+    <h1 id="page-title">ご予約の確認・変更・キャンセル</h1>
+
+    <div id="loading" class="card center note">読み込み中です…</div>
+    <div id="fatal" class="card center hidden"><p id="fatal-text" class="msg err"></p></div>
+
+    <div id="detail" class="card hidden">
+        <div class="row"><span class="k">状態</span><span class="v"><span id="d-status" class="badge"></span></span></div>
+        <div class="row"><span class="k" id="d-kind-label">種別</span><span class="v" id="d-kind"></span></div>
+        <div class="row"><span class="k">お名前</span><span class="v"><span id="d-name"></span> 様</span></div>
+        <div class="row"><span class="k">日時</span><span class="v big" id="d-datetime"></span></div>
+    </div>
+
+    <div id="done" class="card center hidden"><p id="done-text" class="msg ok"></p></div>
+
+    <div id="actions" class="hidden">
+        <button type="button" id="open-change" class="btn primary">日時を変更する</button>
+        <button type="button" id="open-cancel" class="btn outline">予約をキャンセルする</button>
+    </div>
+
+    <div id="change-panel" class="card hidden">
+        <p class="note" style="margin-top:0">新しいご希望日時を選んでください。<span id="rule-note"></span></p>
+        <label for="new-date">ご希望日</label>
+        <input type="date" id="new-date">
+        <p id="date-msg" class="msg err"></p>
+        <label for="new-time">ご希望時間</label>
+        <select id="new-time" disabled><option value="">日付を選んでください</option></select>
+        <p id="change-msg" class="msg"></p>
+        <button type="button" id="do-change" class="btn primary" disabled>この日時に変更する</button>
+        <button type="button" class="btn ghost back">戻る</button>
+    </div>
+
+    <div id="cancel-panel" class="card hidden">
+        <p style="font-weight:700;margin-top:0">このご予約をキャンセルしますか？</p>
+        <p class="note">キャンセル後は元に戻せません。再度ご希望の場合は、もう一度お申し込みください。</p>
+        <p id="cancel-msg" class="msg"></p>
+        <button type="button" id="do-cancel" class="btn primary">キャンセルする</button>
+        <button type="button" class="btn ghost back">戻る</button>
+    </div>
+
+    <p class="note center" style="margin-top:24px">ご不明点は店舗までお問い合わせください。<br>jf-kyoudou@okamoto-group.co.jp</p>
+</div>
+
+<script>
+(function () {
+    var CONFIG = {
+        apiUrl: 'https://script.google.com/macros/s/AKfycby8qQgZ1bE2eNcTHrqi9VN-ZveKjexFwDdDJObpLfxUrzz6iz6K1N2BLok9wKAJOlcl/exec',
+        kindLabel: '種別',
+        slotsAction: 'getBookedSlots',
+        slotsField: 'times',
+        maxDate: null,
+        ruleNote: '（月曜・木曜はお休み／平日 10:00〜19:30・土日 12:00〜18:30）',
+        timesFor: function (d) {
+            var day = d.getDay();
+            if (day === 1 || day === 4) return null;
+            var weekend = day === 0 || day === 6;
+            return buildTimes(weekend ? 12 * 60 : 10 * 60, weekend ? 18 * 60 + 30 : 19 * 60 + 30);
+        },
+        closedMessage: '月曜・木曜はスタッフ不在のため選べません。'
+    };
+
+    function buildTimes(start, end) {
+        var out = [];
+        for (var m = start; m <= end; m += 30) {
+            out.push(('0' + Math.floor(m / 60)).slice(-2) + ':' + ('0' + (m % 60)).slice(-2));
+        }
+        return out;
+    }
+
+    var ERRORS = {
+        notFound: 'ご予約が見つかりませんでした。メールに記載のURLをもう一度ご確認ください。',
+        alreadyCancelled: 'このご予約はすでにキャンセルされています。',
+        pastReservation: 'ご予約日時を過ぎているため、変更・キャンセルできません。',
+        slotTaken: 'その日時はすでに予約が入っています。別の時間を選んでください。',
+        invalidSlot: 'その日時は選べません。別の日時を選んでください。',
+        sameSlot: '現在のご予約と同じ日時です。',
+        missingFields: '日付と時間を選んでください。'
+    };
+    function errText(code) { return ERRORS[code] || '通信エラーが発生しました。時間をおいて再度お試しください。'; }
+
+    var cbSeq = 0;
+    function api(params) {
+        return new Promise(function (resolve, reject) {
+            var name = '__mg_cb_' + Date.now() + '_' + (++cbSeq);
+            var script = document.createElement('script');
+            var timer = setTimeout(function () { cleanup(); reject(new Error('timeout')); }, 45000);
+            function cleanup() { clearTimeout(timer); try { delete window[name]; } catch (e) { window[name] = undefined; } script.remove(); }
+            window[name] = function (data) { cleanup(); resolve(data); };
+            var q = Object.keys(params).map(function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]); });
+            q.push('callback=' + name, '_=' + Date.now());
+            script.src = CONFIG.apiUrl + '?' + q.join('&');
+            script.onerror = function () { cleanup(); reject(new Error('network')); };
+            document.body.appendChild(script);
+        });
+    }
+
+    var $ = function (id) { return document.getElementById(id); };
+    var id = new URLSearchParams(location.search).get('id') || '';
+    var current = null;
+
+    function show(elId, on) { $(elId).classList.toggle('hidden', !on); }
+    function pad(n) { return ('0' + n).slice(-2); }
+    function ymd(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+    function displayDate(key) {
+        var p = key.split('-').map(Number);
+        var d = new Date(p[0], p[1] - 1, p[2]);
+        return p[1] + '/' + p[2] + '（' + '日月火水木金土'.charAt(d.getDay()) + '）';
+    }
+
+    function render(r) {
+        current = r;
+        $('d-kind-label').textContent = CONFIG.kindLabel;
+        $('d-kind').textContent = r.plan || '';
+        $('d-name').textContent = r.name || '';
+        $('d-datetime').textContent = displayDate(r.date) + ' ' + r.time;
+        var badge = $('d-status');
+        badge.className = 'badge ' + r.status;
+        badge.textContent = r.status === 'cancelled' ? 'キャンセル済み' : (r.status === 'past' ? 'ご予約日時を過ぎています' : 'ご予約中');
+        show('detail', true);
+        show('actions', r.status === 'active');
+        show('change-panel', false);
+        show('cancel-panel', false);
+    }
+
+    function fatal(text) {
+        show('loading', false);
+        $('fatal-text').textContent = text;
+        show('fatal', true);
+    }
+
+    function load() {
+        if (!/^[0-9a-f]{32}$/i.test(id)) { fatal(errText('notFound')); return; }
+        api({ action: 'getReservation', id: id }).then(function (res) {
+            show('loading', false);
+            if (!res || !res.ok) { fatal(errText(res && res.error)); return; }
+            render(res.reservation);
+        }).catch(function () { fatal(errText('system')); });
+    }
+
+    // ----- 日時変更 -----
+    var dateInput = $('new-date');
+    var timeSelect = $('new-time');
+    var slotReq = 0;
+
+    function setupDateRange() {
+        var today = new Date();
+        dateInput.min = ymd(today);
+        if (CONFIG.maxDate) dateInput.max = ymd(CONFIG.maxDate(today));
+        $('rule-note').textContent = CONFIG.ruleNote;
+    }
+
+    function resetTimes(text) {
+        timeSelect.innerHTML = '<option value="">' + text + '</option>';
+        timeSelect.disabled = true;
+        $('do-change').disabled = true;
+    }
+
+    dateInput.addEventListener('change', function () {
+        $('date-msg').textContent = '';
+        $('change-msg').textContent = '';
+        var v = dateInput.value;
+        if (!v) { resetTimes('日付を選んでください'); return; }
+        var p = v.split('-').map(Number);
+        var d = new Date(p[0], p[1] - 1, p[2]);
+        if ((dateInput.min && v < dateInput.min) || (dateInput.max && v > dateInput.max)) {
+            $('date-msg').textContent = 'その日付は選べません。';
+            resetTimes('日付を選んでください');
+            return;
+        }
+        var times = CONFIG.timesFor(d);
+        if (!times) {
+            $('date-msg').textContent = CONFIG.closedMessage;
+            resetTimes('日付を選んでください');
+            return;
+        }
+        var now = new Date();
+        if (v === ymd(now)) {
+            var nowMin = now.getHours() * 60 + now.getMinutes();
+            times = times.filter(function (t) { var hm = t.split(':').map(Number); return hm[0] * 60 + hm[1] > nowMin; });
+        }
+        if (!times.length) { $('date-msg').textContent = 'この日は選べる時間がありません。'; resetTimes('日付を選んでください'); return; }
+
+        resetTimes('空き状況を確認中…');
+        var reqId = ++slotReq;
+        api({ action: CONFIG.slotsAction, date: v }).then(function (res) {
+            if (reqId !== slotReq) return;
+            var booked = {};
+            ((res && res.ok && res[CONFIG.slotsField]) || []).forEach(function (t) { booked[t] = true; });
+            timeSelect.innerHTML = '<option value="">時間を選んでください</option>';
+            times.forEach(function (t) {
+                var opt = document.createElement('option');
+                opt.value = t;
+                var mine = current && current.date === v && current.time === t;
+                if (mine) { opt.disabled = true; opt.textContent = t + '（現在のご予約）'; }
+                else if (booked[t]) { opt.disabled = true; opt.textContent = t + '（予約済）'; }
+                else { opt.textContent = t; }
+                timeSelect.appendChild(opt);
+            });
+            timeSelect.disabled = false;
+        }).catch(function () {
+            if (reqId !== slotReq) return;
+            resetTimes('日付を選んでください');
+            $('date-msg').textContent = errText('system');
+        });
+    });
+
+    timeSelect.addEventListener('change', function () {
+        $('do-change').disabled = !timeSelect.value;
+        $('change-msg').textContent = '';
+    });
+
+    $('do-change').addEventListener('click', function () {
+        var btn = this;
+        var msg = $('change-msg');
+        if (!dateInput.value || !timeSelect.value) { msg.className = 'msg err'; msg.textContent = errText('missingFields'); return; }
+        btn.disabled = true;
+        btn.textContent = '変更中…';
+        msg.textContent = '';
+        api({ action: 'changeReservation', id: id, date: dateInput.value, time: timeSelect.value }).then(function (res) {
+            btn.textContent = 'この日時に変更する';
+            if (!res || !res.ok) {
+                msg.className = 'msg err';
+                msg.textContent = errText(res && res.error);
+                btn.disabled = false;
+                if (res && res.error === 'slotTaken') dateInput.dispatchEvent(new Event('change'));
+                return;
+            }
+            render(res.reservation);
+            $('done-text').textContent = '日時を変更しました。確認メールをお送りしています。';
+            show('done', true);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }).catch(function () {
+            btn.textContent = 'この日時に変更する';
+            btn.disabled = false;
+            msg.className = 'msg err';
+            msg.textContent = errText('system');
+        });
+    });
+
+    // ----- キャンセル -----
+    $('do-cancel').addEventListener('click', function () {
+        var btn = this;
+        var msg = $('cancel-msg');
+        btn.disabled = true;
+        btn.textContent = 'キャンセル中…';
+        msg.textContent = '';
+        api({ action: 'cancelReservation', id: id }).then(function (res) {
+            btn.textContent = 'キャンセルする';
+            if (!res || !res.ok) {
+                msg.className = 'msg err';
+                msg.textContent = errText(res && res.error);
+                btn.disabled = false;
+                return;
+            }
+            render(res.reservation);
+            $('done-text').textContent = 'ご予約をキャンセルしました。';
+            show('done', true);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }).catch(function () {
+            btn.textContent = 'キャンセルする';
+            btn.disabled = false;
+            msg.className = 'msg err';
+            msg.textContent = errText('system');
+        });
+    });
+
+    $('open-change').addEventListener('click', function () {
+        show('done', false);
+        show('actions', false);
+        show('change-panel', true);
+        dateInput.value = '';
+        resetTimes('日付を選んでください');
+        $('change-msg').textContent = '';
+        $('date-msg').textContent = '';
+    });
+    $('open-cancel').addEventListener('click', function () {
+        show('done', false);
+        show('actions', false);
+        show('cancel-panel', true);
+        $('cancel-msg').textContent = '';
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.back'), function (b) {
+        b.addEventListener('click', function () { if (current) render(current); });
+    });
+
+    setupDateRange();
+    load();
+})();
+</script>
+</body>
+</html>

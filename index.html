@@ -412,6 +412,11 @@
                     <p class="font-bold text-sm sm:text-base" data-i18n-html="form.screenshotTitle">この画面をスクリーンショットして<br>必ず保存してください</p>
                     <p class="text-xs mt-2" style="color:#555" data-i18n="form.screenshotNote">ご予約当日は、保存した画面の内容をご確認のうえご来館ください。</p>
                 </div>
+                <div id="manage-link-box" class="hidden max-w-md mx-auto mt-5 text-left border rounded p-4" style="border-color: var(--line);">
+                    <p class="font-bold text-sm mb-1">日時の変更・キャンセルはこちら</p>
+                    <a id="manage-link" href="#" class="text-brand-red underline text-sm break-all"></a>
+                    <p class="text-xs mt-2" style="color:#555">このURLも保存しておいてください（確認メールにも記載しています）。</p>
+                </div>
                 <p id="mail-pending-note" class="hidden text-xs text-gray-600 mt-4 max-w-md mx-auto">確認メールの送信処理中です。数分以内に届かない場合は迷惑メールフォルダもご確認ください。</p>
             </div>
     </main>
@@ -712,6 +717,13 @@
                     const dateString = data.date.replace(/-/g, '/');
                     const formattedDate = `${new Date(dateString).getMonth() + 1}/${new Date(dateString).getDate()}`;
                     document.getElementById('result-datetime').textContent = `${formattedDate} ${data.time}`;
+
+                    if (result.manageUrl) {
+                        const manageLink = document.getElementById('manage-link');
+                        manageLink.href = result.manageUrl;
+                        manageLink.textContent = result.manageUrl;
+                        document.getElementById('manage-link-box').classList.remove('hidden');
+                    }
 
                     formContainer.classList.add('hidden');
                     successMessage.classList.remove('hidden');

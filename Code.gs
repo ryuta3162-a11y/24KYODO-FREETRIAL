@@ -14,6 +14,12 @@ var EMAIL_COL = 4; // D列
 var DATE_COL = 8; // H列
 var TIME_COL = 9; // I列
 var RESERVE_LAST_COL = 9; // A〜I のみ
+var ID_COL = 10; // J列: 予約ID（変更・キャンセル用URLのキー）
+var STATUS_COL = 11; // K列: 状態（予約中 / キャンセル）
+var HISTORY_COL = 12; // L列: 変更・キャンセル履歴
+var STATUS_ACTIVE = '予約中';
+var STATUS_CANCELLED = 'キャンセル';
+var MANAGE_URL_BASE = 'https://24-kyodo-freetrial.vercel.app/manage.html?id=';
 var STORE_NAME = 'JOYFIT24 経堂';
 var STORE_NAME_SHORT = 'JOYFIT24経堂';
 var STORE_EMAIL = 'jf-kyoudou@okamoto-group.co.jp';
@@ -41,6 +47,12 @@ function doGet(e) {
       result = getBookedSlots_(p.date);
     } else if (action === 'submit') {
       result = submitReservation_(p);
+    } else if (action === 'getReservation') {
+      result = getReservation_(p.id);
+    } else if (action === 'cancelReservation') {
+      result = cancelReservation_(p.id);
+    } else if (action === 'changeReservation') {
+      result = changeReservation_(p.id, p.date, p.time);
     } else {
       result = { ok: false, error: 'unknownAction' };
     }
@@ -65,6 +77,12 @@ function doPost(e) {
       result = getBookedSlots_(data.date);
     } else if (action === 'submit') {
       result = submitReservation_(data);
+    } else if (action === 'getReservation') {
+      result = getReservation_(data.id);
+    } else if (action === 'cancelReservation') {
+      result = cancelReservation_(data.id);
+    } else if (action === 'changeReservation') {
+      result = changeReservation_(data.id, data.date, data.time);
     } else {
       result = { ok: false, error: 'unknownAction' };
     }
@@ -131,9 +149,12 @@ function submitReservation_(p) {
     // H列=希望日, I列=希望時間（A列の申込タイムスタンプとは別。テキスト固定）
     sh.getRange(row, DATE_COL).setNumberFormat('@').setValue(dateText);
     sh.getRange(row, TIME_COL).setNumberFormat('@').setValue(timeText);
+    var reservationId = Utilities.getUuid().replace(/-/g, '');
+    sh.getRange(row, ID_COL, 1, 2).setValues([[reservationId, STATUS_ACTIVE]]);
     SpreadsheetApp.flush();
 
     var booking = {
+      id: reservationId,
       row: row,
       plan: plan,
       name: name,
@@ -163,6 +184,7 @@ function submitReservation_(p) {
 
     return {
       ok: true,
+      manageUrl: MANAGE_URL_BASE + reservationId,
       mailSent: !!(mailResult.customer && mailResult.customer.ok && mailResult.admin && mailResult.admin.ok)
     };
   } finally {
@@ -267,9 +289,12 @@ function buildCustomerMailBody_(data) {
     '■ 日時：' + data.displayDate + ' ' + data.time,
     '■ お名前：' + data.name,
     '■ 電話番号：' + data.tel,
+    '',
+    '■ ご予約の日時変更・キャンセル',
+    data.id ? ('下記ページから、日時の変更・キャンセルができます。\n' + MANAGE_URL_BASE + data.id)
+      : ('こちらのメールにご連絡ください。\n' + STORE_EMAIL),
+    '',
     '【ご来館時のお願い】',
-    '・キャンセル時はこちらのメールにご連絡ください。',
-    STORE_EMAIL,
     '・体験は60分を目安にご利用ください',
     '・館内は土足でのご利用が可能です',
     '・当日は入口のインターホンを押してください。',
@@ -315,7 +340,8 @@ function retryFailedMails() {
     if (isMailStatusOk_(status.customer) && isMailStatusOk_(status.admin)) continue;
     if (rowNum < 2 || rowNum > lastRow) continue;
 
-    var row = sh.getRange(rowNum, 1, rowNum, RESERVE_LAST_COL).getValues()[0];
+    var row = sh.getRange(rowNum, 1, 1, STATUS_COL).getValues()[0];
+    if (String(row[STATUS_COL - 1]).trim() === STATUS_CANCELLED) continue;
     var booking = buildBookingFromValues_(row, rowNum, parseVisitDate_(row[DATE_COL - 1]));
     if (!booking) continue;
 
@@ -335,7 +361,7 @@ function setupAllTriggers() {
   // 前日リマインドは廃止。既存トリガーも削除する
   deleteTriggersForHandlers_(['sendDayBeforeReminders', 'retryFailedMails']);
   ScriptApp.newTrigger('retryFailedMails').timeBased().everyHours(1).create();
-  clearLegacyMailColumns_(getReserveSheet_());
+  ensureReserveHeaders_(getReserveSheet_());
   getMailLogSheet_();
   PropertiesService.getScriptProperties().setProperty(TRIGGER_PROP_KEY, new Date().toISOString());
   SpreadsheetApp.getUi().alert(
@@ -385,7 +411,6 @@ function resendMissingBookingMails() {
 }
 
 function onOpen() {
-  try { clearLegacyMailColumns_(getReserveSheet_()); } catch (e) {}
   SpreadsheetApp.getUi()
     .createMenu('見学体験メール')
     .addItem('初期セットアップ（トリガー一括設定）', 'setupAllTriggers')
@@ -456,13 +481,6 @@ function upsertMailLogRow_(reserveRow, email) {
   return { sheet: sh, row: sh.getLastRow() };
 }
 
-function clearLegacyMailColumns_(sh) {
-  if (!sh) return;
-  var lastCol = sh.getLastColumn();
-  if (lastCol < 10) return;
-  sh.getRange(1, 10, Math.max(sh.getLastRow(), 1), lastCol - 9).clearContent();
-}
-
 function buildBookingFromValues_(row, rowNum, visitDate) {
   var email = normalizeEmail_(row[EMAIL_COL - 1]);
   var name = String(row[2] || '').trim();
@@ -473,6 +491,7 @@ function buildBookingFromValues_(row, rowNum, visitDate) {
   var timeText = formatTimeValue_(row[TIME_COL - 1]);
 
   return {
+    id: String(row[ID_COL - 1] || '').trim(),
     row: rowNum,
     plan: String(row[1] || '').trim(),
     name: name,
@@ -528,22 +547,27 @@ function isEmailAlreadyBooked_(email) {
   var sh = getReserveSheet_();
   var lastRow = sh.getLastRow();
   if (lastRow < 2) return false;
-  var values = sh.getRange(2, EMAIL_COL, lastRow, EMAIL_COL).getValues();
+  var values = sh.getRange(2, 1, lastRow - 1, STATUS_COL).getValues();
   for (var i = 0; i < values.length; i++) {
-    if (normalizeEmail_(values[i][0]) === email) return true;
+    if (String(values[i][STATUS_COL - 1]).trim() === STATUS_CANCELLED) continue;
+    if (normalizeEmail_(values[i][EMAIL_COL - 1]) === email) return true;
   }
   return false;
 }
 
-function getBookedTimesForDate_(dateKey) {
+/** excludeRow: 日時変更時に本人の予約行を除外する */
+function getBookedTimesForDate_(dateKey, excludeRow) {
   var sh = getReserveSheet_();
   var lastRow = sh.getLastRow();
   if (lastRow < 2) return [];
 
-  var values = sh.getRange(2, DATE_COL, lastRow, TIME_COL).getValues();
+  var values = sh.getRange(2, DATE_COL, lastRow - 1, STATUS_COL - DATE_COL + 1).getValues();
+  var statusIdx = STATUS_COL - DATE_COL;
   var seen = {};
   var times = [];
   for (var i = 0; i < values.length; i++) {
+    if (excludeRow && i + 2 === excludeRow) continue;
+    if (String(values[i][statusIdx]).trim() === STATUS_CANCELLED) continue;
     var rowDate = parseVisitDate_(values[i][0]);
     if (!rowDate || formatDateKey_(rowDate) !== dateKey) continue;
     var t = formatTimeValue_(values[i][1]);
@@ -568,10 +592,11 @@ function getMachineLectureBookedTimes_(dateKey) {
   try {
     var sh = SpreadsheetApp.openById(MACHINE_LECTURE_SPREADSHEET_ID).getSheetByName(MACHINE_LECTURE_SHEET_NAME);
     if (!sh || sh.getLastRow() < 2) return [];
-    // F:予約日 G:予約時間
-    var values = sh.getRange(2, 6, sh.getLastRow() - 1, 2).getValues();
+    // F:予約日 G:予約時間 H:予約ID I:状態
+    var values = sh.getRange(2, 6, sh.getLastRow() - 1, 4).getValues();
     var out = [];
     for (var i = 0; i < values.length; i++) {
+      if (String(values[i][3]).trim() === STATUS_CANCELLED) continue;
       var d = parseVisitDate_(values[i][0]);
       if (!d || formatDateKey_(d) !== dateKey) continue;
       var t = formatTimeValue_(values[i][1]);
@@ -584,16 +609,216 @@ function getMachineLectureBookedTimes_(dateKey) {
   }
 }
 
-function isSlotAlreadyBooked_(dateText, timeText) {
+function isSlotAlreadyBooked_(dateText, timeText, excludeRow) {
   var visitDate = parseVisitDate_(dateText);
   var dateKey = visitDate ? formatDateKey_(visitDate) : formatDateInputValue_(dateText);
   var wantTime = formatTimeValue_(timeText);
   if (!dateKey || !wantTime) return false;
-  var booked = getBookedTimesForDate_(dateKey);
+  var booked = getBookedTimesForDate_(dateKey, excludeRow);
   for (var i = 0; i < booked.length; i++) {
     if (booked[i] === wantTime) return true;
   }
   return false;
+}
+
+// ===== 予約の確認・日時変更・キャンセル（manage.html から呼ぶ） =====
+
+function findReservationById_(rawId) {
+  var id = String(rawId || '').trim();
+  if (!/^[0-9a-f]{32}$/i.test(id)) return null;
+  var sh = getReserveSheet_();
+  var lastRow = sh.getLastRow();
+  if (lastRow < 2) return null;
+  var ids = sh.getRange(2, ID_COL, lastRow - 1, 1).getValues();
+  for (var i = 0; i < ids.length; i++) {
+    if (String(ids[i][0]).trim() !== id) continue;
+    var row = i + 2;
+    var values = sh.getRange(row, 1, 1, HISTORY_COL).getValues()[0];
+    var booking = buildBookingFromValues_(values, row);
+    if (!booking) return null;
+    return {
+      sheet: sh,
+      row: row,
+      booking: booking,
+      cancelled: String(values[STATUS_COL - 1]).trim() === STATUS_CANCELLED,
+      history: String(values[HISTORY_COL - 1] || '')
+    };
+  }
+  return null;
+}
+
+function reservationDateTime_(dateText, timeText) {
+  var d = parseVisitDate_(dateText);
+  var t = formatTimeValue_(timeText);
+  if (!d || !t) return null;
+  var hm = t.split(':');
+  var dt = new Date(d.getTime());
+  dt.setHours(Number(hm[0]), Number(hm[1]), 0, 0);
+  return dt;
+}
+
+/** LPと同じ受付枠: 月・木休み / 土日 12:00〜18:30 / 平日 10:00〜19:30 */
+function allowedTimesForDate_(dateObj) {
+  var day = dateObj.getDay();
+  if (day === 1 || day === 4) return [];
+  var weekend = (day === 0 || day === 6);
+  var start = weekend ? 12 * 60 : 10 * 60;
+  var end = weekend ? 18 * 60 + 30 : 19 * 60 + 30;
+  var out = [];
+  for (var m = start; m <= end; m += 30) {
+    out.push(('0' + Math.floor(m / 60)).slice(-2) + ':' + ('0' + (m % 60)).slice(-2));
+  }
+  return out;
+}
+
+function reservationResponse_(found) {
+  var b = found.booking;
+  var start = reservationDateTime_(b.date, b.time);
+  var past = !start || start.getTime() <= Date.now();
+  return {
+    ok: true,
+    reservation: {
+      plan: b.plan,
+      name: b.name,
+      date: b.date,
+      time: b.time,
+      displayDate: b.displayDate,
+      status: found.cancelled ? 'cancelled' : (past ? 'past' : 'active')
+    }
+  };
+}
+
+function getReservation_(rawId) {
+  var found = findReservationById_(rawId);
+  if (!found) return { ok: false, error: 'notFound' };
+  return reservationResponse_(found);
+}
+
+function appendReservationHistory_(found, text) {
+  var stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy/MM/dd HH:mm');
+  var next = (found.history ? found.history + '\n' : '') + stamp + ' ' + text;
+  found.sheet.getRange(found.row, HISTORY_COL).setValue(next);
+}
+
+function cancelReservation_(rawId) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+  try {
+    var found = findReservationById_(rawId);
+    if (!found) return { ok: false, error: 'notFound' };
+    if (found.cancelled) return { ok: false, error: 'alreadyCancelled' };
+    var start = reservationDateTime_(found.booking.date, found.booking.time);
+    if (!start || start.getTime() <= Date.now()) return { ok: false, error: 'pastReservation' };
+
+    found.sheet.getRange(found.row, STATUS_COL).setValue(STATUS_CANCELLED);
+    appendReservationHistory_(found, 'キャンセル（' + found.booking.date + ' ' + found.booking.time + '）');
+    SpreadsheetApp.flush();
+    found.cancelled = true;
+
+    try {
+      sendReservationUpdateMails_(found.booking, 'cancel', null);
+    } catch (mailErr) {
+      Logger.log('cancel mail error row=' + found.row + ' ' + mailErr);
+    }
+    return reservationResponse_(found);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function changeReservation_(rawId, rawDate, rawTime) {
+  var dateText = formatDateInputValue_(rawDate);
+  var timeText = formatTimeValue_(rawTime);
+  var visitDate = parseVisitDate_(dateText);
+  if (!dateText || !timeText || !visitDate) return { ok: false, error: 'missingFields' };
+  if (allowedTimesForDate_(visitDate).indexOf(timeText) === -1) return { ok: false, error: 'invalidSlot' };
+  var newStart = reservationDateTime_(dateText, timeText);
+  if (!newStart || newStart.getTime() <= Date.now()) return { ok: false, error: 'invalidSlot' };
+
+  var lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+  try {
+    var found = findReservationById_(rawId);
+    if (!found) return { ok: false, error: 'notFound' };
+    if (found.cancelled) return { ok: false, error: 'alreadyCancelled' };
+    var start = reservationDateTime_(found.booking.date, found.booking.time);
+    if (!start || start.getTime() <= Date.now()) return { ok: false, error: 'pastReservation' };
+    if (formatDateKey_(visitDate) === found.booking.date && timeText === found.booking.time) {
+      return { ok: false, error: 'sameSlot' };
+    }
+    if (isSlotAlreadyBooked_(dateText, timeText, found.row)) return { ok: false, error: 'slotTaken' };
+
+    var before = { date: found.booking.date, time: found.booking.time, displayDate: found.booking.displayDate };
+    found.sheet.getRange(found.row, DATE_COL).setNumberFormat('@').setValue(formatDateKey_(visitDate));
+    found.sheet.getRange(found.row, TIME_COL).setNumberFormat('@').setValue(timeText);
+    appendReservationHistory_(found, '日時変更 ' + before.date + ' ' + before.time + ' → ' + formatDateKey_(visitDate) + ' ' + timeText);
+    SpreadsheetApp.flush();
+
+    found.booking.date = formatDateKey_(visitDate);
+    found.booking.time = timeText;
+    found.booking.displayDate = formatDisplayDate_(visitDate);
+    found.booking.visitDateKey = formatDateKey_(visitDate);
+
+    try {
+      sendReservationUpdateMails_(found.booking, 'change', before);
+    } catch (mailErr) {
+      Logger.log('change mail error row=' + found.row + ' ' + mailErr);
+    }
+    return reservationResponse_(found);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function sendReservationUpdateMails_(booking, kind, before) {
+  var isCancel = kind === 'cancel';
+  var label = isCancel ? 'キャンセル' : '日時変更';
+  var customerBody = [
+    booking.name + ' 様',
+    '',
+    STORE_NAME + 'です。',
+    isCancel ? '以下のご予約のキャンセルを承りました。' : '以下の内容でご予約の日時を変更しました。',
+    '■ 種別：' + booking.plan
+  ];
+  if (isCancel) {
+    customerBody.push('■ 日時：' + booking.displayDate + ' ' + booking.time);
+    customerBody.push('', 'またのご利用をお待ちしております。');
+  } else {
+    customerBody.push('■ 変更前：' + before.displayDate + ' ' + before.time);
+    customerBody.push('■ 変更後：' + booking.displayDate + ' ' + booking.time);
+    customerBody.push('', '再度の変更・キャンセルは下記ページから行えます。', MANAGE_URL_BASE + booking.id);
+    customerBody.push('', 'ご来館をお待ちしております。');
+  }
+  customerBody.push(STORE_NAME);
+
+  var customer = sendMailWithRetry_({
+    to: booking.email,
+    subject: '【' + STORE_NAME + '】見学・体験予約の' + label + 'を承りました',
+    body: customerBody.join('\n'),
+    storeOnly: true
+  });
+
+  var adminLines = [];
+  if (!customer.ok) adminLines.push('※お客さまへの確認メールは送信されていません。必要に応じて店舗から直接ご連絡ください。', '');
+  adminLines.push('【' + STORE_NAME_SHORT + '】 見学・体験予約の' + label + 'がありました（お客さま操作）。');
+  adminLines.push('■ 種別：' + booking.plan);
+  if (isCancel) {
+    adminLines.push('■ キャンセルした日時：' + booking.displayDate + ' ' + booking.time);
+  } else {
+    adminLines.push('■ 変更前：' + before.displayDate + ' ' + before.time);
+    adminLines.push('■ 変更後：' + booking.displayDate + ' ' + booking.time);
+  }
+  adminLines.push('■ お名前：' + booking.name);
+  adminLines.push('■ 電話番号：' + booking.tel);
+  adminLines.push('■ メールアドレス：' + booking.email);
+  adminLines.push('', 'スプレッドシート（' + booking.row + '行目）', SpreadsheetApp.getActiveSpreadsheet().getUrl());
+
+  sendMailWithRetry_({
+    to: STORE_EMAIL,
+    bcc: getStaffBcc_(),
+    subject: '【' + STORE_NAME_SHORT + '】 見学・体験の' + label + 'がありました',
+    body: adminLines.join('\n')
+  });
 }
 
 function getReserveSheet_() {
@@ -614,7 +839,10 @@ function ensureReserveHeaders_(sh) {
     '性別',
     '年代',
     '希望日',
-    '希望時間'
+    '希望時間',
+    '予約ID',
+    '状態',
+    '変更・キャンセル履歴'
   ];
   sh.getRange(1, 1, 1, headers.length).setValues([headers]);
   sh.getRange(1, 1, 1, headers.length).setFontWeight('bold');
