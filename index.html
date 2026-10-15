@@ -31,13 +31,6 @@
             text-align: center;
             padding: 3.5rem 1rem 1.75rem;
         }
-        .hero-brand {
-            font-size: 0.78rem;
-            font-weight: 800;
-            letter-spacing: 0.14em;
-            color: var(--ink);
-            margin-bottom: 1.1rem;
-        }
         .hero-title-black {
             margin: 0;
             font-size: clamp(1.45rem, 4.8vw, 2rem);
@@ -281,9 +274,8 @@
     </div>
 
     <header class="hero">
-        <p class="hero-brand">JOYFIT24 経堂</p>
-        <h1 class="hero-title-black" data-i18n="hero.lineBlack">入会前に館内をチェック</h1>
-        <p class="hero-title-red" data-i18n="hero.lineRed">無料見学・体験 予約受付中</p>
+        <h1 class="hero-title-black" data-i18n="hero.lineBlack">JOYFIT24 経堂</h1>
+        <p class="hero-title-red" data-i18n="hero.lineRed">無料見学・体験</p>
         <hr class="hero-rule">
     </header>
 
@@ -292,7 +284,6 @@
                 <form id="inquiry-form">
 
                     <div class="form-block">
-                            <p class="block-label" data-i18n="form.planPrompt">見学・体験どちらかご選択ください</p>
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="radio" id="tour" name="plan" value="見学" class="hidden plan-radio" required checked>
                                 <label for="tour"><span data-i18n="form.visit">見学</span></label>
@@ -358,12 +349,11 @@
                     </div>
 
                     <div class="form-block">
-                        <p class="block-label" data-i18n="form.noticeTitle">ご確認事項</p>
+                        <p class="block-label" data-i18n="form.noticeTitle">確認事項</p>
                         <ul class="notice-list">
-                            <li data-i18n="form.notice1">館内は土足でのご利用が可能です。</li>
-                            <li data-i18n-html="form.notice2">体験は<span class="font-bold">60分を目安</span>にご利用頂いております。</li>
-                            <li data-i18n-html="form.notice3"><span class="text-brand-red font-bold">月曜日・木曜日はスタッフ不在のため予約不可。</span></li>
-                            <li data-i18n-html="form.notice4"><span class="text-brand-red font-bold">予約はメールアドレスにつき1回のみ</span>です。</li>
+                            <li data-i18n-html="form.notice1">館内は土足利用が可能です。<span class="text-brand-red font-bold">※サンダル不可</span></li>
+                            <li data-i18n-html="form.notice2">体験は<span class="font-bold">60分を目安</span>にご利用頂いております</li>
+                            <li data-i18n-html="form.notice3"><span class="text-brand-red font-bold">月曜日・木曜日はスタッフ不在のため予約不可</span></li>
                         </ul>
                         <p class="field-label text-center mt-4 mb-0" data-i18n="form.staffHours">スタッフ常駐時間</p>
                         <div class="hours-row">

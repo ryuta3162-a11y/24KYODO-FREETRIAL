@@ -3,14 +3,13 @@
     "title": "免费参观·体验 - JOYFIT24经堂"
   },
   "hero": {
-    "lineBlack": "入会前先了解场馆",
-    "lineRed": "免费参观·体验预约中",
+    "lineBlack": "JOYFIT24 经堂",
+    "lineRed": "免费参观·体验",
     "subtitle": "请在工作人员在馆时间内到店",
     "title": "免费参观·体验预约",
     "formLabel": "RESERVATION FORM"
   },
   "form": {
-    "planPrompt": "请选择参观或体验",
     "datetimePrompt": "希望日期与时间",
     "visit": "参观",
     "trial": "体验",
@@ -33,9 +32,9 @@
     "age50": "50多岁",
     "age60": "60岁以上",
     "noticeTitle": "注意事项",
-    "notice1": "馆内可穿着外出鞋使用。",
-    "notice2": "体验时间以<span class=\"font-bold\">约60分钟</span>为参考。",
-    "notice3": "<span class=\"text-brand-red font-bold\">周一、周四无工作人员，无法预约。</span>",
+    "notice1": "馆内可穿着外出鞋使用。<span class=\"text-brand-red font-bold\">※不可穿凉鞋</span>",
+    "notice2": "体验时间以<span class=\"font-bold\">约60分钟</span>为参考",
+    "notice3": "<span class=\"text-brand-red font-bold\">周一、周四无工作人员，无法预约</span>",
     "staffHours": "工作人员在岗时间",
     "weekday": "工作日",
     "weekend": "周六·周日·节假日",
@@ -61,8 +60,7 @@
     "verifying": "验证中...",
     "codeSent": "验证码已发送，请查收邮件。",
     "verified": "邮箱验证完成",
-    "submitHint": "完成邮箱验证后即可提交",
-    "notice4": "<span class=\"text-brand-red font-bold\">每个邮箱仅可预约1次</span>。"
+    "submitHint": "完成邮箱验证后即可提交"
   },
   "errors": {
     "monThuClosed": "周一·周四休息（无工作人员）",
