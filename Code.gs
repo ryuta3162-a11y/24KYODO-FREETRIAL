@@ -20,6 +20,10 @@ var HISTORY_COL = 12; // L列: 変更・キャンセル履歴
 var STATUS_ACTIVE = '予約中';
 var STATUS_CANCELLED = 'キャンセル';
 var MANAGE_URL_BASE = 'https://24-kyodo-freetrial.vercel.app/manage.html?id=';
+/** 新規受付停止日（既存予約はそのまま） */
+var BLOCKED_DATES = {
+  '2026-11-13': true
+};
 var STORE_NAME = 'JOYFIT24 経堂';
 var STORE_NAME_SHORT = 'JOYFIT24経堂';
 var STORE_EMAIL = 'jf-kyoudou@okamoto-group.co.jp';
@@ -136,6 +140,7 @@ function submitReservation_(p) {
     var dateText = formatDateInputValue_(date);
     var visitDate = parseVisitDate_(dateText);
     if (!timeText || !dateText) return { ok: false, error: 'missingFields' };
+    if (isDateBlocked_(dateText)) return { ok: false, error: 'dateClosed' };
 
     // 同時刻の二重予約防止（画面のグレーアウトと併用）
     if (isSlotAlreadyBooked_(dateText, timeText)) {
@@ -657,8 +662,13 @@ function reservationDateTime_(dateText, timeText) {
   return dt;
 }
 
+function isDateBlocked_(dateKey) {
+  return !!(BLOCKED_DATES && BLOCKED_DATES[String(dateKey || '')]);
+}
+
 /** LPと同じ受付枠: 月・木休み / 土日 12:00〜18:30 / 平日 10:00〜19:30 */
 function allowedTimesForDate_(dateObj) {
+  if (isDateBlocked_(formatDateKey_(dateObj))) return [];
   var day = dateObj.getDay();
   if (day === 1 || day === 4) return [];
   var weekend = (day === 0 || day === 6);

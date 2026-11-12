@@ -517,6 +517,12 @@
 
                 if (!this.value) return;
 
+                if (this.value === '2026-11-13') {
+                    this.value = '';
+                    dateError.textContent = JoyfitI18n.t('errors.dateClosed', '11/13は受付を終了しました。別の日を選んでください。');
+                    return;
+                }
+
                 if (dayOfWeek === 1 || dayOfWeek === 4) {
                     this.value = '';
                     dateError.textContent = JoyfitI18n.t('errors.monThuClosed', 'MON & THU CLOSED (月曜・木曜はスタッフ不在)');
@@ -544,7 +550,11 @@
                     option.textContent = option.disabled ? bookedLabel(option.value) : option.value;
                 });
                 if (dateError.textContent) {
-                    dateError.textContent = JoyfitI18n.t('errors.monThuClosed', 'MON & THU CLOSED (月曜・木曜はスタッフ不在)');
+                    if (dateError.textContent.indexOf('11/13') !== -1) {
+                        dateError.textContent = JoyfitI18n.t('errors.dateClosed', '11/13は受付を終了しました。別の日を選んでください。');
+                    } else {
+                        dateError.textContent = JoyfitI18n.t('errors.monThuClosed', 'MON & THU CLOSED (月曜・木曜はスタッフ不在)');
+                    }
                 }
                 if (!submitButton.disabled && successMessage.classList.contains('hidden')) {
                     submitButton.textContent = JoyfitI18n.t('form.submit', '上記の内容で申し込む');
@@ -559,13 +569,15 @@
                     alreadyBooked: 'errors.alreadyBooked',
                     invalidEmail: 'errors.invalidEmail',
                     missingFields: 'errors.missingFields',
-                    slotTaken: 'errors.slotTaken'
+                    slotTaken: 'errors.slotTaken',
+                    dateClosed: 'errors.dateClosed'
                 };
                 const fallbacks = {
                     alreadyBooked: 'このメールアドレスはすでに予約済みです。予約は1回のみです。',
                     invalidEmail: 'メールアドレスを正しく入力してください。',
                     missingFields: '必須項目を入力してください。',
-                    slotTaken: 'その日時はすでに予約が入っています。別の時間を選んでください。'
+                    slotTaken: 'その日時はすでに予約が入っています。別の時間を選んでください。',
+                    dateClosed: '11/13は受付を終了しました。別の日を選んでください。'
                 };
                 const key = keys[code] || 'errors.system';
                 return JoyfitI18n.t(key, fallbacks[code] || 'システムエラーが発生しました。再度お試しください。');

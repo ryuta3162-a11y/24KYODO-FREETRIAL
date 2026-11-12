@@ -92,12 +92,14 @@
         maxDate: null,
         ruleNote: '（月曜・木曜はお休み／平日 10:00〜19:30・土日 12:00〜18:30）',
         timesFor: function (d) {
+            var key = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+            if (key === '2026-11-13') return null;
             var day = d.getDay();
             if (day === 1 || day === 4) return null;
             var weekend = day === 0 || day === 6;
             return buildTimes(weekend ? 12 * 60 : 10 * 60, weekend ? 18 * 60 + 30 : 19 * 60 + 30);
         },
-        closedMessage: '月曜・木曜はスタッフ不在のため選べません。'
+        closedMessage: 'その日は受付できません。別の日を選んでください。'
     };
 
     function buildTimes(start, end) {
